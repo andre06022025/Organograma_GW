@@ -40,8 +40,12 @@ class UsuarioController extends Controller
         $usuarios = $query->orderBy('name')->paginate(20)->withQueryString();
 
         $grupos = Grupo::ativos()->get(['id', 'nome']);
+        $gestores = User::where('status', 'ativo')
+            ->where('role', '!=', 'visualizador')
+            ->orderBy('name')
+            ->get(['id', 'name', 'cargo', 'role']);
 
-        return view('cadastros.usuarios.index', compact('usuarios', 'grupos'));
+        return view('cadastros.usuarios.index', compact('usuarios', 'grupos', 'gestores'));
     }
 
     public function create()
