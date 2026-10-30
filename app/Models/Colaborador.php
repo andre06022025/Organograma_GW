@@ -46,11 +46,6 @@ class Colaborador extends Model
             ->orderBy('nome_completo');
     }
 
-    public function subordinadosRecursivos(): HasMany
-    {
-        return $this->hasMany(Colaborador::class, 'gestor_id');
-    }
-
     // Scopes
     public function scopeAtivos($query)
     {
@@ -82,7 +77,7 @@ class Colaborador extends Model
     {
         return self::ativos()
             ->raiz()
-            ->with('subordinadosRecursivos.subordinadosRecursivos.subordinadosRecursivos')
+            ->with('subordinados.subordinados.subordinados.subordinados.subordinados.subordinados')
             ->get()
             ->map(fn($c) => $c->toTreeNode())
             ->toArray();

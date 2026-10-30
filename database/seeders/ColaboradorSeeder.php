@@ -157,7 +157,7 @@ class ColaboradorSeeder extends Seeder
             'nome_completo' => 'João',
             'cargo' => 'Supervisão 3',
             'setor' => 'Sistemas 3+4',
-            'email' => 'joao@empresa.com.br',
+            'email' => 'joao.s34@empresa.com.br',
             'gestor_id' => $cooVilela->id,
         ]);
 
@@ -273,7 +273,7 @@ class ColaboradorSeeder extends Seeder
             'nome_completo' => 'Thiago (Ref. Apoio)',
             'cargo' => 'Direção (Referência Apoio)',
             'setor' => 'Apoio',
-            'email' => 'thiago@empresa.com.br',
+            'email' => 'thiago.apoio@empresa.com.br',
             'gestor_id' => null,
         ]);
 

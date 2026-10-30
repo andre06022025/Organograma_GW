@@ -1,9 +1,45 @@
 @import 'tailwindcss';
 
+@source '../../resources/views/**/*.blade.php';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+
+/* Dark mode baseado na classe .dark (compatível com o toggle do layout) */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Source Sans Pro', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-lte-purple: #6f42c1;
+    --color-lte-purple-dark: #4b2882;
+    --color-lte-blue: #007bff;
+    --color-lte-blue-dark: #0056b3;
+    --color-lte-cyan: #17a2b8;
+    --color-lte-orange: #fd7e14;
+    --color-lte-orange-dark: #c85d02;
+    --color-lte-navy: #001f3f;
+    --color-lte-gray-bg: #f4f6f9;
+    --color-lte-gray-bg-dark: #1e293b;
+    --color-lte-card-bg: #ffffff;
+    --color-lte-card-bg-dark: #334155;
+    --color-lte-border: #e2e8f0;
+    --color-lte-border-dark: #475569;
+    --color-lte-text: #334155;
+    --color-lte-text-dark: #f1f5f9;
+    --color-lte-text-muted: #64748b;
+    --color-lte-text-muted-dark: #94a3b8;
+}
+
+/* Botões de cadastro com a cor da marca (complementa o Bootstrap) */
+.btn-lte-purple {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+    color: #fff;
+}
+
+.btn-lte-purple:hover,
+.btn-lte-purple:focus {
+    background-color: #4b2882;
+    border-color: #4b2882;
+    color: #fff;
 }

@@ -39,7 +39,7 @@ class UsuarioController extends Controller
 
         $usuarios = $query->orderBy('name')->paginate(20)->withQueryString();
 
-        $grupos = Grupo::ativos()->get(['id', 'nome']);
+        $grupos = Grupo::ordenados()->get(['id', 'nome']);
         $gestores = User::where('status', 'ativo')
             ->where('role', '!=', 'visualizador')
             ->orderBy('name')
@@ -50,7 +50,7 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        $grupos = Grupo::ativos()->get(['id', 'nome']);
+        $grupos = Grupo::ordenados()->get(['id', 'nome']);
         $gestores = User::where('status', 'ativo')
             ->where('role', '!=', 'visualizador')
             ->orderBy('name')
@@ -79,7 +79,7 @@ class UsuarioController extends Controller
 
     public function edit(User $usuario)
     {
-        $grupos = Grupo::ativos()->get(['id', 'nome']);
+        $grupos = Grupo::ordenados()->get(['id', 'nome']);
         $gestores = User::where('status', 'ativo')
             ->where('id', '!=', $usuario->id)
             ->where('role', '!=', 'visualizador')

@@ -33,11 +33,8 @@ Route::prefix('organograma')->name('organograma.')->group(function () {
     Route::get('/detalhes/{id}', [OrganogramaController::class, 'detalhes'])->name('detalhes');
 });
 
-// API para busca no header
-Route::get('/api/colaboradores/buscar', [OrganogramaController::class, 'buscar'])->name('colaboradores.buscar');
-
-// Cadastros routes (protegidas por auth)
-Route::middleware('auth')->group(function () {
+// Cadastros routes (protegidas por autenticação + perfil de gestão)
+Route::middleware(['auth', 'gestao'])->group(function () {
     Route::prefix('cadastros')->name('cadastros.')->group(function () {
         Route::resource('colaboradores', ColaboradorController::class)
             ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);

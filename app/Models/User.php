@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -53,12 +52,6 @@ class User extends Authenticatable
     public function subordinados(): HasMany
     {
         return $this->hasMany(User::class, 'gestor_id');
-    }
-
-    public function sistemas(): BelongsToMany
-    {
-        return $this->belongsToMany(\App\Models\OrganogramaSistema::class, 'user_sistema', 'user_id', 'sistema_id')
-            ->withTimestamps();
     }
 
     public function getFotoUrlAttribute(): string

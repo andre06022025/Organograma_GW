@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Grupo extends Model
 {
@@ -22,12 +21,7 @@ class Grupo extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function colaboradores(): HasMany
-    {
-        return $this->hasMany(Colaborador::class, 'grupo_id');
-    }
-
-    public function scopeAtivos($query)
+    public function scopeOrdenados($query)
     {
         return $query->orderBy('numero');
     }

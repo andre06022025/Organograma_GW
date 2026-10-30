@@ -5,48 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Organograma Corporativo - General Water')</title>
     
+    <!-- Bootstrap 4 CSS (telas de cadastro) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Tailwind CSS compilado via Vite + JS do app -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Source Sans Pro', 'sans-serif'],
-                    },
-                    colors: {
-                        'lte-purple': '#6f42c1',
-                        'lte-purple-dark': '#4b2882',
-                        'lte-blue': '#007bff',
-                        'lte-blue-dark': '#0056b3',
-                        'lte-cyan': '#17a2b8',
-                        'lte-orange': '#fd7e14',
-                        'lte-orange-dark': '#c85d02',
-                        'lte-navy': '#001f3f',
-                        'lte-gray-bg': '#f4f6f9',
-                        'lte-gray-bg-dark': '#1e293b',
-                        'lte-card-bg': '#ffffff',
-                        'lte-card-bg-dark': '#334155',
-                        'lte-border': '#e2e8f0',
-                        'lte-border-dark': '#475569',
-                        'lte-text': '#334155',
-                        'lte-text-dark': '#f1f5f9',
-                        'lte-text-muted': '#64748b',
-                        'lte-text-muted-dark': '#94a3b8',
-                    }
-                }
-            }
-        }
-        
-        // Verificar tema salvo ou preferência do sistema
+        // Aplicar tema salvo ou preferência do sistema antes da renderização
         if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
@@ -286,6 +255,9 @@
         <!-- Canvas Principal de Navegação (Zoom & Pan) -->
         <main class="flex-1 bg-lte-gray-bg dark:bg-lte-gray-bg-dark overflow-auto p-4 relative" id="canvasContainer">
 
+            {{-- Conteúdo das telas de cadastro (Bootstrap) --}}
+            @yield('content')
+
             <div id="viewportCanvas" class="w-max min-w-full mx-auto pb-12 flex flex-col items-center gap-4">
 
                 @yield('organograma-content')
@@ -506,10 +478,16 @@
         // MODAL DETALHES
         // ==========================================
         function openCardModal(nodeId) {
-            fetch(`/organograma/detalhes/${nodeId}`)
-                .then(r => r.json())
-                .then(data => populateModal(data))
-                .catch(() => populateModalFromDOM(nodeId));
+            if (/^\d+$/.test(String(nodeId))) {
+                // IDs numéricos: busca os dados no backend
+                fetch(`/organograma/detalhes/${nodeId}`, { headers: { 'Accept': 'application/json' } })
+                    .then(r => r.ok ? r.json() : Promise.reject())
+                    .then(data => populateModal(data))
+                    .catch(() => populateModalFromDOM(nodeId));
+            } else {
+                // Cards estáticos do organograma: usa os data-attributes do próprio card
+                populateModalFromDOM(nodeId);
+            }
             
             document.getElementById('cardModal').classList.remove('hidden');
             setTimeout(() => {
@@ -530,7 +508,7 @@
         function populateModal(data) {
             const isConfidential = data.pode_ver_confidencial === true;
             
-            document.getElementById('modalHeaderBg').className = 'p-3 flex justify-between items-start ' + (data.cor_nivel || 'bg-lte-orange');
+            document.getElementById('modalHeaderBg').className = 'text-white p-3 flex justify-between items-start ' + (data.cor_nivel || 'bg-lte-orange');
             document.getElementById('modalAvatar').src = data.foto_url || '';
             document.getElementById('modalAvatar').alt = data.nome;
             document.getElementById('modalRoleBadge').textContent = data.label_nivel || data.nivel;
@@ -559,13 +537,12 @@
             if (!card) return;
             
             const data = {
-                nome: card.dataset.nome,
-                cargo: card.dataset.cargo,
-                setor: card.dataset.setor,
+                nome: card.dataset.name,
+                cargo: card.dataset.role,
+                setor: card.dataset.sector,
                 nivel: card.dataset.nivel,
                 label_nivel: card.dataset.labelNivel,
                 cor_nivel: card.dataset.corNivel,
-                superintendencia: card.dataset.superintendencia,
                 area_atuacao: card.dataset.areaAtuacao,
                 foto_url: card.querySelector('img')?.src,
             };

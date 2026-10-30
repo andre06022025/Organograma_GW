@@ -9,8 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         // 1. Recriar tabela grupos (apenas nome e número/id)
+        // ATENÇÃO: não remover a tabela `users` aqui. Ela é criada pela migration
+        // 0001_01_01_000000_create_users_table e alterada por
+        // 2026_10_30_170000_add_custom_fields_to_users_table (que depende dela existir).
         Schema::dropIfExists('user_sistema');
-        Schema::dropIfExists('users');
         Schema::dropIfExists('grupos');
         
         Schema::create('grupos', function (Blueprint $table) {
