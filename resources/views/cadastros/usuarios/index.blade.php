@@ -120,15 +120,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $usuario->gestor?->name ?? '-' }}</td>
-                                <td>
-                                    @if($usuario->sistemas->count() > 0)
-                                        @foreach($usuario->sistemas as $s)
-                                            <span class="badge badge-light text-dark mr-1 mb-1" style="font-size: 0.65rem;">{{ $s->sigla ?? $s->nome }}</span>
-                                        @endforeach
-                                    @else
-                                        <span class="text-muted">-</span>
-                                    @endif
-                                </td>
+                                <td><span class="text-muted">-</span></td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('cadastros.usuarios.edit', $usuario) }}" 
