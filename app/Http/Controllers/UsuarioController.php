@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Grupo;
-use App\Models\OrganogramaSistema;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -15,7 +14,7 @@ class UsuarioController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::with(['grupo', 'gestor', 'sistemas']);
+        $query = User::with('grupo');
 
         if ($request->filled('busca')) {
             $termo = $request->busca;
@@ -40,22 +39,20 @@ class UsuarioController extends Controller
 
         $usuarios = $query->orderBy('name')->paginate(20)->withQueryString();
 
-        $grupos = Grupo::ativos()->ordenados()->get(['id', 'nome']);
-        $sistemas = OrganogramaSistema::ativos()->ordenados()->get(['id', 'nome']);
+        $grupos = Grupo::ativos()->get(['id', 'nome']);
 
-        return view('cadastros.usuarios.index', compact('usuarios', 'grupos', 'sistemas'));
+        return view('cadastros.usuarios.index', compact('usuarios', 'grupos'));
     }
 
     public function create()
     {
-        $grupos = Grupo::ativos()->ordenados()->get(['id', 'nome']);
-        $sistemas = OrganogramaSistema::ativos()->ordenados()->get(['id', 'nome']);
+        $grupos = Grupo::ativos()->get(['id', 'nome']);
         $gestores = User::where('status', 'ativo')
             ->where('role', '!=', 'visualizador')
             ->orderBy('name')
             ->get(['id', 'name', 'cargo', 'role']);
 
-        return view('cadastros.usuarios.create', compact('grupos', 'sistemas', 'gestores'));
+        return view('cadastros.usuarios.create', compact('grupos', 'gestores'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -69,12 +66,7 @@ class UsuarioController extends Controller
 
         $dados['password'] = Hash::make($dados['password']);
 
-        $usuario = User::create($dados);
-
-        // Associar sistemas
-        if ($request->filled('sistemas')) {
-            $usuario->sistemas()->sync($request->sistemas);
-        }
+        User::create($dados);
 
         return redirect()
             ->route('cadastros.usuarios.index')
@@ -83,17 +75,14 @@ class UsuarioController extends Controller
 
     public function edit(User $usuario)
     {
-        $grupos = Grupo::ativos()->ordenados()->get(['id', 'nome']);
-        $sistemas = OrganogramaSistema::ativos()->ordenados()->get(['id', 'nome']);
+        $grupos = Grupo::ativos()->get(['id', 'nome']);
         $gestores = User::where('status', 'ativo')
             ->where('id', '!=', $usuario->id)
             ->where('role', '!=', 'visualizador')
             ->orderBy('name')
             ->get(['id', 'name', 'cargo', 'role']);
 
-        $usuario->load('sistemas');
-
-        return view('cadastros.usuarios.edit', compact('usuario', 'grupos', 'sistemas', 'gestores'));
+        return view('cadastros.usuarios.edit', compact('usuario', 'grupos', 'gestores'));
     }
 
     public function update(Request $request, User $usuario): RedirectResponse
@@ -116,9 +105,6 @@ class UsuarioController extends Controller
 
         $usuario->update($dados);
 
-        // Associar sistemas
-        $usuario->sistemas()->sync($request->sistemas ?? []);
-
         return redirect()
             ->route('cadastros.usuarios.index')
             ->with('success', 'Usuário atualizado com sucesso!');
@@ -136,7 +122,6 @@ class UsuarioController extends Controller
             Storage::disk('public')->delete($usuario->foto_path);
         }
 
-        $usuario->sistemas()->detach();
         $usuario->delete();
 
         return redirect()
@@ -159,8 +144,6 @@ class UsuarioController extends Controller
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'ramal' => ['nullable', 'string', 'max:20'],
             'unidade' => ['nullable', 'string', 'max:100'],
-            'sistemas' => ['nullable', 'array'],
-            'sistemas.*' => ['integer', Rule::exists('organograma_sistemas', 'id')],
         ]);
     }
 }

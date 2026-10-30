@@ -27,7 +27,7 @@ class OrganogramaController extends Controller
     public function buscar(Request $request): JsonResponse
     {
         $termo = $request->get('q', '');
-        
+
         if (strlen($termo) < 2) {
             return response()->json([]);
         }
@@ -54,14 +54,9 @@ class OrganogramaController extends Controller
     public function detalhes($id): JsonResponse
     {
         $colaborador = Colaborador::with('gestor')->findOrFail($id);
-        
+
         $user = auth()->user();
-        $podeVerConfidencial = false;
-        
-        if ($user) {
-            $podeVerConfidencial = $user->isGestao() 
-                || $user->colaborador_id === $colaborador->gestor_id;
-        }
+        $podeVerConfidencial = $user ? $user->isGestao() : false;
 
         return response()->json([
             'id' => $colaborador->id,
@@ -74,6 +69,7 @@ class OrganogramaController extends Controller
                 'nome' => $colaborador->gestor->nome_completo,
                 'cargo' => $colaborador->gestor->cargo,
             ] : null,
+            'pode_ver_confidencial' => $podeVerConfidencial,
         ]);
     }
 }
