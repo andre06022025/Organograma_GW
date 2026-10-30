@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Organograma Corporativo - General Water')</title>
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Source Sans Pro', 'sans-serif'],
+                    },
+                    colors: {
+                        'lte-purple': '#6f42c1',
+                        'lte-purple-dark': '#4b2882',
+                        'lte-blue': '#007bff',
+                        'lte-blue-dark': '#0056b3',
+                        'lte-cyan': '#17a2b8',
+                        'lte-orange': '#fd7e14',
+                        'lte-orange-dark': '#c85d02',
+                        'lte-navy': '#001f3f',
+                        'lte-gray-bg': '#f4f6f9',
+                        'lte-gray-bg-dark': '#1e293b',
+                        'lte-card-bg': '#ffffff',
+                        'lte-card-bg-dark': '#334155',
+                        'lte-border': '#e2e8f0',
+                        'lte-border-dark': '#475569',
+                        'lte-text': '#334155',
+                        'lte-text-dark': '#f1f5f9',
+                        'lte-text-muted': '#64748b',
+                        'lte-text-muted-dark': '#94a3b8',
+                    }
+                }
+            }
+        }
+        
+        // Verificar tema salvo ou preferência do sistema
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        .dark ::-webkit-scrollbar-track { background: #334155; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #64748b; }
+        
+        .node-card {
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+            cursor: pointer;
+        }
+        .node-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .dark .node-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        #viewportCanvas {
+            transform-origin: top center;
+            transition: transform 0.1s ease-out;
+        }
+        
+        .modal-enter {
+            animation: modalIn 0.2s ease-out;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Transições suaves para mudança de tema */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Ajustes para dark mode nas modais Bootstrap */
+        .dark .modal-content {
+            background-color: #334155;
+            border-color: #475569;
+        }
+        .dark .modal-header,
+        .dark .modal-footer {
+            border-color: #475569;
+        }
+        .dark .form-control {
+            background-color: #1e293b;
+            border-color: #475569;
+            color: #f1f5f9;
+        }
+        .dark .form-control:focus {
+            background-color: #1e293b;
+            border-color: #6f42c1;
+            color: #f1f5f9;
+            box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+        }
+        .dark .form-select {
+            background-color: #1e293b;
+            border-color: #475569;
+            color: #f1f5f9;
+        }
+        .dark .custom-control-label::before {
+            background-color: #1e293b;
+            border-color: #475569;
+        }
+        .dark .custom-control-input:checked~.custom-control-label::before {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        .dark .card {
+            background-color: #334155;
+            border-color: #475569;
+        }
+        .dark .table {
+            color: #f1f5f9;
+        }
+        .dark .table th {
+            background-color: #1e293b;
+            border-color: #475569;
+        }
+        .dark .table td {
+            border-color: #475569;
+        }
+        .dark .dropdown-menu {
+            background-color: #334155;
+            border-color: #475569;
+        }
+        .dark .dropdown-item {
+            color: #f1f5f9;
+        }
+        .dark .dropdown-item:hover {
+            background-color: #475569;
+        }
+        .dark .bg-white { background-color: #334155 !important; }
+        .dark .bg-gray-50 { background-color: #1e293b !important; }
+        .dark .bg-gray-100 { background-color: #334155 !important; }
+        .dark .bg-slate-50 { background-color: #1e293b !important; }
+        .dark .bg-slate-100 { background-color: #334155 !important; }
+        .dark .bg-slate-200 { background-color: #475569 !important; }
+        .dark .bg-slate-800 { background-color: #1e293b !important; }
+        .dark .bg-slate-900 { background-color: #0f172a !important; }
+        .dark .text-slate-700 { color: #f1f5f9 !important; }
+        .dark .text-slate-600 { color: #cbd5e1 !important; }
+        .dark .text-slate-500 { color: #94a3b8 !important; }
+        .dark .text-slate-400 { color: #94a3b8 !important; }
+        .dark .text-slate-300 { color: #cbd5e1 !important; }
+        .dark .text-slate-200 { color: #e2e8f0 !important; }
+        .dark .border-slate-200 { border-color: #475569 !important; }
+        .dark .border-slate-300 { border-color: #475569 !important; }
+        .dark .bg-slate-800 { background-color: #1e293b !important; }
+    </style>
+    
+    @yield('css')
+</head>
+<body class="bg-lte-gray-bg dark:bg-lte-gray-bg-dark font-sans text-lte-text dark:text-lte-text-dark text-xs antialiased h-screen overflow-hidden flex flex-col">
+
+    <!-- Topbar -->
+    <header class="bg-lte-card-bg dark:bg-lte-card-bg-dark border-b border-lte-border dark:border-lte-border-dark px-4 py-2 flex items-center justify-between shadow-sm z-30 shrink-0">
+        <div class="flex items-center gap-3">
+            <button id="sidebarToggle" onclick="toggleSidebar()" class="text-lte-text-muted dark:text-lte-text-muted-dark hover:text-lte-text dark:hover:text-lte-text p-1 lg:hidden">
+                <i class="fa-solid fa-bars text-base"></i>
+            </button>
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-sitemap text-lte-orange text-lg"></i>
+                <h1 class="font-bold text-lte-text dark:text-lte-text-dark text-base">Organograma Geral <span class="text-xs font-normal text-lte-text-muted dark:text-lte-text-muted-dark">(General Water)</span></h1>
+            </div>
+        </div>
+
+        <!-- Controles Globais de Zoom & Filtros -->
+        <div class="flex items-center gap-2 flex-wrap">
+            <!-- Pesquisa -->
+            <div class="relative w-48 md:w-64 lg:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-lte-text-muted dark:text-lte-text-muted-dark"></i>
+                <input type="text" id="searchInput" onkeyup="filterNodes()" placeholder="Buscar colaborador ou cargo..." class="w-full pl-8 pr-3 py-1 text-xs border border-lte-border dark:border-lte-border-dark rounded bg-lte-card-bg dark:bg-lte-card-bg-dark text-lte-text dark:text-lte-text-dark focus:outline-none focus:ring-1 focus:ring-lte-purple">
+            </div>
+
+            <!-- Filtro de Área -->
+            <select id="sectorFilter" onchange="filterNodes()" class="border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 text-xs bg-lte-card-bg dark:bg-lte-card-bg-dark text-lte-text dark:text-lte-text-dark hidden sm:block">
+                <option value="all">Todas as Áreas</option>
+                <option value="producao">Áreas de Produção</option>
+                <option value="apoio">Áreas de Apoio</option>
+            </select>
+
+            <!-- Controles de Zoom -->
+            <div class="flex items-center bg-lte-gray-bg dark:bg-lte-gray-bg-dark rounded border border-lte-border dark:border-lte-border-dark p-0.5">
+                <button onclick="changeZoom(-0.1)" title="Reduzir Zoom" class="px-2 py-0.5 hover:bg-lte-card-bg dark:hover:bg-lte-card-bg-dark rounded text-lte-text dark:text-lte-text-dark font-bold">-</button>
+                <span id="zoomLevelText" class="px-2 text-[11px] font-semibold text-lte-text-muted dark:text-lte-text-muted-dark">100%</span>
+                <button onclick="changeZoom(0.1)" title="Aumentar Zoom" class="px-2 py-0.5 hover:bg-lte-card-bg dark:hover:bg-lte-card-bg-dark rounded text-lte-text dark:text-lte-text-dark font-bold">+</button>
+                <button onclick="resetZoom()" title="Ajustar Tela" class="px-2 py-0.5 hover:bg-lte-card-bg dark:hover:bg-lte-card-bg-dark rounded text-lte-text-muted dark:text-lte-text-muted-dark text-[10px] border-l border-lte-border dark:border-lte-border-dark ml-0.5">Reset</button>
+                <button onclick="fitToScreen()" title="Ajustar Tudo" class="px-2 py-0.5 hover:bg-lte-card-bg dark:hover:bg-lte-card-bg-dark rounded text-lte-text-muted dark:text-lte-text-muted-dark text-[10px] border-l border-lte-border dark:border-lte-border-dark ml-0.5">
+                    <i class="fas fa-compress-alt"></i>
+                </button>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button id="themeToggle" onclick="toggleTheme()" title="Alternar tema" class="p-2 rounded-lg bg-lte-gray-bg dark:bg-lte-gray-bg-dark border border-lte-border dark:border-lte-border-dark hover:bg-lte-border dark:hover:bg-lte-border-dark transition-colors" aria-label="Alternar tema claro/escuro">
+                <i id="themeIcon" class="fas fa-sun text-lte-orange text-lg"></i>
+            </button>
+
+            <!-- User Menu -->
+            <div class="flex items-center gap-2 ml-auto">
+                @auth
+                <div class="flex items-center gap-2 bg-lte-gray-bg dark:bg-lte-gray-bg-dark rounded-lg px-3 py-1.5 border border-lte-border dark:border-lte-border-dark">
+                    <img src="{{ auth()->user()->foto_url }}" class="w-6 h-6 rounded-full border border-lte-orange">
+                    <span class="text-xs font-semibold text-lte-text dark:text-lte-text-dark">{{ auth()->user()->name }}</span>
+                    <a href="{{ route('logout') }}" class="text-lte-text-muted dark:text-lte-text-muted-dark hover:text-lte-text dark:hover:text-lte-text ml-2" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
+                        <i class="fas fa-sign-out-alt text-xs"></i>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                        @csrf
+                    </form>
+                </div>
+                @else
+                <a href="{{ route('login') }}" class="px-3 py-1.5 bg-lte-orange text-white text-xs font-semibold rounded hover:bg-lte-orange-dark transition">
+                    <i class="fas fa-sign-in-alt mr-1"></i> Entrar
+                </a>
+                @endauth
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden relative">
+
+        <!-- Sidebar Retrátil -->
+        <aside id="mainSidebar" class="w-56 bg-slate-800 dark:bg-slate-900 text-slate-200 shrink-0 transition-all duration-300 flex flex-col z-20 lg:block">
+            <div class="p-3 bg-slate-900 dark:bg-slate-950 flex items-center gap-2 border-b border-slate-700 dark:border-slate-800">
+                <div class="w-8 h-8 rounded-full border border-lte-orange bg-gradient-to-br from-lte-purple to-lte-cyan flex items-center justify-center">
+                    <i class="fas fa-sitemap text-white text-sm"></i>
+                </div>
+                <div class="overflow-hidden">
+                    @auth
+                    <p class="font-bold text-white text-xs truncate">{{ auth()->user()->name }}</p>
+                    <span class="text-[10px] text-emerald-400 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span> Conectado
+                    </span>
+                    @else
+                    <p class="font-bold text-white text-xs truncate">Visitante</p>
+                    <span class="text-[10px] text-amber-400 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span> Não logado
+                    </span>
+                    @endauth
+                </div>
+            </div>
+
+            <nav class="p-2 space-y-1 text-xs flex-1">
+                <a href="{{ route('organograma.index') }}" class="flex items-center gap-2 px-2.5 py-2 bg-lte-orange text-white font-semibold rounded">
+                    <i class="fa-solid fa-sitemap w-4"></i> Organograma Completo
+                </a>
+                <a href="#" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition" onclick="filterNodes('producao')">
+                    <i class="fa-solid fa-industry w-4"></i> Áreas de Produção
+                </a>
+                <a href="#" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition" onclick="filterNodes('apoio')">
+                    <i class="fa-solid fa-headset w-4"></i> Áreas de Apoio
+                </a>
+                @auth
+                <li class="nav-header text-[10px] text-uppercase tracking-wide text-slate-500 mt-2 mb-1 px-2">CADASTROS</li>
+                <a href="{{ route('cadastros.colaboradores.index') }}" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition">
+                    <i class="fa-solid fa-users-cog w-4"></i> Colaboradores
+                </a>
+                <a href="{{ route('cadastros.usuarios.index') }}" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition">
+                    <i class="fa-solid fa-user-shield w-4"></i> Usuários
+                </a>
+                @endauth
+            </nav>
+
+            <div class="p-3 border-t border-slate-700 dark:border-slate-800 text-[10px] text-slate-400">
+                General Water - CCO v1.0
+            </div>
+        </aside>
+
+        <!-- Canvas Principal de Navegação (Zoom & Pan) -->
+        <main class="flex-1 bg-lte-gray-bg dark:bg-lte-gray-bg-dark overflow-auto p-4 relative" id="canvasContainer">
+
+            <div id="viewportCanvas" class="w-max min-w-full mx-auto pb-12 flex flex-col items-center gap-4">
+
+                @yield('organograma-content')
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal Detalhes + Dados Confidenciais -->
+    <div id="cardModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-lte-card-bg dark:bg-lte-card-bg-dark rounded-lg shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-200 modal-enter" id="modalContainer">
+            
+            <!-- Header Modal -->
+            <div id="modalHeaderBg" class="bg-lte-orange text-white p-3 flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <img id="modalAvatar" src="" class="w-12 h-12 rounded-full border-2 border-white object-cover shadow">
+                    <div>
+                        <span id="modalRoleBadge" class="bg-black/20 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Cargo</span>
+                        <h3 id="modalName" class="font-bold text-base leading-tight">Nome Profissional</h3>
+                        <p id="modalRole" class="text-xs opacity-90">Título do Cargo</p>
+                    </div>
+                </div>
+                <button onclick="closeCardModal()" class="text-white/80 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-4 space-y-3 max-h-[75vh] overflow-y-auto text-xs">
+                
+                <!-- Informações Públicas -->
+                <div class="grid grid-cols-2 gap-2 bg-lte-gray-bg dark:bg-lte-gray-bg-dark p-2 rounded border border-lte-border dark:border-lte-border-dark">
+                    <div>
+                        <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Área / Regional:</span>
+                        <span id="modalLocation" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
+                    </div>
+                    <div>
+                        <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Status Equipe:</span>
+                        <span class="font-bold text-emerald-600 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 100% Operacional
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lte-text-muted dark:text-lte-text-muted-dark uppercase tracking-wide text-[10px] mb-1">Atribuições Principais</h4>
+                    <p id="modalResponsibilities" class="bg-lte-gray-bg dark:bg-lte-gray-bg-dark p-2 rounded border border-lte-border dark:border-lte-border-dark text-lte-text dark:text-lte-text-dark leading-relaxed">
+                        Carregando...
+                    </p>
+                </div>
+
+                <!-- CONTATO -->
+                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-lte-border dark:border-lte-border-dark text-[11px]">
+                    <div class="flex items-center gap-1.5 text-lte-text-muted dark:text-lte-text-muted-dark">
+                        <i class="fa-solid fa-envelope text-lte-orange"></i>
+                        <span id="modalEmail">-</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-lte-text-muted dark:text-lte-text-muted-dark">
+                        <i class="fa-solid fa-phone text-lte-orange"></i>
+                        <span id="modalPhone">-</span>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO CONFIDENCIAL / OCULTA -->
+                <div class="pt-2 border-t border-lte-border dark:border-lte-border-dark">
+                    <button onclick="toggleConfidentialData()" class="w-full py-1.5 bg-slate-800 dark:bg-slate-700 text-white font-semibold rounded hover:bg-slate-700 dark:hover:bg-slate-600 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lock text-amber-400"></i>
+                        <span id="confidentialBtnText">Exibir Informações Confidenciais</span>
+                    </button>
+
+                    <div id="confidentialBox" class="hidden mt-2 p-2.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded text-amber-900 dark:text-amber-100 space-y-1.5">
+                        <div class="flex justify-between border-b border-amber-200/60 dark:border-amber-800/60 pb-1">
+                            <span>Faixa Salarial / Graus:</span>
+                            <strong id="modalSalary">-</strong>
+                        </div>
+                        <div class="flex justify-between border-b border-amber-200/60 dark:border-amber-800/60 pb-1">
+                            <span>Meta do Trimestre (KPI):</span>
+                            <strong id="modalKpi">-</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Avaliação de Desempenho:</span>
+                            <strong id="modalPerformance" class="text-emerald-700 dark:text-emerald-400">-</strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-lte-gray-bg dark:bg-lte-gray-bg-dark px-4 py-2 border-t border-lte-border dark:border-lte-border-dark flex justify-between items-center text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
+                <span>Laravel User ID: <strong id="modalUserId">#-</strong></span>
+                <button onclick="closeCardModal()" class="px-3 py-1 bg-slate-700 dark:bg-slate-600 text-white font-semibold rounded hover:bg-slate-600 dark:hover:bg-slate-500">Fechar</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // ==========================================
+        // TEMA DARK/LIGHT
+        // ==========================================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+        
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            const isDark = html.classList.toggle('dark');
+            
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            if (isDark) {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        }
+        
+        // ==========================================
+        // ESTADO GLOBAL DA APLICAÇÃO
+        // ==========================================
+        let currentZoom = 1.0;
+        const ZOOM_MIN = 0.5;
+        const ZOOM_MAX = 1.5;
+        const ZOOM_STEP = 0.1;
+        
+        let filteredNodes = new Set();
+        
+        // ==========================================
+        // ZOOM
+        // ==========================================
+        function changeZoom(delta) {
+            currentZoom = Math.min(Math.max(ZOOM_MIN, currentZoom + delta), ZOOM_MAX);
+            updateZoom();
+        }
+        function resetZoom() {
+            currentZoom = 1.0;
+            updateZoom();
+        }
+        function fitToScreen() {
+            const viewport = document.getElementById('viewportCanvas');
+            const container = document.getElementById('canvasContainer');
+            if (!viewport || !container) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const viewportRect = viewport.getBoundingClientRect();
+            
+            const scaleX = (containerRect.width * 0.9) / viewportRect.width;
+            const scaleY = (containerRect.height * 0.9) / viewportRect.height;
+            const scale = Math.min(scaleX, scaleY, ZOOM_MAX);
+            
+            currentZoom = Math.max(ZOOM_MIN, Math.min(scale, ZOOM_MAX));
+            updateZoom();
+        }
+        function updateZoom() {
+            const viewport = document.getElementById('viewportCanvas');
+            if (viewport) {
+                viewport.style.transform = `scale(${currentZoom})`;
+            }
+            document.getElementById('zoomLevelText').textContent = `${Math.round(currentZoom * 100)}%`;
+        }
+
+        // ==========================================
+        // SIDEBAR TOGGLE
+        // ==========================================
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            sidebar.classList.toggle('-ml-56');
+        }
+
+        // ==========================================
+        // FILTROS E BUSCA
+        // ==========================================
+        function filterNodes(setorForcado = null) {
+            const busca = document.getElementById('searchInput').value.toLowerCase().trim();
+            const setor = setorForcado || document.getElementById('sectorFilter').value;
+            
+            const cards = document.querySelectorAll('.node-card');
+            let visiveis = 0;
+            
+            cards.forEach(card => {
+                const nome = (card.dataset.nome || '').toLowerCase();
+                const cargo = (card.dataset.cargo || '').toLowerCase();
+                const setorCard = card.dataset.sector || '';
+                
+                const matchBusca = !busca || nome.includes(busca) || cargo.includes(busca);
+                const matchSetor = setor === 'all' || setorCard === setor;
+                
+                const visivel = matchBusca && matchSetor;
+                
+                if (visivel) {
+                    card.style.display = '';
+                    card.style.opacity = '1';
+                    card.style.pointerEvents = 'auto';
+                    visiveis++;
+                } else {
+                    card.style.display = 'none';
+                    card.style.opacity = '0';
+                    card.style.pointerEvents = 'none';
+                }
+            });
+        }
+
+        // ==========================================
+        // MODAL DETALHES
+        // ==========================================
+        function openCardModal(nodeId) {
+            fetch(`/organograma/detalhes/${nodeId}`)
+                .then(r => r.json())
+                .then(data => populateModal(data))
+                .catch(() => populateModalFromDOM(nodeId));
+            
+            document.getElementById('cardModal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('cardModal').classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeCardModal() {
+            const modal = document.getElementById('cardModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('confidentialBox').classList.add('hidden');
+                document.getElementById('confidentialBtnText').textContent = 'Exibir Informações Confidenciais';
+            }, 200);
+        }
+
+        function populateModal(data) {
+            const isConfidential = data.pode_ver_confidencial === true;
+            
+            document.getElementById('modalHeaderBg').className = 'p-3 flex justify-between items-start ' + (data.cor_nivel || 'bg-lte-orange');
+            document.getElementById('modalAvatar').src = data.foto_url || '';
+            document.getElementById('modalAvatar').alt = data.nome;
+            document.getElementById('modalRoleBadge').textContent = data.label_nivel || data.nivel;
+            document.getElementById('modalRoleBadge').className = 'bg-black/20 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase';
+            document.getElementById('modalName').textContent = data.nome;
+            document.getElementById('modalRole').textContent = data.cargo;
+            
+            document.getElementById('modalLocation').textContent = data.area_atuacao || '-';
+            document.getElementById('modalResponsibilities').textContent = data.responsabilidades || 'Não informado';
+            document.getElementById('modalEmail').textContent = data.email || '-';
+            document.getElementById('modalPhone').textContent = data.ramal || '-';
+            document.getElementById('modalUserId').textContent = '#' + data.id;
+            
+            const confidentialBox = document.getElementById('confidentialBox');
+            const btnText = document.getElementById('confidentialBtnText');
+            
+            if (isConfidential) {
+                document.getElementById('modalSalary').textContent = data.faixa_salarial || 'Não informado';
+                document.getElementById('modalKpi').textContent = data.kpis_metas || 'Não definido';
+                document.getElementById('modalPerformance').textContent = data.avaliacao_desempenho || 'Não avaliado';
+            }
+        }
+
+        function populateModalFromDOM(nodeId) {
+            const card = document.querySelector(`.node-card[data-id="${nodeId}"]`);
+            if (!card) return;
+            
+            const data = {
+                nome: card.dataset.nome,
+                cargo: card.dataset.cargo,
+                setor: card.dataset.setor,
+                nivel: card.dataset.nivel,
+                label_nivel: card.dataset.labelNivel,
+                cor_nivel: card.dataset.corNivel,
+                superintendencia: card.dataset.superintendencia,
+                area_atuacao: card.dataset.areaAtuacao,
+                foto_url: card.querySelector('img')?.src,
+            };
+            
+            populateModal({...data, pode_ver_confidencial: false});
+        }
+
+        function toggleConfidentialData() {
+            const box = document.getElementById('confidentialBox');
+            const btnText = document.getElementById('confidentialBtnText');
+            const isHidden = box.classList.contains('hidden');
+            
+            if (isHidden) {
+                box.classList.remove('hidden');
+                btnText.innerHTML = '<i class="fa-solid fa-lock-open text-amber-400 mr-2"></i> Ocultar Informações Confidenciais';
+            } else {
+                box.classList.add('hidden');
+                btnText.innerHTML = '<i class="fa-solid fa-lock text-amber-400 mr-2"></i> Exibir Informações Confidenciais';
+            }
+        }
+
+        // ==========================================
+        // INICIALIZAÇÃO
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            
+            // Atalhos teclado
+            document.addEventListener('keydown', function(e) {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                
+                switch(e.key) {
+                    case '+': case '=': e.preventDefault(); changeZoom(ZOOM_STEP); break;
+                    case '-': case '_': e.preventDefault(); changeZoom(-ZOOM_STEP); break;
+                    case '0': e.preventDefault(); resetZoom(); break;
+                    case 'f': case 'F': e.preventDefault(); fitToScreen(); break;
+                    case '/': e.preventDefault(); document.getElementById('searchInput').focus(); break;
+                    case 'Escape': closeCardModal(); break;
+                    case 'd': case 'D': 
+                        if (e.ctrlKey || e.metaKey) {
+                            e.preventDefault();
+                            toggleTheme();
+                        }
+                        break;
+                }
+            });
+            
+            // Fechar modal ao clicar fora
+            document.getElementById('cardModal').addEventListener('click', function(e) {
+                if (e.target === this) closeCardModal();
+            });
+        });
+
+        // Disponibilizar globalmente
+        window.changeZoom = changeZoom;
+        window.resetZoom = resetZoom;
+        window.fitToScreen = fitToScreen;
+        window.filterNodes = filterNodes;
+        window.openCardModal = openCardModal;
+        window.closeCardModal = closeCardModal;
+        window.toggleConfidentialData = toggleConfidentialData;
+        window.toggleTheme = toggleTheme;
+    </script>
+    
+    @stack('scripts')
+</body>
+</html>
