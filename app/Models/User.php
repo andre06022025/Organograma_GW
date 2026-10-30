@@ -71,10 +71,10 @@ class User extends Authenticatable
 
     public function getRoleLabelAttribute(): string
     {
-        if ($this->role) {
-            return self::ROLES[$this->role] ?? $this->role;
+        if ($this->role === null) {
+            return 'Sem perfil';
         }
-        return 'Sem perfil';
+        return self::ROLES[$this->role] ?? $this->role ?? 'Sem perfil';
     }
 
     public function isAdmin(): bool

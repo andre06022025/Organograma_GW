@@ -134,7 +134,7 @@
                                 @foreach($sistemas as $s)
                                     <div class="col-md-3 mb-2">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="sistemas[]" value="{{ $s->id }}" class="custom-control-input" id="sistema_{{ $s->id }}" {{ $usuario->sistemas->contains('id', $s->id) ? 'checked' : '' }}>
+                                            <input type="checkbox" name="sistemas[]" value="{{ $s->id }}" class="custom-control-input" id="sistema_{{ $s->id }}">
                                             <label class="custom-control-label small" for="sistema_{{ $s->id }}">
                                                 <strong>{{ $s->sigla ?? $s->nome }}</strong>
                                                 @if($s->nome != $s->sigla)
