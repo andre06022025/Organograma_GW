@@ -119,26 +119,6 @@
                                 </select>
                             </div>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label font-weight-bold">Sistemas de Acesso</label>
-                            <div class="row">
-                                @foreach($sistemas as $s)
-                                    <div class="col-md-3 mb-2">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="sistemas[]" value="{{ $s->id }}" class="custom-control-input" id="sistema_{{ $s->id }}">
-                                            <label class="custom-control-label small" for="sistema_{{ $s->id }}">
-                                                <strong>{{ $s->sigla ?? $s->nome }}</strong>
-                                                @if($s->nome != $s->sigla)
-                                                    <br><span class="text-muted">{{ $s->nome }}</span>
-                                                @endif
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        
                         <hr class="my-4">
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('cadastros.usuarios.index') }}" class="btn btn-outline-secondary">
