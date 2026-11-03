@@ -58,6 +58,31 @@
             transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
         
+        /* Estados minimizados */
+        body.ui-minimized #topHeader {
+            height: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden !important;
+        }
+        body.ui-minimized #mainSidebar {
+            width: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden !important;
+        }
+        body.ui-minimized #canvasContainer {
+            padding: 0 !important;
+        }
+        body.ui-minimized #minimizeUIIcon {
+            transform: rotate(180deg);
+        }
+        
+        /* Transições suaves para minimizar */
+        #topHeader, #mainSidebar, #canvasContainer {
+            transition: all 0.3s ease;
+        }
+        
         /* Ajustes para dark mode nas modais Bootstrap */
         .dark .modal-content {
             background-color: #334155;
@@ -139,7 +164,7 @@
 <body class="bg-lte-gray-bg dark:bg-lte-gray-bg-dark font-sans text-lte-text dark:text-lte-text-dark text-xs antialiased h-screen overflow-hidden flex flex-col">
 
     <!-- Topbar -->
-    <header class="bg-lte-card-bg dark:bg-lte-card-bg-dark border-b border-lte-border dark:border-lte-border-dark px-4 py-2 flex items-center justify-between shadow-sm z-30 shrink-0">
+    <header id="topHeader" class="bg-lte-card-bg dark:bg-lte-card-bg-dark border-b border-lte-border dark:border-lte-border-dark px-4 py-2 flex items-center justify-between shadow-sm z-30 shrink-0 transition-all duration-300">
         <div class="flex items-center gap-3">
             <button id="sidebarToggle" onclick="toggleSidebar()" class="text-lte-text-muted dark:text-lte-text-muted-dark hover:text-lte-text dark:hover:text-lte-text p-1 lg:hidden">
                 <i class="fa-solid fa-bars text-base"></i>
@@ -181,12 +206,10 @@
                 <i id="themeIcon" class="fas fa-sun text-lte-orange text-lg"></i>
             </button>
 
-            <!-- User Menu -->
-            <div class="flex items-center gap-2 ml-auto">
-                <button id="themeToggle" onclick="toggleTheme()" title="Alternar tema" class="p-2 rounded-lg bg-lte-gray-bg dark:bg-lte-gray-bg-dark border border-lte-border dark:border-lte-border-dark hover:bg-lte-border dark:hover:bg-lte-border-dark transition-colors" aria-label="Alternar tema claro/escuro">
-                    <i id="themeIcon" class="fas fa-sun text-lte-orange text-lg"></i>
-                </button>
-            </div>
+            <!-- Minimize UI Toggle -->
+            <button id="minimizeUIToggle" onclick="toggleMinimizeUI()" title="Ocultar/Mostrar barras" class="p-2 rounded-lg bg-lte-gray-bg dark:bg-lte-gray-bg-dark border border-lte-border dark:border-lte-border-dark hover:bg-lte-border dark:hover:bg-lte-border-dark transition-colors" aria-label="Ocultar/Mostrar barras">
+                <i id="minimizeUIIcon" class="fas fa-compress-arrows-alt text-lte-purple text-lg"></i>
+            </button>
         </div>
     </header>
 
@@ -540,10 +563,42 @@
         }
 
         // ==========================================
+        // MINIMIZAR UI (TOPBAR + SIDEBAR)
+        // ==========================================
+        function toggleMinimizeUI() {
+            const body = document.body;
+            const icon = document.getElementById('minimizeUIIcon');
+            const isMinimized = body.classList.toggle('ui-minimized');
+            
+            if (isMinimized) {
+                icon.classList.replace('fa-compress-arrows-alt', 'fa-expand-arrows-alt');
+                localStorage.setItem('uiMinimized', 'true');
+            } else {
+                icon.classList.replace('fa-expand-arrows-alt', 'fa-compress-arrows-alt');
+                localStorage.setItem('uiMinimized', 'false');
+            }
+            
+            // Recalcular zoom após animação
+            setTimeout(() => {
+                updateZoom();
+            }, 300);
+        }
+
+        function initMinimizeUI() {
+            const saved = localStorage.getItem('uiMinimized');
+            const icon = document.getElementById('minimizeUIIcon');
+            if (saved === 'true') {
+                document.body.classList.add('ui-minimized');
+                if (icon) icon.classList.replace('fa-compress-arrows-alt', 'fa-expand-arrows-alt');
+            }
+        }
+
+        // ==========================================
         // INICIALIZAÇÃO
         // ==========================================
         document.addEventListener('DOMContentLoaded', function() {
             initTheme();
+            initMinimizeUI();
             
             // Atalhos teclado
             document.addEventListener('keydown', function(e) {
@@ -580,6 +635,7 @@
         window.closeCardModal = closeCardModal;
         window.toggleConfidentialData = toggleConfidentialData;
         window.toggleTheme = toggleTheme;
+        window.toggleMinimizeUI = toggleMinimizeUI;
     </script>
     
     @stack('scripts')

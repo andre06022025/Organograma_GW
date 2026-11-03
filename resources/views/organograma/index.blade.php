@@ -3,21 +3,38 @@
 @section('title', 'Organograma Corporativo - General Water')
 
 @section('organograma-content')
-    <!-- ================= NÍVEL 1: DIREÇÃO ================= -->
-    <div class="flex justify-center w-full">
-        <div class="node-card bg-lte-orange text-white rounded shadow-md border-b-2 border-lte-orange-dark p-2 w-72 flex items-center gap-2"
-             onclick="openCardModal('DIR-THIAGO')" data-id="DIR-THIAGO" data-name="Thiago" data-role="Direção Geral" data-sector="direcao" data-nivel="direcao" data-label-nivel="Nível Executivo" data-cor-nivel="bg-lte-orange" data-area-atuacao="Supervisão Geral do Grupo">
-            <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-            <div class="flex-1 min-w-0">
-                <span class="bg-black/20 text-[9px] font-bold px-1.5 py-0.2 rounded uppercase">Nível Executivo</span>
-                <h2 class="font-bold text-sm leading-tight">DIREÇÃO (THIAGO)</h2>
-                <p class="text-[10px] text-orange-100">Supervisão Geral do Grupo</p>
+    <!-- ================= NÍVEL 1: DIREÇÃO (FULL WIDTH) ================= -->
+    <div class="w-full px-2">
+        <div class="node-card bg-lte-orange text-white rounded-lg shadow-lg border-b-4 border-lte-orange-dark py-2 px-4 flex items-center justify-between w-full"
+             onclick="openCardModal('DIR-THIAGO')" 
+             data-id="DIR-THIAGO" 
+             data-name="Thiago" 
+             data-role="Direção Geral" 
+             data-sector="direcao" 
+             data-nivel="direcao" 
+             data-label-nivel="Nível Executivo" 
+             data-cor-nivel="bg-lte-orange" 
+             data-area-atuacao="Supervisão Geral do Grupo"
+             data-grupo="true"
+             data-grupo-nome="Administrativo"
+             data-grupo-numero="005">
+            <div class="flex items-center gap-3">
+                <svg class="w-8 h-8 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                <div class="flex-1 min-w-0">
+                    <span class="bg-black/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Nível Executivo</span>
+                    <h2 class="font-bold text-lg leading-tight">DIREÇÃO GERAL - THIAGO</h2>
+                    <p class="text-[11px] text-orange-100">Supervisão Geral do Grupo</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-white/80">
+                <span class="text-xs font-medium">Grupo: Administrativo (005)</span>
+                <i class="fa-solid fa-chevron-down text-lg"></i>
             </div>
         </div>
     </div>
 
     <!-- LINHA CONECTORA CENTRAL -->
-    <div class="w-0.5 h-4 bg-slate-400"></div>
+    <div class="w-0.5 h-3 bg-slate-400 mx-auto"></div>
 
     <!-- ================= DIVISÃO EM DUAS COLUNAS PRINCIPAIS ================= -->
     <div class="grid grid-cols-2 gap-6 w-full max-w-[1600px] items-start">
