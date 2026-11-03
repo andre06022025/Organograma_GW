@@ -53,10 +53,7 @@ class OrganogramaController extends Controller
 
     public function detalhes($id): JsonResponse
     {
-        $colaborador = Colaborador::with('gestor')->findOrFail($id);
-
-        $user = auth()->user();
-        $podeVerConfidencial = $user ? $user->isGestao() : false;
+        $colaborador = Colaborador::with(['gestor', 'grupo'])->findOrFail($id);
 
         return response()->json([
             'id' => $colaborador->id,
@@ -71,11 +68,16 @@ class OrganogramaController extends Controller
             'email' => $colaborador->email,
             'ramal' => null,
             'foto_url' => $colaborador->foto_url,
+            'grupo' => $colaborador->grupo ? [
+                'id' => $colaborador->grupo->id,
+                'nome' => $colaborador->grupo->nome,
+                'numero' => $colaborador->grupo->numero,
+            ] : null,
             'gestor' => $colaborador->gestor ? [
                 'nome' => $colaborador->gestor->nome_completo,
                 'cargo' => $colaborador->gestor->cargo,
             ] : null,
-            'pode_ver_confidencial' => $podeVerConfidencial,
+            'pode_ver_confidencial' => false,
         ]);
     }
 }

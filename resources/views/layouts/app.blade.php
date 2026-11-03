@@ -183,22 +183,9 @@
 
             <!-- User Menu -->
             <div class="flex items-center gap-2 ml-auto">
-                @auth
-                <div class="flex items-center gap-2 bg-lte-gray-bg dark:bg-lte-gray-bg-dark rounded-lg px-3 py-1.5 border border-lte-border dark:border-lte-border-dark">
-                    <img src="{{ auth()->user()->foto_url }}" class="w-6 h-6 rounded-full border border-lte-orange">
-                    <span class="text-xs font-semibold text-lte-text dark:text-lte-text-dark">{{ auth()->user()->name }}</span>
-                    <a href="{{ route('logout') }}" class="text-lte-text-muted dark:text-lte-text-muted-dark hover:text-lte-text dark:hover:text-lte-text ml-2" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
-                        <i class="fas fa-sign-out-alt text-xs"></i>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                        @csrf
-                    </form>
-                </div>
-                @else
-                <a href="{{ route('login') }}" class="px-3 py-1.5 bg-lte-orange text-white text-xs font-semibold rounded hover:bg-lte-orange-dark transition">
-                    <i class="fas fa-sign-in-alt mr-1"></i> Entrar
-                </a>
-                @endauth
+                <button id="themeToggle" onclick="toggleTheme()" title="Alternar tema" class="p-2 rounded-lg bg-lte-gray-bg dark:bg-lte-gray-bg-dark border border-lte-border dark:border-lte-border-dark hover:bg-lte-border dark:hover:bg-lte-border-dark transition-colors" aria-label="Alternar tema claro/escuro">
+                    <i id="themeIcon" class="fas fa-sun text-lte-orange text-lg"></i>
+                </button>
             </div>
         </div>
     </header>
@@ -212,17 +199,10 @@
                     <i class="fas fa-sitemap text-white text-sm"></i>
                 </div>
                 <div class="overflow-hidden">
-                    @auth
-                    <p class="font-bold text-white text-xs truncate">{{ auth()->user()->name }}</p>
+                    <p class="font-bold text-white text-xs truncate">Organograma GW</p>
                     <span class="text-[10px] text-emerald-400 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span> Conectado
+                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span> Acesso Livre
                     </span>
-                    @else
-                    <p class="font-bold text-white text-xs truncate">Visitante</p>
-                    <span class="text-[10px] text-amber-400 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span> Não logado
-                    </span>
-                    @endauth
                 </div>
             </div>
 
@@ -236,15 +216,10 @@
                 <a href="#" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition" onclick="filterNodes('apoio')">
                     <i class="fa-solid fa-headset w-4"></i> Áreas de Apoio
                 </a>
-                @auth
                 <li class="nav-header text-[10px] text-uppercase tracking-wide text-slate-500 mt-2 mb-1 px-2">CADASTROS</li>
                 <a href="{{ route('cadastros.colaboradores.index') }}" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition">
                     <i class="fa-solid fa-users-cog w-4"></i> Colaboradores
                 </a>
-                <a href="{{ route('cadastros.usuarios.index') }}" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition">
-                    <i class="fa-solid fa-user-shield w-4"></i> Usuários
-                </a>
-                @endauth
             </nav>
 
             <div class="p-3 border-t border-slate-700 dark:border-slate-800 text-[10px] text-slate-400">
@@ -296,10 +271,8 @@
                         <span id="modalLocation" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
                     </div>
                     <div>
-                        <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Status Equipe:</span>
-                        <span class="font-bold text-emerald-600 flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 100% Operacional
-                        </span>
+                        <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Grupo:</span>
+                        <span id="modalGrupo" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
                     </div>
                 </div>
 
@@ -517,6 +490,7 @@
             document.getElementById('modalRole').textContent = data.cargo;
             
             document.getElementById('modalLocation').textContent = data.area_atuacao || '-';
+            document.getElementById('modalGrupo').textContent = data.grupo ? data.grupo.nome + ' (' + data.grupo.numero + ')' : '-';
             document.getElementById('modalResponsibilities').textContent = data.responsabilidades || 'Não informado';
             document.getElementById('modalEmail').textContent = data.email || '-';
             document.getElementById('modalPhone').textContent = data.ramal || '-';
@@ -544,6 +518,7 @@
                 label_nivel: card.dataset.labelNivel,
                 cor_nivel: card.dataset.corNivel,
                 area_atuacao: card.dataset.areaAtuacao,
+                grupo: card.dataset.grupo ? { nome: card.dataset.grupoNome, numero: card.dataset.grupoNumero } : null,
                 foto_url: card.querySelector('img')?.src,
             };
             

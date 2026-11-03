@@ -65,6 +65,7 @@
                             <th>Nome Completo</th>
                             <th style="width: 150px;">Cargo</th>
                             <th style="width: 120px;">Setor</th>
+                            <th style="width: 100px;">Grupo</th>
                             <th style="width: 100px;">Gestor</th>
                             <th style="width: 100px;">Ações</th>
                         </tr>
@@ -79,6 +80,13 @@
                                 <td class="font-weight-bold">{{ $colab->nome_completo }}</td>
                                 <td>{{ $colab->cargo }}</td>
                                 <td>{{ $colab->setor ?? '-' }}</td>
+                                <td>
+                                    @if($colab->grupo)
+                                        <small>{{ $colab->grupo->nome }} ({{ $colab->grupo->numero }})</small>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if($colab->gestor)
                                         <small>{{ $colab->gestor->nome_completo }}</small>

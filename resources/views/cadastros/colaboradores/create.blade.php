@@ -57,6 +57,17 @@
                                 <label class="form-label font-weight-bold">Setor</label>
                                 <input type="text" name="setor" class="form-control" value="{{ old('setor') }}" maxlength="100" placeholder="Ex: Sistemas 1, LABOR, CCO">
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label font-weight-bold">Grupo</label>
+                                <select name="grupo_id" class="form-control">
+                                    <option value="">Selecione um grupo</option>
+                                    @foreach($grupos as $g)
+                                        <option value="{{ $g->id }}" {{ old('grupo_id') == $g->id ? 'selected' : '' }}>
+                                            {{ $g->nome }} ({{ $g->numero }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         
                         <div class="row">

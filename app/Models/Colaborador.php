@@ -22,6 +22,7 @@ class Colaborador extends Model
         'gestor_id',
         'email',
         'setor',
+        'grupo_id',
     ];
 
     protected $casts = [
@@ -38,6 +39,11 @@ class Colaborador extends Model
     public function gestor(): BelongsTo
     {
         return $this->belongsTo(Colaborador::class, 'gestor_id');
+    }
+
+    public function grupo(): BelongsTo
+    {
+        return $this->belongsTo(Grupo::class, 'grupo_id');
     }
 
     public function subordinados(): HasMany
@@ -90,6 +96,11 @@ class Colaborador extends Model
             'nome' => $this->nome_completo,
             'cargo' => $this->cargo,
             'setor' => $this->setor,
+            'grupo' => $this->grupo ? [
+                'id' => $this->grupo->id,
+                'nome' => $this->grupo->nome,
+                'numero' => $this->grupo->numero,
+            ] : null,
             'email' => $this->email,
             'foto_url' => $this->foto_url,
             'children' => $this->subordinados

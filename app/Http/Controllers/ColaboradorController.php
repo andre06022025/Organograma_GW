@@ -12,7 +12,7 @@ class ColaboradorController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Colaborador::with('gestor')->whereNull('deleted_at');
+        $query = Colaborador::with(['gestor', 'grupo'])->whereNull('deleted_at');
 
         if ($request->filled('busca')) {
             $termo = $request->busca;
@@ -37,8 +37,9 @@ class ColaboradorController extends Controller
     public function create()
     {
         $gestores = Colaborador::whereNull('deleted_at')->ordenados()->get(['id', 'nome_completo', 'cargo']);
+        $grupos = \App\Models\Grupo::ordenados()->get(['id', 'nome', 'numero']);
 
-        return view('cadastros.colaboradores.create', compact('gestores'));
+        return view('cadastros.colaboradores.create', compact('gestores', 'grupos'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -63,8 +64,9 @@ class ColaboradorController extends Controller
             ->where('id', '!=', $colaborador->id)
             ->ordenados()
             ->get(['id', 'nome_completo', 'cargo']);
+        $grupos = \App\Models\Grupo::ordenados()->get(['id', 'nome', 'numero']);
 
-        return view('cadastros.colaboradores.edit', compact('colaborador', 'gestores'));
+        return view('cadastros.colaboradores.edit', compact('colaborador', 'gestores', 'grupos'));
     }
 
     public function update(Request $request, Colaborador $colaborador): RedirectResponse
@@ -113,6 +115,7 @@ class ColaboradorController extends Controller
             'nome_completo' => ['required', 'string', 'max:150'],
             'cargo' => ['required', 'string', 'max:100'],
             'setor' => ['nullable', 'string', 'max:100'],
+            'grupo_id' => ['nullable', Rule::exists('grupos', 'id')],
             'gestor_id' => ['nullable', Rule::exists('colaboradores', 'id')],
             'email' => ['nullable', 'email', 'max:150'],
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],

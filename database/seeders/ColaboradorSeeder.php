@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Colaborador;
+use App\Models\Grupo;
 use Illuminate\Database\Seeder;
 
 class ColaboradorSeeder extends Seeder
@@ -11,6 +12,13 @@ class ColaboradorSeeder extends Seeder
     {
         Colaborador::truncate();
 
+        // Buscar grupos por nome para obter IDs
+        $grupoTI = Grupo::where('nome', 'TI')->first();
+        $grupoRH = Grupo::where('nome', 'RH')->first();
+        $grupoOperacoes = Grupo::where('nome', 'Operações')->first();
+        $grupoManutencao = Grupo::where('nome', 'Manutenção')->first();
+        $grupoAdministrativo = Grupo::where('nome', 'Administrativo')->first();
+
         // NÍVEL 1: DIREÇÃO
         $direcao = Colaborador::create([
             'nome_completo' => 'Thiago',
@@ -18,6 +26,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Direção',
             'email' => 'thiago@empresa.com.br',
             'gestor_id' => null,
+            'grupo_id' => $grupoAdministrativo?->id,
         ]);
 
         // NÍVEL 2: SUPERINTENDÊNCIAS
@@ -27,6 +36,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Produção',
             'email' => 'renato.capuano@empresa.com.br',
             'gestor_id' => $direcao->id,
+            'grupo_id' => $grupoOperacoes?->id,
         ]);
 
         $supArthur = Colaborador::create([
@@ -35,6 +45,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Produção',
             'email' => 'arthur@empresa.com.br',
             'gestor_id' => $direcao->id,
+            'grupo_id' => $grupoOperacoes?->id,
         ]);
 
         $supCapuano = Colaborador::create([
@@ -43,6 +54,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Apoio',
             'email' => 'capuano@empresa.com.br',
             'gestor_id' => $direcao->id,
+            'grupo_id' => $grupoOperacoes?->id,
         ]);
 
         // GERÊNCIA CORPORATIVA
@@ -52,6 +64,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Produção',
             'email' => 'neves@empresa.com.br',
             'gestor_id' => $supRenato->id,
+            'grupo_id' => $grupoOperacoes?->id,
         ]);
 
         // SISTEMAS 1
@@ -61,6 +74,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 1',
             'email' => 'freddy@empresa.com.br',
             'gestor_id' => $supRenato->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -69,6 +83,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 1',
             'email' => 'denis@empresa.com.br',
             'gestor_id' => $cooFreddy->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -77,6 +92,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 1',
             'email' => 'paulo@empresa.com.br',
             'gestor_id' => $cooFreddy->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         // SISTEMAS 2
@@ -86,6 +102,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 2',
             'email' => 'leonardo.m@empresa.com.br',
             'gestor_id' => $supRenato->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -94,6 +111,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 2',
             'email' => 'vagner@empresa.com.br',
             'gestor_id' => $cooLeonardo->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -102,6 +120,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 2',
             'email' => 'eric@empresa.com.br',
             'gestor_id' => $cooLeonardo->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -110,6 +129,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 2',
             'email' => 'joao@empresa.com.br',
             'gestor_id' => $cooLeonardo->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         // SISTEMAS 3+4
@@ -119,6 +139,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 3+4',
             'email' => 'vilela@empresa.com.br',
             'gestor_id' => $supRenato->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         $cooWellington = Colaborador::create([
@@ -127,6 +148,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 3+4',
             'email' => 'wellington@empresa.com.br',
             'gestor_id' => $supRenato->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -135,6 +157,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 3+4',
             'email' => 'julio@empresa.com.br',
             'gestor_id' => $cooVilela->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -143,6 +166,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 3+4',
             'email' => 'lucas@empresa.com.br',
             'gestor_id' => $cooWellington->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -151,6 +175,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 3+4',
             'email' => 'alan@empresa.com.br',
             'gestor_id' => $cooWellington->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -159,6 +184,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 3+4',
             'email' => 'joao.s34@empresa.com.br',
             'gestor_id' => $cooVilela->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         // SISTEMAS 5
@@ -168,6 +194,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 5',
             'email' => 'andre.s5@empresa.com.br',
             'gestor_id' => $supArthur->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -176,6 +203,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 5',
             'email' => 'anfrisio@empresa.com.br',
             'gestor_id' => $cooAndre->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -184,6 +212,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 5',
             'email' => 'everton@empresa.com.br',
             'gestor_id' => $cooAndre->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         // SISTEMAS 6
@@ -193,6 +222,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 6',
             'email' => 'rodrigo@empresa.com.br',
             'gestor_id' => $supArthur->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -201,6 +231,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 6',
             'email' => 'vanderso@empresa.com.br',
             'gestor_id' => $cooRodrigo->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -209,6 +240,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 6',
             'email' => 'cesar@empresa.com.br',
             'gestor_id' => $cooRodrigo->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         // SISTEMAS 7
@@ -218,6 +250,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 7',
             'email' => 'sergio.luiz@empresa.com.br',
             'gestor_id' => $supArthur->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         $cooPedro = Colaborador::create([
@@ -226,6 +259,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 8',
             'email' => 'pedro@empresa.com.br',
             'gestor_id' => $supArthur->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         $gerDiogo = Colaborador::create([
@@ -234,6 +268,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 9',
             'email' => 'diogo@empresa.com.br',
             'gestor_id' => $supArthur->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -242,6 +277,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Gestão Op.',
             'email' => 'ana.luiza@empresa.com.br',
             'gestor_id' => $gerSergio->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -250,6 +286,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 7',
             'email' => 'deivison@empresa.com.br',
             'gestor_id' => $gerSergio->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -258,6 +295,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 8',
             'email' => 'lagus@empresa.com.br',
             'gestor_id' => $cooPedro->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         Colaborador::create([
@@ -266,6 +304,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Sistemas 9',
             'email' => 'rafael@empresa.com.br',
             'gestor_id' => $gerDiogo->id,
+            'grupo_id' => $grupoTI?->id,
         ]);
 
         // APOIO
@@ -275,6 +314,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Apoio',
             'email' => 'thiago.apoio@empresa.com.br',
             'gestor_id' => null,
+            'grupo_id' => $grupoOperacoes?->id,
         ]);
 
         $gerRicardo = Colaborador::create([
@@ -283,6 +323,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'LABOR',
             'email' => 'ricardo@empresa.com.br',
             'gestor_id' => $supCapuano->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         $gerMarilia = Colaborador::create([
@@ -291,6 +332,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'LICENC',
             'email' => 'marilia@empresa.com.br',
             'gestor_id' => $supCapuano->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         Colaborador::create([
@@ -299,6 +341,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'LICENC',
             'email' => 'gabriel@empresa.com.br',
             'gestor_id' => $gerMarilia->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         Colaborador::create([
@@ -307,6 +350,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'RIC',
             'email' => 'ric@empresa.com.br',
             'gestor_id' => $supCapuano->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         $gerPedroAlc = Colaborador::create([
@@ -315,6 +359,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Manutenção de Poços',
             'email' => 'pedro.alcantara@empresa.com.br',
             'gestor_id' => $supCapuano->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         $gerCarlos = Colaborador::create([
@@ -323,6 +368,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Manutenção + Lodo',
             'email' => 'carlos@empresa.com.br',
             'gestor_id' => $supCapuano->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         Colaborador::create([
@@ -331,6 +377,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Manutenção + Lodo',
             'email' => 'diego.manut@empresa.com.br',
             'gestor_id' => $gerCarlos->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         Colaborador::create([
@@ -339,6 +386,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Manutenção + Lodo',
             'email' => 'leonardo.ne@empresa.com.br',
             'gestor_id' => $gerCarlos->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         Colaborador::create([
@@ -347,6 +395,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Manutenção + Lodo',
             'email' => 'nelson@empresa.com.br',
             'gestor_id' => $gerCarlos->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         Colaborador::create([
@@ -355,6 +404,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Manutenção + Lodo',
             'email' => 'osias@empresa.com.br',
             'gestor_id' => $gerCarlos->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         Colaborador::create([
@@ -363,6 +413,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'CCO',
             'email' => 'andre.cco@empresa.com.br',
             'gestor_id' => $supCapuano->id,
+            'grupo_id' => $grupoOperacoes?->id,
         ]);
 
         Colaborador::create([
@@ -371,6 +422,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Engenharia de Processos',
             'email' => 'beatriz@empresa.com.br',
             'gestor_id' => $supCapuano->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         Colaborador::create([
@@ -379,6 +431,7 @@ class ColaboradorSeeder extends Seeder
             'setor' => 'Engenharia de Processos',
             'email' => 'trainee.eng@empresa.com.br',
             'gestor_id' => $gerCarlos->id,
+            'grupo_id' => $grupoManutencao?->id,
         ]);
 
         $this->command->info('Colaboradores criados: ' . Colaborador::count());
