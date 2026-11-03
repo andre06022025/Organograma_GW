@@ -87,6 +87,14 @@
         body.ui-minimized #minimizeUIIcon {
             transform: rotate(180deg);
         }
+
+        /* Botão flutuante para restaurar as barras quando a UI está minimizada */
+        #restoreUIBtn {
+            display: none;
+        }
+        body.ui-minimized #restoreUIBtn {
+            display: inline-flex;
+        }
         
         /* Transições suaves para minimizar */
         #topHeader, #mainSidebar, #canvasContainer {
@@ -222,6 +230,15 @@
             </button>
         </div>
     </header>
+
+    <!-- Botão flutuante: aparece apenas quando topbar/sidebar estão ocultas -->
+    <button id="restoreUIBtn" onclick="toggleMinimizeUI()"
+            title="Mostrar barras (topbar e menu)"
+            aria-label="Mostrar barras"
+            class="fixed bottom-3 right-3 z-40 items-center gap-1.5 px-3 py-1.5 rounded-lg bg-lte-purple text-white text-xs font-semibold shadow-lg hover:bg-lte-purple-dark transition-colors">
+        <i class="fa-solid fa-expand-arrows-alt"></i>
+        <span class="hidden sm:inline">Mostrar barras</span>
+    </button>
 
     <div class="flex flex-1 overflow-hidden relative">
 
