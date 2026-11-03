@@ -18,8 +18,6 @@ Route::get('/', function () {
 // Organograma routes
 Route::prefix('organograma')->name('organograma.')->group(function () {
     Route::get('/', [OrganogramaController::class, 'index'])->name('index');
-    Route::get('/api', [OrganogramaController::class, 'api'])->name('api');
-    Route::get('/buscar', [OrganogramaController::class, 'buscar'])->name('buscar');
     Route::get('/detalhes/{id}', [OrganogramaController::class, 'detalhes'])->name('detalhes');
 });
 

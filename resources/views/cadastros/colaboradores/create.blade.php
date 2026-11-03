@@ -68,6 +68,32 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label font-weight-bold">Área <span class="text-danger">*</span></label>
+                                <select name="area" class="form-control" required>
+                                    @foreach(\App\Models\Colaborador::AREAS as $valor => $rotulo)
+                                        <option value="{{ $valor }}" {{ old('area', 'producao') === $valor ? 'selected' : '' }}>{{ $rotulo }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label font-weight-bold">Nível <span class="text-danger">*</span></label>
+                                <select name="nivel" class="form-control" required>
+                                    @foreach(\App\Models\Colaborador::NIVEIS as $valor => $info)
+                                        <option value="{{ $valor }}" {{ old('nivel', 'supervisao') === $valor ? 'selected' : '' }}>{{ $info['label'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label font-weight-bold">Ordem</label>
+                                <input type="number" name="ordem" class="form-control" value="{{ old('ordem', 0) }}" min="0" max="999">
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="form-check">
+                                    <input type="checkbox" name="ric" id="ric" value="1" class="form-check-input" {{ old('ric') ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="ric">Participa da RIC (gestão compartilhada)</label>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="row">

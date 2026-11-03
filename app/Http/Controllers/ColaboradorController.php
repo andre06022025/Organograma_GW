@@ -46,6 +46,8 @@ class ColaboradorController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $dados = $this->validar($request);
+        $dados['ric'] = $request->boolean('ric');
+        $dados['ordem'] = (int) ($dados['ordem'] ?? 0);
 
         if ($request->hasFile('foto')) {
             $path = $request->file('foto')->store('colaboradores', 'public');
@@ -73,6 +75,8 @@ class ColaboradorController extends Controller
     public function update(Request $request, Colaborador $colaborador): RedirectResponse
     {
         $dados = $this->validar($request, $colaborador);
+        $dados['ric'] = $request->boolean('ric');
+        $dados['ordem'] = (int) ($dados['ordem'] ?? 0);
 
         if ($request->hasFile('foto')) {
             if ($colaborador->foto_path && Storage::disk('public')->exists($colaborador->foto_path)) {
@@ -116,6 +120,10 @@ class ColaboradorController extends Controller
             'nome_completo' => ['required', 'string', 'max:150'],
             'cargo' => ['required', 'string', 'max:100'],
             'setor' => ['nullable', 'string', 'max:100'],
+            'nivel' => ['required', Rule::in(array_keys(Colaborador::NIVEIS))],
+            'area' => ['required', Rule::in(array_keys(Colaborador::AREAS))],
+            'ordem' => ['nullable', 'integer', 'min:0', 'max:999'],
+            'ric' => ['nullable', 'boolean'],
             'grupo_id' => ['nullable', Rule::exists('grupos', 'id')],
             'gestor_id' => ['nullable', Rule::exists('colaboradores', 'id')],
             'email' => ['nullable', 'email', 'max:150'],

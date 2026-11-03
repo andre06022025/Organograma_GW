@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @source '../../resources/views/**/*.blade.php';
+@source '../../app/**/*.php';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 /* Dark mode baseado na classe .dark (compatível com o toggle do layout) */

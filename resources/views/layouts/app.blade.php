@@ -256,7 +256,7 @@
             {{-- Conteúdo das telas de cadastro (Bootstrap) --}}
             @yield('content')
 
-            <div id="viewportCanvas" class="w-max min-w-full mx-auto pb-12 flex flex-col items-center gap-4">
+            <div id="viewportCanvas" class="w-full min-w-0 mx-auto pb-12 flex flex-col items-center gap-4">
 
                 @yield('organograma-content')
 
@@ -265,7 +265,7 @@
         </main>
     </div>
 
-    <!-- Modal Detalhes + Dados Confidenciais -->
+    <!-- Modal Detalhes do Colaborador -->
     <div id="cardModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
         <div class="bg-lte-card-bg dark:bg-lte-card-bg-dark rounded-lg shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-200 modal-enter" id="modalContainer">
             
@@ -286,66 +286,38 @@
 
             <!-- Modal Content -->
             <div class="p-4 space-y-3 max-h-[75vh] overflow-y-auto text-xs">
-                
-                <!-- Informações Públicas -->
+
+                <!-- Informações -->
                 <div class="grid grid-cols-2 gap-2 bg-lte-gray-bg dark:bg-lte-gray-bg-dark p-2 rounded border border-lte-border dark:border-lte-border-dark">
                     <div>
-                        <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Área / Regional:</span>
-                        <span id="modalLocation" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
+                        <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Nível:</span>
+                        <span id="modalNivel" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
                     </div>
                     <div>
                         <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Grupo:</span>
                         <span id="modalGrupo" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
                     </div>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-lte-text-muted dark:text-lte-text-muted-dark uppercase tracking-wide text-[10px] mb-1">Atribuições Principais</h4>
-                    <p id="modalResponsibilities" class="bg-lte-gray-bg dark:bg-lte-gray-bg-dark p-2 rounded border border-lte-border dark:border-lte-border-dark text-lte-text dark:text-lte-text-dark leading-relaxed">
-                        Carregando...
-                    </p>
+                    <div>
+                        <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Setor / Área:</span>
+                        <span id="modalLocation" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
+                    </div>
+                    <div>
+                        <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Gestor direto:</span>
+                        <span id="modalGestor" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
+                    </div>
                 </div>
 
                 <!-- CONTATO -->
-                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-lte-border dark:border-lte-border-dark text-[11px]">
-                    <div class="flex items-center gap-1.5 text-lte-text-muted dark:text-lte-text-muted-dark">
-                        <i class="fa-solid fa-envelope text-lte-orange"></i>
-                        <span id="modalEmail">-</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 text-lte-text-muted dark:text-lte-text-muted-dark">
-                        <i class="fa-solid fa-phone text-lte-orange"></i>
-                        <span id="modalPhone">-</span>
-                    </div>
-                </div>
-
-                <!-- SEÇÃO CONFIDENCIAL / OCULTA -->
-                <div class="pt-2 border-t border-lte-border dark:border-lte-border-dark">
-                    <button onclick="toggleConfidentialData()" class="w-full py-1.5 bg-slate-800 dark:bg-slate-700 text-white font-semibold rounded hover:bg-slate-700 dark:hover:bg-slate-600 transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-lock text-amber-400"></i>
-                        <span id="confidentialBtnText">Exibir Informações Confidenciais</span>
-                    </button>
-
-                    <div id="confidentialBox" class="hidden mt-2 p-2.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded text-amber-900 dark:text-amber-100 space-y-1.5">
-                        <div class="flex justify-between border-b border-amber-200/60 dark:border-amber-800/60 pb-1">
-                            <span>Faixa Salarial / Graus:</span>
-                            <strong id="modalSalary">-</strong>
-                        </div>
-                        <div class="flex justify-between border-b border-amber-200/60 dark:border-amber-800/60 pb-1">
-                            <span>Meta do Trimestre (KPI):</span>
-                            <strong id="modalKpi">-</strong>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Avaliação de Desempenho:</span>
-                            <strong id="modalPerformance" class="text-emerald-700 dark:text-emerald-400">-</strong>
-                        </div>
-                    </div>
+                <div class="flex items-center gap-1.5 pt-2 border-t border-lte-border dark:border-lte-border-dark text-[11px] text-lte-text-muted dark:text-lte-text-muted-dark">
+                    <i class="fa-solid fa-envelope text-lte-orange"></i>
+                    <span id="modalEmail">-</span>
                 </div>
 
             </div>
 
             <!-- Modal Footer -->
             <div class="bg-lte-gray-bg dark:bg-lte-gray-bg-dark px-4 py-2 border-t border-lte-border dark:border-lte-border-dark flex justify-between items-center text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
-                <span>Laravel User ID: <strong id="modalUserId">#-</strong></span>
+                <span>ID do colaborador: <strong id="modalUserId">#-</strong></span>
                 <button onclick="closeCardModal()" class="px-3 py-1 bg-slate-700 dark:bg-slate-600 text-white font-semibold rounded hover:bg-slate-600 dark:hover:bg-slate-500">Fechar</button>
             </div>
 
@@ -441,33 +413,44 @@
         // FILTROS E BUSCA
         // ==========================================
         function filterNodes(setorForcado = null) {
-            const busca = document.getElementById('searchInput').value.toLowerCase().trim();
-            const setor = setorForcado || document.getElementById('sectorFilter').value;
-            
-            const cards = document.querySelectorAll('.node-card');
-            let visiveis = 0;
-            
-            cards.forEach(card => {
+            const buscaInput = document.getElementById('searchInput');
+            const filtroArea = document.getElementById('sectorFilter');
+            const busca = (buscaInput?.value || '').toLowerCase().trim();
+            const setor = setorForcado || filtroArea?.value || 'all';
+
+            // Sincroniza o select quando o filtro vem da sidebar
+            if (setorForcado && filtroArea) {
+                filtroArea.value = setorForcado;
+            }
+
+            // Mostra/oculta cada card
+            document.querySelectorAll('.node-card').forEach(card => {
                 const nome = (card.dataset.nome || '').toLowerCase();
                 const cargo = (card.dataset.cargo || '').toLowerCase();
                 const setorCard = card.dataset.sector || '';
-                
+                const fixo = card.dataset.fixo === 'true';
+
                 const matchBusca = !busca || nome.includes(busca) || cargo.includes(busca);
                 const matchSetor = setor === 'all' || setorCard === setor;
-                
-                const visivel = matchBusca && matchSetor;
-                
-                if (visivel) {
-                    card.style.display = '';
-                    card.style.opacity = '1';
-                    card.style.pointerEvents = 'auto';
-                    visiveis++;
-                } else {
-                    card.style.display = 'none';
-                    card.style.opacity = '0';
-                    card.style.pointerEvents = 'none';
-                }
+
+                card.style.display = (fixo || (matchBusca && matchSetor)) ? '' : 'none';
             });
+
+            // Esconde blocos (grupos/superintendências) que ficaram sem cards
+            document.querySelectorAll('.js-filtravel').forEach(box => {
+                const cards = box.querySelectorAll('.node-card');
+                const algumVisivel = Array.from(cards).some(c => c.style.display !== 'none');
+                box.style.display = algumVisivel ? '' : 'none';
+            });
+
+            // Esconde colunas inteiras sem nenhum card visível
+            document.querySelectorAll('.js-coluna').forEach(col => {
+                const algumVisivel = Array.from(col.querySelectorAll('.node-card'))
+                    .some(c => c.style.display !== 'none');
+                col.style.display = algumVisivel ? '' : 'none';
+            });
+
+            setTimeout(updateZoom, 50);
         }
 
         // ==========================================
@@ -496,70 +479,46 @@
             modal.classList.add('opacity-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                document.getElementById('confidentialBox').classList.add('hidden');
-                document.getElementById('confidentialBtnText').textContent = 'Exibir Informações Confidenciais';
             }, 200);
         }
 
         function populateModal(data) {
-            const isConfidential = data.pode_ver_confidencial === true;
-            
             document.getElementById('modalHeaderBg').className = 'text-white p-3 flex justify-between items-start ' + (data.cor_nivel || 'bg-lte-orange');
             document.getElementById('modalAvatar').src = data.foto_url || '';
             document.getElementById('modalAvatar').alt = data.nome;
-            document.getElementById('modalRoleBadge').textContent = data.label_nivel || data.nivel;
+            document.getElementById('modalRoleBadge').textContent = data.label_nivel || data.nivel || 'Colaborador';
             document.getElementById('modalRoleBadge').className = 'bg-black/20 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase';
-            document.getElementById('modalName').textContent = data.nome;
-            document.getElementById('modalRole').textContent = data.cargo;
-            
-            document.getElementById('modalLocation').textContent = data.area_atuacao || '-';
+            document.getElementById('modalName').textContent = data.nome || '-';
+            document.getElementById('modalRole').textContent = data.cargo || '-';
+
+            document.getElementById('modalNivel').textContent = data.label_nivel || data.nivel || '-';
+            document.getElementById('modalLocation').textContent = data.setor || data.area_atuacao || '-';
             document.getElementById('modalGrupo').textContent = data.grupo ? data.grupo.nome + ' (' + data.grupo.numero + ')' : '-';
-            document.getElementById('modalResponsibilities').textContent = data.responsabilidades || 'Não informado';
+            document.getElementById('modalGestor').textContent = data.gestor ? data.gestor.nome : '-';
             document.getElementById('modalEmail').textContent = data.email || '-';
-            document.getElementById('modalPhone').textContent = data.ramal || '-';
             document.getElementById('modalUserId').textContent = '#' + data.id;
-            
-            const confidentialBox = document.getElementById('confidentialBox');
-            const btnText = document.getElementById('confidentialBtnText');
-            
-            if (isConfidential) {
-                document.getElementById('modalSalary').textContent = data.faixa_salarial || 'Não informado';
-                document.getElementById('modalKpi').textContent = data.kpis_metas || 'Não definido';
-                document.getElementById('modalPerformance').textContent = data.avaliacao_desempenho || 'Não avaliado';
-            }
         }
 
         function populateModalFromDOM(nodeId) {
             const card = document.querySelector(`.node-card[data-id="${nodeId}"]`);
             if (!card) return;
-            
+
             const data = {
-                nome: card.dataset.name,
-                cargo: card.dataset.role,
-                setor: card.dataset.sector,
+                id: card.dataset.id,
+                nome: card.dataset.nome,
+                cargo: card.dataset.cargo,
+                setor: card.dataset.setor,
                 nivel: card.dataset.nivel,
                 label_nivel: card.dataset.labelNivel,
                 cor_nivel: card.dataset.corNivel,
-                area_atuacao: card.dataset.areaAtuacao,
-                grupo: card.dataset.grupo ? { nome: card.dataset.grupoNome, numero: card.dataset.grupoNumero } : null,
+                grupo: card.dataset.grupo === 'true'
+                    ? { nome: card.dataset.grupoNome, numero: card.dataset.grupoNumero }
+                    : null,
+                gestor: card.dataset.gestor ? { nome: card.dataset.gestor } : null,
                 foto_url: card.querySelector('img')?.src,
             };
-            
-            populateModal({...data, pode_ver_confidencial: false});
-        }
 
-        function toggleConfidentialData() {
-            const box = document.getElementById('confidentialBox');
-            const btnText = document.getElementById('confidentialBtnText');
-            const isHidden = box.classList.contains('hidden');
-            
-            if (isHidden) {
-                box.classList.remove('hidden');
-                btnText.innerHTML = '<i class="fa-solid fa-lock-open text-amber-400 mr-2"></i> Ocultar Informações Confidenciais';
-            } else {
-                box.classList.add('hidden');
-                btnText.innerHTML = '<i class="fa-solid fa-lock text-amber-400 mr-2"></i> Exibir Informações Confidenciais';
-            }
+            populateModal(data);
         }
 
         // ==========================================
@@ -633,7 +592,6 @@
         window.filterNodes = filterNodes;
         window.openCardModal = openCardModal;
         window.closeCardModal = closeCardModal;
-        window.toggleConfidentialData = toggleConfidentialData;
         window.toggleTheme = toggleTheme;
         window.toggleMinimizeUI = toggleMinimizeUI;
     </script>
