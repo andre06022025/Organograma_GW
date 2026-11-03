@@ -40,312 +40,270 @@
     <div class="grid grid-cols-2 gap-6 w-full max-w-[1600px] items-start">
 
         <!-- ================= COLUNA 1: ÁREAS DE PRODUÇÃO ================= -->
-        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-4 h-full min-h-[calc(100vh-200px)]">
-            <!-- Header da coluna -->
-            <div class="bg-gradient-to-r from-lte-purple to-lte-cyan text-white font-bold text-center py-2 rounded-lg text-sm uppercase tracking-wider shadow-md">
-                <i class="fa-solid fa-industry mr-2"></i> Áreas de Produção
+        <div class="bg-slate-100 p-3 rounded-lg border border-slate-300 shadow-sm flex flex-col gap-3">
+            <div class="bg-slate-800 text-white font-bold text-center py-1 rounded text-xs uppercase tracking-wide">
+                Áreas de Produção
             </div>
 
-            <!-- NÍVEL 2: SUPERINTENDÊNCIAS - Grid 2 colunas igual -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="node-card bg-gradient-to-br from-lte-purple to-lte-purple-dark text-white p-3 rounded-lg flex items-center gap-3 shadow-lg hover:shadow-xl transition-shadow"
-                     onclick="openCardModal('SUP-RENATO')" 
-                     data-id="SUP-RENATO" data-name="Renato Capuano" data-role="Superintendência" data-sector="producao" data-nivel="superintendencia" data-label-nivel="Superintendência" data-cor-nivel="bg-lte-purple" data-area-atuacao="Sistemas 1 a 6"
-                     data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <span class="text-[10px] opacity-90 block font-semibold uppercase tracking-wide">SUPERINTENDÊNCIA</span>
-                        <h3 class="font-bold text-sm truncate">RENATO CAPUANO</h3>
-                        <p class="text-[10px] opacity-80 mt-0.5">Sistemas 1 a 6</p>
+            <!-- NÍVEL 2 PRODUÇÃO: SUPERINTENDÊNCIAS -->
+            <div class="grid grid-cols-2 gap-2">
+                <div class="node-card bg-lte-purple text-white p-2 rounded flex items-center gap-2"
+                     onclick="openCardModal('SUP-RENATO')" data-id="SUP-RENATO" data-name="Renato Capuano" data-role="Superintendência" data-sector="producao" data-nivel="superintendencia" data-label-nivel="Superintendência" data-cor-nivel="bg-lte-purple" data-area-atuacao="Sistemas 1 a 6">
+                    <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                    <div class="min-w-0">
+                        <span class="text-[9px] opacity-80 block font-semibold truncate">SUPERINTENDÊNCIA</span>
+                        <h3 class="font-bold text-xs truncate">RENATO CAPUANO</h3>
                     </div>
                 </div>
 
-                <div class="node-card bg-gradient-to-br from-lte-cyan to-lte-blue text-white p-3 rounded-lg flex items-center gap-3 shadow-lg hover:shadow-xl transition-shadow"
-                     onclick="openCardModal('SUP-ARTHUR')" 
-                     data-id="SUP-ARTHUR" data-name="Arthur" data-role="Superintendência" data-sector="producao" data-nivel="superintendencia" data-label-nivel="Superintendência" data-cor-nivel="bg-lte-cyan" data-area-atuacao="Sistemas 7 a 9"
-                     data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <span class="text-[10px] opacity-90 block font-semibold uppercase tracking-wide">SUPERINTENDÊNCIA</span>
-                        <h3 class="font-bold text-sm truncate">ARTHUR</h3>
-                        <p class="text-[10px] opacity-80 mt-0.5">Sistemas 7 a 9</p>
+                <div class="node-card bg-lte-cyan text-white p-2 rounded flex items-center gap-2"
+                     onclick="openCardModal('SUP-ARTHUR')" data-id="SUP-ARTHUR" data-name="Arthur" data-role="Superintendência" data-sector="producao" data-nivel="superintendencia" data-label-nivel="Superintendência" data-cor-nivel="bg-lte-cyan" data-area-atuacao="Sistemas 7 a 9">
+                    <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                    <div class="min-w-0">
+                        <span class="text-[9px] opacity-80 block font-semibold truncate">SUPERINTENDÊNCIA</span>
+                        <h3 class="font-bold text-xs truncate">ARTHUR</h3>
                     </div>
                 </div>
             </div>
 
-            <!-- NÍVEL 3: GERÊNCIA CORPORATIVA - Centralizada -->
-            <div class="flex justify-center">
-                <div class="node-card bg-gradient-to-br from-lte-purple to-lte-purple-dark text-white px-6 py-3 rounded-lg flex items-center gap-3 shadow-lg w-full max-w-md"
-                     onclick="openCardModal('GER-NEVES')" 
-                     data-id="GER-NEVES" data-name="Neves" data-role="Gerência Corporativa" data-sector="producao" data-nivel="gerencia" data-label-nivel="Gerência Corporativa" data-cor-nivel="bg-lte-purple" data-area-atuacao="Transversal a todas as áreas"
-                     data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                    </div>
-                    <div class="text-left min-w-0">
-                        <span class="text-[9px] uppercase font-bold bg-white/20 px-2 py-0.5 rounded block w-max">Gerência Corporativa</span>
-                        <h4 class="font-bold text-base mt-1">NEVES</h4>
-                        <p class="text-[10px] opacity-80 mt-0.5">Transversal a todas as áreas</p>
-                    </div>
+            <!-- NÍVEL 3 PRODUÇÃO: GERÊNCIA CORPORATIVA -->
+            <div class="node-card bg-lte-purple text-white p-1.5 rounded flex items-center justify-center gap-2"
+                 onclick="openCardModal('GER-NEVES')" data-id="GER-NEVES" data-name="Neves" data-role="Ger. Corporativa" data-sector="producao" data-nivel="gerencia" data-label-nivel="Gerência Corporativa" data-cor-nivel="bg-lte-purple" data-area-atuacao="Transversal a todas as áreas">
+                <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                <div class="text-left">
+                    <span class="text-[8px] uppercase font-bold bg-black/20 px-1 rounded block w-max">Gerência Corporativa</span>
+                    <h4 class="font-bold text-xs">NEVES</h4>
                 </div>
             </div>
 
-            <!-- DIVISOR -->
-            <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent my-2"></div>
+            <!-- NÍVEL 4 & 5 PRODUÇÃO: SISTEMAS 1 A 9 (GRID COMPACTO COM FOTOS) -->
+            <div class="grid grid-cols-6 gap-1.5">
 
-            <!-- NÍVEL 4: COORDENAÇÕES (SISTEMAS 1-6) - Grid responsivo 3 colunas -->
-            <div class="space-y-3">
-                <div class="text-xs font-bold text-lte-purple uppercase tracking-wide flex items-center gap-1">
-                    <i class="fa-solid fa-server text-lte-purple"></i>
-                    <span>Coordenações de Sistemas (RMSP)</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <!-- Sistemas 1 -->
-                    <div class="bg-white border border-purple-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="bg-lte-purple text-white text-[10px] font-bold px-2 py-1 rounded text-center mb-2">SISTEMAS 1</div>
-                        <div class="space-y-2">
-                            <div class="node-card bg-lte-purple text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('COO-FREDDY')" data-id="COO-FREDDY" data-name="Freddy" data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Rotas + RMSP" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                <svg class="w-5 h-5 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                <div class="min-w-0">
-                                    <p class="font-bold text-[11px] truncate">Coord. FREDDY</p>
-                                    <p class="text-[9px] opacity-80 truncate">Rotas + RMSP</p>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="node-card bg-lte-purple/90 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-DENIS')" data-id="SUP-DENIS" data-name="Denis" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="Integrados + Rota 3" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 1 DENIS</p>
-                                        <p class="text-[8px] opacity-80 truncate">Integ. Rota 3</p>
-                                    </div>
-                                </div>
-                                <div class="node-card bg-lte-purple/80 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-PAULO')" data-id="SUP-PAULO" data-name="Paulo" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="Integrados + Rota 2" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 2 PAULO</p>
-                                        <p class="text-[8px] opacity-80 truncate">Integ. Rota 2</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sistemas 2 -->
-                    <div class="bg-white border border-purple-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="bg-lte-purple text-white text-[10px] font-bold px-2 py-1 rounded text-center mb-2">SISTEMAS 2</div>
-                        <div class="space-y-2">
-                            <div class="node-card bg-lte-purple text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('COO-LEONARDO')" data-id="COO-LEONARDO" data-name="Leonardo M." data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Rotas + RMSP (ABC)" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                <svg class="w-5 h-5 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                <div class="min-w-0">
-                                    <p class="font-bold text-[11px] truncate">Coord. LEONARDO</p>
-                                    <p class="text-[9px] opacity-80 truncate">Rotas + RMSP</p>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="node-card bg-lte-purple/90 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-VAGNER')" data-id="SUP-VAGNER" data-name="Vagner" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="RMSP (ABC)" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 1 VAGNER</p>
-                                        <p class="text-[8px] opacity-80 truncate">RMSP (ABC)</p>
-                                    </div>
-                                </div>
-                                <div class="node-card bg-lte-purple/80 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-ERIC')" data-id="SUP-ERIC" data-name="Eric" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="Rota Paulista" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 2 ERIC</p>
-                                        <p class="text-[8px] opacity-80 truncate">Rota Paulista</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sistemas 3+4 -->
-                    <div class="bg-white border border-purple-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="bg-lte-purple text-white text-[10px] font-bold px-2 py-1 rounded text-center mb-2">SISTEMAS 3+4</div>
-                        <div class="space-y-2">
-                            <div class="node-card bg-lte-purple text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('COO-VILELA')" data-id="COO-VILELA" data-name="Vilela + Wellington" data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Interior SP / CFO" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                <svg class="w-5 h-5 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                <div class="min-w-0">
-                                    <p class="font-bold text-[11px] truncate">VILELA + WELLINGTON</p>
-                                    <p class="text-[9px] opacity-80 truncate">Interior SP / CFO</p>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="node-card bg-lte-purple/90 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-JULIO')" data-id="SUP-JULIO" data-name="Julio" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="Campinas+SJRP" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 1 JULIO</p>
-                                        <p class="text-[8px] opacity-80 truncate">Campinas+SJRP</p>
-                                    </div>
-                                </div>
-                                <div class="node-card bg-lte-purple/85 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('OP-LUCAS')" data-id="OP-LUCAS" data-name="Lucas" data-role="Op. Líder" data-sector="producao" data-nivel="operador_lider" data-label-nivel="Operador Líder" data-cor-nivel="bg-lte-purple/85" data-area-atuacao="Bragança+Jundiaí" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Op. Líder LUCAS</p>
-                                        <p class="text-[8px] opacity-80 truncate">Bragança+Jundiaí</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="node-card bg-lte-purple/80 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-ALAN')" data-id="SUP-ALAN" data-name="Alan" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="CFO + Campinas" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 2 ALAN</p>
-                                        <p class="text-[8px] opacity-80 truncate">CFO + Campinas</p>
-                                    </div>
-                                </div>
-                                <div class="node-card bg-lte-purple/75 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-JOAO')" data-id="SUP-JOAO" data-name="João" data-role="Supervisão 3" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/75" data-area-atuacao="Interior SP/Rota" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 3 JOÃO</p>
-                                        <p class="text-[8px] opacity-80 truncate">Interior SP/Rota</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- NÍVEL 4: COORDENAÇÕES (SISTEMAS 5-6) - Grid responsivo 2 colunas -->
-            <div class="space-y-3 pt-2 border-t border-slate-200">
-                <div class="text-xs font-bold text-lte-purple uppercase tracking-wide flex items-center gap-1">
-                    <i class="fa-solid fa-server text-lte-purple"></i>
-                    <span>Coordenações de Sistemas (RMSP - Continuação)</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <!-- Sistemas 5 -->
-                    <div class="bg-white border border-purple-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="bg-lte-purple text-white text-[10px] font-bold px-2 py-1 rounded text-center mb-2">SISTEMAS 5</div>
-                        <div class="space-y-2">
-                            <div class="node-card bg-lte-purple text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('COO-ANDRE')" data-id="COO-ANDRE" data-name="André" data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Integ. RMSP" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                <svg class="w-5 h-5 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                <div class="min-w-0">
-                                    <p class="font-bold text-[11px] truncate">Coord. ANDRÉ</p>
-                                    <p class="text-[9px] opacity-80 truncate">Integ. RMSP</p>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="node-card bg-lte-purple/90 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-ANFRISIO')" data-id="SUP-ANFRISIO" data-name="Anfrísio" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="Integ. ZL + Sh D" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 1 ANFRÍSIO</p>
-                                        <p class="text-[8px] opacity-80 truncate">Integ. ZL + Sh D</p>
-                                    </div>
-                                </div>
-                                <div class="node-card bg-lte-purple/80 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-EVERTON')" data-id="SUP-EVERTON" data-name="Everton" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="Rota 1 + Expo" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 2 EVERTON</p>
-                                        <p class="text-[8px] opacity-80 truncate">Rota 1 + Expo</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sistemas 6 -->
-                    <div class="bg-white border border-purple-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="bg-lte-purple text-white text-[10px] font-bold px-2 py-1 rounded text-center mb-2">SISTEMAS 6</div>
-                        <div class="space-y-2">
-                            <div class="node-card bg-lte-purple text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('COO-RODRIGO')" data-id="COO-RODRIGO" data-name="Rodrigo" data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Integ. RMSP" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                <svg class="w-5 h-5 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                <div class="min-w-0">
-                                    <p class="font-bold text-[11px] truncate">Coord. RODRIGO</p>
-                                    <p class="text-[9px] opacity-80 truncate">Integ. RMSP</p>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="node-card bg-lte-purple/90 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-VANDERSO')" data-id="SUP-VANDERSO" data-name="Vanderso" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="Castelo + Granja" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 1 VANDERSO</p>
-                                        <p class="text-[8px] opacity-80 truncate">Castelo + Granja</p>
-                                    </div>
-                                </div>
-                                <div class="node-card bg-lte-purple/80 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('SUP-CESAR')" data-id="SUP-CESAR" data-name="Cesar" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="Continental + ZN" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                                    <svg class="w-4 h-4 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-[10px] truncate">Superv. 2 CESAR</p>
-                                        <p class="text-[8px] opacity-80 truncate">Continental + ZN</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- NÍVEL 4: SISTEMAS 7,8,9 (GERÊNCIAS REGIONAIS) -->
-            <div class="space-y-3 pt-2 border-t border-slate-200">
-                <div class="text-xs font-bold text-lte-cyan uppercase tracking-wide flex items-center gap-1">
-                    <i class="fa-solid fa-globe-americas text-lte-cyan"></i>
-                    <span>Gerências Regionais (Sistemas 7, 8, 9)</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div class="node-card bg-gradient-to-br from-lte-cyan to-lte-blue text-white p-3 rounded-lg flex items-center gap-3 shadow-md hover:shadow-lg transition-shadow" onclick="openCardModal('GER-SERGIO')" data-id="GER-SERGIO" data-name="Sergio Luiz" data-role="Gerência S7" data-sector="producao" data-nivel="gerencia" data-label-nivel="Gerência" data-cor-nivel="bg-lte-cyan" data-area-atuacao="Bahia" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
+                <!-- SISTEMAS 1 -->
+                <div class="bg-purple-50 border border-purple-200 rounded p-1 space-y-1">
+                    <div class="bg-lte-purple text-white font-bold text-[9px] p-0.5 rounded text-center">SISTEMAS 1</div>
+                    
+                    <div class="node-card bg-lte-purple text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('COO-FREDDY')" data-id="COO-FREDDY" data-name="Freddy" data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Rotas + RMSP">
                         <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
                         <div class="min-w-0">
-                            <p class="font-bold text-sm truncate">Ger. SERGIO LUIZ</p>
-                            <p class="text-[10px] opacity-90 truncate">Bahia - Sistema 7</p>
+                            <p class="font-bold leading-tight text-[9px] truncate">Coord. FREDDY</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Rotas + RMSP</p>
                         </div>
                     </div>
-                    <div class="node-card bg-gradient-to-br from-lte-cyan to-lte-blue text-white p-3 rounded-lg flex items-center gap-3 shadow-md hover:shadow-lg transition-shadow" onclick="openCardModal('COO-PEDRO')" data-id="COO-PEDRO" data-name="Pedro" data-role="Coord. S8" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-cyan" data-area-atuacao="RMSP + RJ" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
+
+                    <div class="node-card bg-lte-purple/90 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-DENIS')" data-id="SUP-DENIS" data-name="Denis" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="Integrados + Rota 3">
                         <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
                         <div class="min-w-0">
-                            <p class="font-bold text-sm truncate">Coord. PEDRO</p>
-                            <p class="text-[10px] opacity-90 truncate">RMSP + RJ - Sistema 8</p>
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 1 DENIS</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Integ. Rota 3</p>
                         </div>
                     </div>
-                    <div class="node-card bg-gradient-to-br from-lte-cyan to-lte-blue text-white p-3 rounded-lg flex items-center gap-3 shadow-md hover:shadow-lg transition-shadow" onclick="openCardModal('GER-DIOGO')" data-id="GER-DIOGO" data-name="Diogo" data-role="Gerência S9" data-sector="producao" data-nivel="gerencia" data-label-nivel="Gerência" data-cor-nivel="bg-lte-cyan" data-area-atuacao="DF" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
+
+                    <div class="node-card bg-lte-purple/80 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-PAULO')" data-id="SUP-PAULO" data-name="Paulo" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="Integrados + Rota 2">
                         <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
                         <div class="min-w-0">
-                            <p class="font-bold text-sm truncate">Ger. DIOGO</p>
-                            <p class="text-[10px] opacity-90 truncate">DF - Sistema 9</p>
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 2 PAULO</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Integ. Rota 2</p>
                         </div>
                     </div>
                 </div>
+
+                <!-- SISTEMAS 2 -->
+                <div class="bg-purple-50 border border-purple-200 rounded p-1 space-y-1">
+                    <div class="bg-lte-purple text-white font-bold text-[9px] p-0.5 rounded text-center">SISTEMAS 2</div>
+                    
+                    <div class="node-card bg-lte-purple text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('COO-LEONARDO')" data-id="COO-LEONARDO" data-name="Leonardo M." data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Rotas + RMSP (ABC)">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-bold leading-tight text-[9px] truncate">Coord. LEONARDO</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Rotas + RMSP</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/90 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-VAGNER')" data-id="SUP-VAGNER" data-name="Vagner" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="RMSP (ABC)">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 1 VAGNER</p>
+                            <p class="text-[7.5px] opacity-80 truncate">RMSP (ABC)</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/80 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-ERIC')" data-id="SUP-ERIC" data-name="Eric" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="Rota Paulista">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 2 ERIC</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Rota Paulista</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SISTEMAS 3 + 4 -->
+                <div class="bg-purple-50 border border-purple-200 rounded p-1 space-y-1">
+                    <div class="bg-lte-purple text-white font-bold text-[9px] p-0.5 rounded text-center">SISTEMAS 3+4</div>
+                    
+                    <div class="node-card bg-lte-purple text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('COO-VILELA')" data-id="COO-VILELA" data-name="Vilela + Wellington" data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Interior SP / CFO">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-bold leading-tight text-[8.5px] truncate">VILELA + WELLINGTON</p>
+                            <p class="text-[7px] opacity-80 truncate">Interior SP / CFO</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/90 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-JULIO')" data-id="SUP-JULIO" data-name="Julio" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="Campinas+SJRP">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 1 JULIO</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Campinas+SJRP</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/85 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('OP-LUCAS')" data-id="OP-LUCAS" data-name="Lucas" data-role="Op. Líder" data-sector="producao" data-nivel="operador_lider" data-label-nivel="Operador Líder" data-cor-nivel="bg-lte-purple/85" data-area-atuacao="Bragança+Jundiaí">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Op. Líder LUCAS</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Bragança+Jundiaí</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/80 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-ALAN')" data-id="SUP-ALAN" data-name="Alan" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="CFO + Campinas">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 2 ALAN</p>
+                            <p class="text-[7.5px] opacity-80 truncate">CFO + Campinas</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/75 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-JOAO')" data-id="SUP-JOAO" data-name="João" data-role="Supervisão 3" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/75" data-area-atuacao="Interior SP/Rota">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 3 JOÃO</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Interior SP/Rota</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SISTEMAS 5 -->
+                <div class="bg-purple-50 border border-purple-200 rounded p-1 space-y-1">
+                    <div class="bg-lte-purple text-white font-bold text-[9px] p-0.5 rounded text-center">SISTEMAS 5</div>
+                    
+                    <div class="node-card bg-lte-purple text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('COO-ANDRE')" data-id="COO-ANDRE" data-name="André" data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Integ. RMSP">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-bold leading-tight text-[9px] truncate">Coord. ANDRÉ</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Integ. RMSP</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/90 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-ANFRISIO')" data-id="SUP-ANFRISIO" data-name="Anfrísio" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="Integ. ZL + Sh D">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 1 ANFRÍSIO</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Integ. ZL + Sh D</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/80 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-EVERTON')" data-id="SUP-EVERTON" data-name="Everton" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="Rota 1 + Expo">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 2 EVERTON</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Rota 1 + Expo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SISTEMAS 6 -->
+                <div class="bg-purple-50 border border-purple-200 rounded p-1 space-y-1">
+                    <div class="bg-lte-purple text-white font-bold text-[9px] p-0.5 rounded text-center">SISTEMAS 6</div>
+                    
+                    <div class="node-card bg-lte-purple text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('COO-RODRIGO')" data-id="COO-RODRIGO" data-name="Rodrigo" data-role="Coordenação" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-purple" data-area-atuacao="Integ. RMSP">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-bold leading-tight text-[9px] truncate">Coord. RODRIGO</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Integ. RMSP</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/90 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-VANDERSO')" data-id="SUP-VANDERSO" data-name="Vanderso" data-role="Supervisão 1" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/90" data-area-atuacao="Castelo + Granja">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 1 VANDERSO</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Castelo + Granja</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-purple/80 text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('SUP-CESAR')" data-id="SUP-CESAR" data-name="Cesar" data-role="Supervisão 2" data-sector="producao" data-nivel="supervisao" data-label-nivel="Supervisão" data-cor-nivel="bg-lte-purple/80" data-area-atuacao="Continental + ZN">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-[8.5px] truncate">Superv. 2 CESAR</p>
+                            <p class="text-[7.5px] opacity-80 truncate">Continental + ZN</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SISTEMAS 7, 8, 9 -->
+                <div class="bg-cyan-50 border border-cyan-200 rounded p-1 space-y-1">
+                    <div class="bg-lte-cyan text-white font-bold text-[9px] p-0.5 rounded text-center">SISTEMAS 7,8,9</div>
+                    
+                    <div class="node-card bg-lte-cyan text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('GER-SERGIO')" data-id="GER-SERGIO" data-name="Sergio Luiz" data-role="Gerência S7" data-sector="producao" data-nivel="gerencia" data-label-nivel="Gerência" data-cor-nivel="bg-lte-cyan" data-area-atuacao="Bahia">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-bold leading-tight text-[8.5px] truncate">Ger. SERGIO LUIZ</p>
+                            <p class="text-[7.5px] opacity-90 truncate">Bahia</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-cyan text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('COO-PEDRO')" data-id="COO-PEDRO" data-name="Pedro" data-role="Coord. S8" data-sector="producao" data-nivel="coordenacao" data-label-nivel="Coordenação" data-cor-nivel="bg-lte-cyan" data-area-atuacao="RMSP + RJ">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-bold leading-tight text-[8.5px] truncate">Coord. PEDRO</p>
+                            <p class="text-[7.5px] opacity-90 truncate">RMSP + RJ</p>
+                        </div>
+                    </div>
+
+                    <div class="node-card bg-lte-cyan text-white p-1 rounded flex items-center gap-1.5" onclick="openCardModal('GER-DIOGO')" data-id="GER-DIOGO" data-name="Diogo" data-role="Gerência S9" data-sector="producao" data-nivel="gerencia" data-label-nivel="Gerência" data-cor-nivel="bg-lte-cyan" data-area-atuacao="DF">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                        <div class="min-w-0">
+                            <p class="font-bold leading-tight text-[8.5px] truncate">Ger. DIOGO</p>
+                            <p class="text-[7.5px] opacity-90 truncate">DF</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- GESTÃO OPERACIONAL E LÍDERES REGIONAIS -->
-            <div class="bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg p-3 space-y-3 pt-2 border-t border-slate-200">
-                <div class="text-xs font-bold text-lte-cyan uppercase tracking-wide flex items-center gap-1">
-                    <i class="fa-solid fa-users-cog text-lte-cyan"></i>
-                    <span>Gestão Operacional & Líderes Regionais</span>
-                </div>
-                <div class="node-card bg-gradient-to-br from-lte-cyan to-lte-blue text-white p-3 rounded-lg flex items-center gap-3 shadow-md" onclick="openCardModal('GOP-ANA')" data-id="GOP-ANA" data-name="Ana Luiza" data-role="Gestão Op." data-sector="producao" data-nivel="gerencia" data-label-nivel="Gestão Op." data-cor-nivel="bg-lte-cyan" data-area-atuacao="Integ. RMSP (Pinheiros) / DF / Bahia" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
+            <div class="bg-cyan-100/60 border border-cyan-300 p-2 rounded space-y-1.5">
+                <div class="node-card bg-lte-cyan text-white p-1.5 rounded flex items-center justify-center gap-2" onclick="openCardModal('GOP-ANA')" data-id="GOP-ANA" data-name="Ana Luiza" data-role="Gestão Op." data-sector="producao" data-nivel="gerencia" data-label-nivel="Gestão Op." data-cor-nivel="bg-lte-cyan" data-area-atuacao="Integ. RMSP (Pinheiros) / DF / Bahia">
                     <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                    <div class="text-left min-w-0">
-                        <span class="text-[9px] uppercase font-bold bg-white/20 px-2 py-0.5 rounded block w-max">Gestão Operacional</span>
-                        <h4 class="font-bold text-sm mt-1">ANA LUIZA</h4>
-                        <p class="text-[10px] opacity-90 mt-0.5">Integ. RMSP (Pinheiros) / DF / Bahia</p>
+                    <div class="text-left">
+                        <span class="text-[8px] uppercase font-bold bg-black/20 px-1 rounded block w-max">Gestão Op.</span>
+                        <h4 class="font-bold text-xs">ANA LUIZA</h4>
+                        <p class="text-[8px] text-cyan-100">Integ. RMSP (Pinheiros) / DF / Bahia</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <div class="node-card bg-lte-cyan/90 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('OP-DEIVISON')" data-id="OP-DEIVISON" data-name="Deivison" data-role="Op. Líder" data-sector="producao" data-nivel="operador_lider" data-label-nivel="Operador Líder" data-cor-nivel="bg-lte-cyan/90" data-area-atuacao="Bahia" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                        <svg class="w-5 h-5 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+
+                <div class="grid grid-cols-3 gap-1">
+                    <div class="node-card bg-lte-cyan/90 text-white p-1 rounded flex items-center gap-1" onclick="openCardModal('OP-DEIVISON')" data-id="OP-DEIVISON" data-name="Deivison" data-role="Op. Líder" data-sector="producao" data-nivel="operador_lider" data-label-nivel="Operador Líder" data-cor-nivel="bg-lte-cyan/90" data-area-atuacao="Bahia">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
                         <div class="min-w-0">
-                            <p class="font-bold text-[10px] truncate">Op. DEIVISON</p>
-                            <p class="text-[8px] opacity-80 truncate">Bahia</p>
+                            <p class="font-bold text-[8px] truncate">Op. DEIVISON</p>
+                            <p class="text-[7px] opacity-80 truncate">Bahia</p>
                         </div>
                     </div>
-                    <div class="node-card bg-lte-cyan/90 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('OP-LAGUS')" data-id="OP-LAGUS" data-name="Lagus" data-role="Op. Líder" data-sector="producao" data-nivel="operador_lider" data-label-nivel="Operador Líder" data-cor-nivel="bg-lte-cyan/90" data-area-atuacao="RJ" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                        <svg class="w-5 h-5 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+
+                    <div class="node-card bg-lte-cyan/90 text-white p-1 rounded flex items-center gap-1" onclick="openCardModal('OP-LAGUS')" data-id="OP-LAGUS" data-name="Lagus" data-role="Op. Líder" data-sector="producao" data-nivel="operador_lider" data-label-nivel="Operador Líder" data-cor-nivel="bg-lte-cyan/90" data-area-atuacao="RJ">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
                         <div class="min-w-0">
-                            <p class="font-bold text-[10px] truncate">Op. LAGUS</p>
-                            <p class="text-[8px] opacity-80 truncate">RJ</p>
+                            <p class="font-bold text-[8px] truncate">Op. LAGUS</p>
+                            <p class="text-[7px] opacity-80 truncate">RJ</p>
                         </div>
                     </div>
-                    <div class="node-card bg-lte-cyan/90 text-white p-2 rounded flex items-center gap-2" onclick="openCardModal('OP-RAFAEL')" data-id="OP-RAFAEL" data-name="Rafael" data-role="Op. Líder" data-sector="producao" data-nivel="operador_lider" data-label-nivel="Operador Líder" data-cor-nivel="bg-lte-cyan/90" data-area-atuacao="DF" data-grupo="true" data-grupo-nome="TI" data-grupo-numero="001">
-                        <svg class="w-5 h-5 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+
+                    <div class="node-card bg-lte-cyan/90 text-white p-1 rounded flex items-center gap-1" onclick="openCardModal('OP-RAFAEL')" data-id="OP-RAFAEL" data-name="Rafael" data-role="Op. Líder" data-sector="producao" data-nivel="operador_lider" data-label-nivel="Operador Líder" data-cor-nivel="bg-lte-cyan/90" data-area-atuacao="DF">
+                        <svg class="w-6 h-6 text-white/70 shrink-0" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
                         <div class="min-w-0">
-                            <p class="font-bold text-[10px] truncate">Op. RAFAEL</p>
-                            <p class="text-[8px] opacity-80 truncate">DF</p>
+                            <p class="font-bold text-[8px] truncate">Op. RAFAEL</p>
+                            <p class="text-[7px] opacity-80 truncate">DF</p>
                         </div>
                     </div>
                 </div>
