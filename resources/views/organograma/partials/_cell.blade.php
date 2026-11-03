@@ -12,7 +12,7 @@
 @endphp
 
 @if($barra)
-    <div class="{{ $cor }} text-white text-center font-bold uppercase text-[10px] px-1 py-1 leading-tight flex items-center justify-center min-h-[24px]
+    <div class="{{ $cor }} text-white text-center font-bold uppercase text-[clamp(9px,0.7vw,13px)] px-1 py-1 leading-tight flex items-center justify-center min-h-[clamp(24px,1.9vw,36px)]
                 {{ $colaborador ? 'node-card cursor-pointer select-none' : '' }}"
          @if($style) style="{{ $style }}" @endif
          @if($colaborador)
@@ -31,7 +31,7 @@
     </div>
 @elseif($colaborador)
     @if(!empty($compacto))
-        <div class="node-card node-cell {{ $cor }} text-white text-center px-1 py-1 leading-tight min-h-[22px] cursor-pointer select-none"
+        <div class="node-card node-cell {{ $cor }} text-white text-center px-1 py-1 leading-tight min-h-[clamp(22px,1.7vw,32px)] cursor-pointer select-none"
              @if($style) style="{{ $style }}" @endif
              role="button"
              tabindex="0"
@@ -43,10 +43,10 @@
                  'fixo' => $fixo,
                  'areaForcada' => $areaForcada,
              ])>
-            <span class="block text-[9px] font-bold uppercase leading-tight">{{ $rotulo }}</span>
+            <span class="block text-[clamp(8.5px,0.6vw,11px)] font-bold uppercase leading-tight">{{ $rotulo }}</span>
         </div>
     @else
-        <div class="node-card node-cell {{ $cor }} text-white text-center px-1 py-1 leading-tight flex flex-col items-center justify-center min-h-[52px] cursor-pointer select-none"
+        <div class="node-card node-cell {{ $cor }} text-white text-center px-1 py-1 leading-tight flex flex-col items-center justify-center min-h-[clamp(52px,4.4vw,84px)] cursor-pointer select-none"
              @if($style) style="{{ $style }}" @endif
              role="button"
              tabindex="0"
@@ -59,10 +59,10 @@
                  'areaForcada' => $areaForcada,
              ])>
 
-            <span class="block text-[8px] leading-none opacity-95">{{ $nivelTexto }}</span>
-            <span class="block text-[10px] font-bold uppercase leading-tight mt-0.5">{{ $rotulo }}</span>
+            <span class="block text-[clamp(7.5px,0.56vw,10px)] leading-none opacity-95">{{ $nivelTexto }}</span>
+            <span class="block text-[clamp(10px,0.72vw,13px)] font-bold uppercase leading-tight mt-0.5">{{ $rotulo }}</span>
             @if($regiaoTexto)
-                <span class="block text-[7.5px] leading-tight opacity-90 mt-0.5">{{ $regiaoTexto }}</span>
+                <span class="block text-[clamp(7px,0.52vw,9.5px)] leading-tight opacity-90 mt-0.5">{{ $regiaoTexto }}</span>
             @endif
         </div>
     @endif

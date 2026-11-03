@@ -24,7 +24,7 @@
 
             {{-- ================= ÁREAS DE PRODUÇÃO ================= --}}
             <div class="js-area flex-[1.33] basis-0 min-w-0" data-area="producao">
-                <div class="grid gap-[2px]"
+                <div class="grid gap-[clamp(2px,0.18vw,4px)]"
                      style="grid-template-columns: 0.8fr 1.15fr 1.15fr 1.15fr 0.9fr 0.9fr 0.75fr 0.75fr 0.75fr;">
 
                     {{-- Linha 1: Superintendências --}}
@@ -52,7 +52,7 @@
                         'style' => 'grid-column: 1 / span 2; grid-row: 2;',
                     ])
                     <div style="grid-column: 3 / span 4; grid-row: 2;"
-                         class="flex items-center justify-center text-[11px] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
+                         class="flex items-center justify-center text-[clamp(11px,0.85vw,16px)] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
                         Áreas de Produção
                     </div>
 
@@ -112,7 +112,7 @@
 
             {{-- ================= ÁREAS DE APOIO ================= --}}
             <div class="js-area flex-1 basis-0 min-w-0" data-area="apoio">
-                <div class="grid gap-[2px]"
+                <div class="grid gap-[clamp(2px,0.18vw,4px)]"
                      style="grid-template-columns: 0.9fr 1fr 0.9fr 0.85fr 1fr 0.9fr 0.75fr;">
 
                     {{-- Linha 1: Lideranças --}}
@@ -142,7 +142,7 @@
 
                     {{-- Linha 2: título da área (respiro para alinhar com a Gerência Corporativa) --}}
                     <div style="grid-column: 1 / span 7; grid-row: 2;"
-                         class="min-h-[26px] flex items-center justify-center text-[11px] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
+                         class="min-h-[clamp(26px,2vw,38px)] flex items-center justify-center text-[clamp(11px,0.85vw,16px)] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
                         Áreas de Apoio
                     </div>
 
@@ -161,7 +161,7 @@
 
                     {{-- RIC: gestão compartilhada em cards separados --}}
                     <div style="grid-column: 3; grid-row: 4;" class="{{ $laranja }} flex flex-col">
-                        <div class="text-center text-white text-[8px] leading-none py-0.5">Gerência</div>
+                        <div class="text-center text-white text-[clamp(7.5px,0.56vw,10px)] leading-none py-0.5">Gerência</div>
                         @foreach(['sergio.luiz@empresa.com.br', 'diogo@empresa.com.br', 'neves@empresa.com.br'] as $emailRic)
                             @include('organograma.partials._cell', [
                                 'colaborador' => $m[$emailRic] ?? null,
