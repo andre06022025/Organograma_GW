@@ -120,6 +120,7 @@ class ColaboradorController extends Controller
             'nome_completo' => ['required', 'string', 'max:150'],
             'cargo' => ['required', 'string', 'max:100'],
             'setor' => ['nullable', 'string', 'max:100'],
+            'regiao' => ['nullable', 'string', 'max:100'],
             'nivel' => ['required', Rule::in(array_keys(Colaborador::NIVEIS))],
             'area' => ['required', Rule::in(array_keys(Colaborador::AREAS))],
             'ordem' => ['nullable', 'integer', 'min:0', 'max:999'],

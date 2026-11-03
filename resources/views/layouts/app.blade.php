@@ -39,6 +39,16 @@
         .dark .node-card:hover {
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
+
+        /* Cards no estilo planilha (sem elevação) */
+        .node-cell {
+            transition: filter 0.15s ease;
+        }
+        .node-cell:hover {
+            transform: none;
+            box-shadow: none;
+            filter: brightness(1.1);
+        }
         
         #viewportCanvas {
             transform-origin: top center;
@@ -256,7 +266,7 @@
             {{-- Conteúdo das telas de cadastro (Bootstrap) --}}
             @yield('content')
 
-            <div id="viewportCanvas" class="w-full min-w-0 mx-auto pb-12 flex flex-col items-center gap-4">
+            <div id="viewportCanvas" class="w-full min-w-0 mx-auto pb-12 flex flex-col items-stretch gap-4">
 
                 @yield('organograma-content')
 
@@ -449,6 +459,17 @@
                     .some(c => c.style.display !== 'none');
                 col.style.display = algumVisivel ? '' : 'none';
             });
+
+            // Filtro por área: mostra apenas a área selecionada
+            document.querySelectorAll('.js-area').forEach(area => {
+                const pertence = setor === 'all' || area.dataset.area === setor;
+                area.style.display = pertence ? '' : 'none';
+            });
+
+            const divisor = document.querySelector('.js-divisor');
+            if (divisor) {
+                divisor.style.display = setor === 'all' ? '' : 'none';
+            }
 
             setTimeout(updateZoom, 50);
         }

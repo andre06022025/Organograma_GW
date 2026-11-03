@@ -60,11 +60,15 @@
                                 <label class="form-label font-weight-bold">Cargo <span class="text-danger">*</span></label>
                                 <input type="text" name="cargo" class="form-control" value="{{ old('cargo', $colaborador->cargo) }}" required maxlength="100">
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label font-weight-bold">Setor</label>
                                 <input type="text" name="setor" class="form-control" value="{{ old('setor', $colaborador->setor) }}" maxlength="100">
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label font-weight-bold">Região / Atuação</label>
+                                <input type="text" name="regiao" class="form-control" value="{{ old('regiao', $colaborador->regiao) }}" maxlength="100">
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label font-weight-bold">Grupo</label>
                                 <select name="grupo_id" class="form-control">
                                     <option value="">Selecione um grupo</option>

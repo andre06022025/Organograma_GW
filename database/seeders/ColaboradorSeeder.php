@@ -588,6 +588,59 @@ class ColaboradorSeeder extends Seeder
             'grupo_id' => $grupoManutencao?->id,
         ]);
 
+        // =========================================================
+        // REGIÕES DE ATUAÇÃO (exibidas no card, como na planilha)
+        // =========================================================
+        $regioes = [
+            'thiago@empresa.com.br' => 'Supervisão Geral do Grupo',
+            'renato.capuano@empresa.com.br' => 'Sistemas 1 a 6',
+            'arthur@empresa.com.br' => 'Sistemas 7 a 9',
+            'capuano@empresa.com.br' => 'Áreas de Apoio',
+            'neves@empresa.com.br' => 'Transversal a todas as áreas',
+            'freddy@empresa.com.br' => 'Rotas + Integrados RMSP',
+            'denis@empresa.com.br' => 'Integrados + Rota 3',
+            'paulo@empresa.com.br' => 'Integrados + Rota 2',
+            'leonardo.m@empresa.com.br' => 'Rotas + Integrados RMSP (ABC)',
+            'vagner@empresa.com.br' => 'Integrados RMSP (ABC)',
+            'eric@empresa.com.br' => 'Rotas + Rota Paulista',
+            'joao@empresa.com.br' => 'Interior SP',
+            'vilela@empresa.com.br' => 'Cps + PR + Rib / Preto + SJRP / CFO + Rota',
+            'wellington@empresa.com.br' => 'COB + Brag + Jund + Jaguariúna + Americana',
+            'julio@empresa.com.br' => 'Campinas + SJRP',
+            'lucas@empresa.com.br' => 'Bragança + Jundiaí + Jaguariúna + Americana',
+            'alan@empresa.com.br' => 'CFO + Campinas',
+            'joao.s34@empresa.com.br' => 'Interior SP / Rota PF',
+            'andre.s5@empresa.com.br' => 'Integrados RMSP + Rota',
+            'anfrisio@empresa.com.br' => 'Integrados ZL + Sh D',
+            'everton@empresa.com.br' => 'Rota 1 + CN + Expo CN',
+            'rodrigo@empresa.com.br' => 'Integrados RMSP',
+            'vanderso@empresa.com.br' => 'Eixo Castelo + Granja',
+            'cesar@empresa.com.br' => 'Continental + Zona Norte',
+            'sergio.luiz@empresa.com.br' => 'Bahia',
+            'ana.luiza@empresa.com.br' => 'Integrados RMSP (Pinheiros) / DF / Bahia',
+            'deivison@empresa.com.br' => 'Bahia',
+            'pedro@empresa.com.br' => 'Integrados RMSP + RJ',
+            'lagus@empresa.com.br' => 'RJ',
+            'diogo@empresa.com.br' => 'DF',
+            'rafael@empresa.com.br' => 'DF',
+            'ricardo@empresa.com.br' => 'Laboratório',
+            'marilia@empresa.com.br' => 'Licenciamento',
+            'gabriel@empresa.com.br' => 'Coordenação LICENC',
+            'pedro.alcantara@empresa.com.br' => 'Manutenção de Poços',
+            'carlos@empresa.com.br' => 'Manutenção + Lodo',
+            'diego.manut@empresa.com.br' => 'Manutenção Industrial',
+            'leonardo.ne@empresa.com.br' => 'Nordeste',
+            'nelson@empresa.com.br' => 'PCM',
+            'osias@empresa.com.br' => 'Lodo',
+            'andre.cco@empresa.com.br' => 'Central de Operações',
+            'beatriz@empresa.com.br' => 'Engenharia de Processos',
+            'trainee.eng@empresa.com.br' => 'Engenharia',
+        ];
+
+        foreach ($regioes as $email => $regiao) {
+            Colaborador::where('email', $email)->update(['regiao' => $regiao]);
+        }
+
         $this->command->info('Colaboradores criados: ' . Colaborador::count());
         $this->command->info('Participantes do RIC: ' . Colaborador::where('ric', true)->count());
     }

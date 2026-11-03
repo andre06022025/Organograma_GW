@@ -42,6 +42,7 @@ class Colaborador extends Model
         'gestor_id',
         'email',
         'setor',
+        'regiao',
         'nivel',
         'area',
         'ordem',
@@ -125,6 +126,35 @@ class Colaborador extends Model
     }
 
     /**
+     * Rótulo curto exibido no card (ex.: "Supervisão 1", "Coordenação").
+     */
+    public function getNivelCurtoAttribute(): string
+    {
+        $cargo = (string) $this->cargo;
+
+        if (str_starts_with($cargo, 'Supervisão')) {
+            return $cargo;
+        }
+        if (str_starts_with($cargo, 'Coordenação')) {
+            return 'Coordenação';
+        }
+        if (str_starts_with($cargo, 'Gerência')) {
+            return 'Gerência';
+        }
+        if (str_starts_with($cargo, 'Operador')) {
+            return 'Operador Líder';
+        }
+        if (str_starts_with($cargo, 'Gestão')) {
+            return 'Gestão Op.';
+        }
+        if (str_starts_with($cargo, 'Engenharia')) {
+            return 'Engenharia';
+        }
+
+        return $this->nivel_label;
+    }
+
+    /**
      * Classe de cor do card conforme área + nível.
      * As classes precisam existir literalmente para o Tailwind gerar o CSS
      * (resources/css/app.css inclui os arquivos de app no @source).
@@ -196,6 +226,7 @@ class Colaborador extends Model
             'nome' => $this->nome_completo,
             'cargo' => $this->cargo,
             'setor' => $this->setor,
+            'regiao' => $this->regiao,
             'nivel' => $this->nivel,
             'label_nivel' => $this->nivel_label,
             'cor_nivel' => $this->cor_nivel,
