@@ -19,6 +19,7 @@ Route::get('/', function () {
 Route::prefix('organograma')->name('organograma.')->group(function () {
     Route::get('/', [OrganogramaController::class, 'index'])->name('index');
     Route::get('/detalhes/{id}', [OrganogramaController::class, 'detalhes'])->name('detalhes');
+    Route::post('/{colaborador}/foto', [OrganogramaController::class, 'atualizarFoto'])->name('foto');
 });
 
 // Cadastros routes (sem autenticação)

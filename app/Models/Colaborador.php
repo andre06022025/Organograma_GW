@@ -129,6 +129,15 @@ class Colaborador extends Model
         return "https://ui-avatars.com/api/?name=" . urlencode($this->nome_completo) . "&background=6f42c1&color=fff&size=128&rounded=true";
     }
 
+    /**
+     * Indica se existe uma foto válida no storage.
+     */
+    public function getTemFotoAttribute(): bool
+    {
+        return (bool) $this->foto_path
+            && Storage::disk('public')->exists($this->foto_path);
+    }
+
     public function getNivelLabelAttribute(): string
     {
         return self::NIVEIS[$this->nivel]['label'] ?? 'Colaborador';

@@ -3,6 +3,18 @@
 @section('title', 'Organograma Corporativo - General Water')
 
 @section('organograma-content')
+    @if(session('success'))
+        <div id="flashSuccess" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-lg">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(function () {
+                var el = document.getElementById('flashSuccess');
+                if (el) el.remove();
+            }, 4000);
+        </script>
+    @endif
+
     @php
         $roxo = 'bg-lte-purple';
         $azul = 'bg-lte-steel';

@@ -351,6 +351,49 @@
         </div>
     </div>
 
+    <!-- Modal Foto do Colaborador -->
+    <div id="photoModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-lte-card-bg dark:bg-lte-card-bg-dark rounded-lg shadow-2xl w-full max-w-sm overflow-hidden transform scale-95 transition-transform duration-200 modal-enter">
+
+            <div class="bg-lte-purple text-white p-3 flex justify-between items-start">
+                <div>
+                    <span class="bg-black/20 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Foto</span>
+                    <h3 id="photoModalName" class="font-bold text-base leading-tight">Colaborador</h3>
+                </div>
+                <button type="button" onclick="closePhotoModal()" class="text-white/80 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="photoForm" method="POST" enctype="multipart/form-data" action="">
+                @csrf
+                <div class="p-4 space-y-3 text-xs">
+                    <div class="flex justify-center">
+                        <div class="w-28 h-28 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700 flex items-center justify-center border-4 border-white dark:border-slate-600 shadow">
+                            <img id="photoPreview" src="" alt="Prévia da foto" class="w-full h-full object-cover hidden">
+                            <svg id="photoPlaceholder" xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-slate-400" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="font-bold block mb-1" for="photoInput">Selecionar nova foto</label>
+                        <input type="file" name="foto" id="photoInput" accept="image/*" class="form-control-file" onchange="previewPhoto(this)" required>
+                        <small class="text-muted">JPG, PNG ou WebP (máx. 2MB)</small>
+                    </div>
+                </div>
+
+                <div class="bg-lte-gray-bg dark:bg-lte-gray-bg-dark px-4 py-2 border-t border-lte-border dark:border-lte-border-dark flex justify-end gap-2">
+                    <button type="button" onclick="closePhotoModal()" class="px-3 py-1 bg-slate-500 dark:bg-slate-600 text-white font-semibold rounded hover:bg-slate-600 dark:hover:bg-slate-500">Cancelar</button>
+                    <button type="submit" class="px-3 py-1 bg-lte-purple text-white font-semibold rounded hover:bg-lte-purple-dark">
+                        <i class="fa-solid fa-upload mr-1"></i> Salvar foto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -560,6 +603,57 @@
         }
 
         // ==========================================
+        // MODAL FOTO
+        // ==========================================
+        function openPhotoModal(button) {
+            const id = button.dataset.id;
+            const nome = button.dataset.nome || 'Colaborador';
+            const foto = button.dataset.foto || '';
+
+            document.getElementById('photoForm').action = '/organograma/' + id + '/foto';
+            document.getElementById('photoModalName').textContent = nome;
+
+            const preview = document.getElementById('photoPreview');
+            const placeholder = document.getElementById('photoPlaceholder');
+
+            if (foto) {
+                preview.src = foto;
+                preview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            } else {
+                preview.src = '';
+                preview.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+            }
+
+            document.getElementById('photoInput').value = '';
+
+            const modal = document.getElementById('photoModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closePhotoModal() {
+            const modal = document.getElementById('photoModal');
+            if (!modal) return;
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photoPreview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    document.getElementById('photoPlaceholder').classList.add('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ==========================================
         // MINIMIZAR UI (TOPBAR + SIDEBAR)
         // ==========================================
         function toggleMinimizeUI() {
@@ -607,7 +701,7 @@
                     case '0': e.preventDefault(); resetZoom(); break;
                     case 'f': case 'F': e.preventDefault(); fitToScreen(); break;
                     case '/': e.preventDefault(); document.getElementById('searchInput').focus(); break;
-                    case 'Escape': closeCardModal(); break;
+                    case 'Escape': closeCardModal(); closePhotoModal(); break;
                     case 'd': case 'D': 
                         if (e.ctrlKey || e.metaKey) {
                             e.preventDefault();
@@ -621,6 +715,10 @@
             document.getElementById('cardModal').addEventListener('click', function(e) {
                 if (e.target === this) closeCardModal();
             });
+
+            document.getElementById('photoModal').addEventListener('click', function(e) {
+                if (e.target === this) closePhotoModal();
+            });
         });
 
         // Disponibilizar globalmente
@@ -630,6 +728,9 @@
         window.filterNodes = filterNodes;
         window.openCardModal = openCardModal;
         window.closeCardModal = closeCardModal;
+        window.openPhotoModal = openPhotoModal;
+        window.closePhotoModal = closePhotoModal;
+        window.previewPhoto = previewPhoto;
         window.toggleTheme = toggleTheme;
         window.toggleMinimizeUI = toggleMinimizeUI;
     </script>

@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.1.0
+**Versão:** v1.2.0
 
 ---
 
@@ -11,6 +11,7 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - Acesso direto, sem autenticação.
 - Organograma em estilo planilha, com colunas por área (Produção e Apoio) e hierarquia por linhas.
 - Cards com cor, rótulo curto, nível, região, grupo e gestor direto.
+- Foto do colaborador ao lado do nome, com placeholder de pessoa do Bootstrap e modal para envio/troca da foto.
 - Gestão compartilhada (RIC) com cards separados.
 - Zoom, busca por nome/cargo e filtros por área.
 - Tema claro/escuro com persistência.
@@ -27,6 +28,7 @@ A tabela `colaboradores` é a única fonte dos cards. Campos usados:
 | Campo | Uso |
 |---|---|
 | `nome_completo` | Nome exibido (quando não há rótulo) |
+| `foto_path` | Foto exibida no card (placeholder Bootstrap quando vazio) |
 | `rotulo` | Rótulo curto do card (ex.: `PEDRO ALC.`) |
 | `cargo` | Cargo do colaborador |
 | `regiao` | Terceira linha do card (ex.: `Bahia`, `Integrados RMSP`) |
@@ -88,5 +90,6 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.2.0** — Foto do colaborador ao lado do nome (placeholder Bootstrap) e modal para envio/troca da foto direto do organograma.
 - **v1.1.0** — Base de colaboradores passa a alimentar os cards (cor, rótulo e nível vêm do banco); layout estilo planilha; tamanhos proporcionais à tela; botão de restaurar UI minimizada.
 - **v1.0.0** — Correções de layout, migrations, modal e remoção de autenticação/rotas mortas.

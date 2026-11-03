@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Colaborador;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class OrganogramaController extends Controller
 {
@@ -56,5 +59,26 @@ class OrganogramaController extends Controller
                 'cargo' => $colaborador->gestor->cargo,
             ] : null,
         ]);
+    }
+
+    public function atualizarFoto(Request $request, Colaborador $colaborador): RedirectResponse
+    {
+        $request->validate([
+            'foto' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ], [
+            'foto.required' => 'Selecione uma imagem.',
+            'foto.image' => 'O arquivo deve ser uma imagem.',
+            'foto.mimes' => 'Use um arquivo JPG, PNG ou WebP.',
+            'foto.max' => 'A imagem deve ter no máximo 2MB.',
+        ]);
+
+        if ($colaborador->foto_path && Storage::disk('public')->exists($colaborador->foto_path)) {
+            Storage::disk('public')->delete($colaborador->foto_path);
+        }
+
+        $colaborador->foto_path = $request->file('foto')->store('colaboradores', 'public');
+        $colaborador->save();
+
+        return back()->with('success', 'Foto de ' . $colaborador->nome_completo . ' atualizada com sucesso!');
     }
 }
