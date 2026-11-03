@@ -30,8 +30,9 @@ class ColaboradorController extends Controller
         $colaboradores = $query->ordenados()->paginate(20)->withQueryString();
 
         $setores = Colaborador::whereNull('deleted_at')->distinct()->pluck('setor')->filter()->sort()->values();
+        $grupos = \App\Models\Grupo::ordenados()->get(['id', 'nome', 'numero']);
 
-        return view('cadastros.colaboradores.index', compact('colaboradores', 'setores'));
+        return view('cadastros.colaboradores.index', compact('colaboradores', 'setores', 'grupos'));
     }
 
     public function create()

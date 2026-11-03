@@ -637,7 +637,8 @@
         window.toggleTheme = toggleTheme;
         window.toggleMinimizeUI = toggleMinimizeUI;
     </script>
-    
+
+    @yield('scripts')
     @stack('scripts')
 </body>
 </html>
