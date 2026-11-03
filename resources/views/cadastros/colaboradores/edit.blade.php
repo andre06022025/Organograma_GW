@@ -99,6 +99,22 @@
                                 <label class="form-label font-weight-bold">Ordem</label>
                                 <input type="number" name="ordem" class="form-control" value="{{ old('ordem', $colaborador->ordem ?? 0) }}" min="0" max="999">
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label font-weight-bold">Rótulo do card</label>
+                                <input type="text" name="rotulo" class="form-control" value="{{ old('rotulo', $colaborador->rotulo) }}" maxlength="150" placeholder="Ex: PEDRO ALC. (vazio = nome completo)">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label font-weight-bold">Nível no card</label>
+                                <input type="text" name="nivel_card" class="form-control" value="{{ old('nivel_card', $colaborador->nivel_card) }}" maxlength="50" placeholder="Ex: Gestão Op.">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label font-weight-bold">Cor do card <span class="text-danger">*</span></label>
+                                <select name="cor" class="form-control" required>
+                                    @foreach(\App\Models\Colaborador::CORES as $valor => $info)
+                                        <option value="{{ $valor }}" {{ old('cor', $colaborador->cor ?: 'roxo') === $valor ? 'selected' : '' }}>{{ $info['label'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-12 mb-2">
                                 <div class="form-check">
                                     <input type="checkbox" name="ric" id="ric" value="1" class="form-check-input" {{ old('ric', $colaborador->ric) ? 'checked' : '' }}>

@@ -1,13 +1,14 @@
 @php
     $colaborador = $colaborador ?? null;
     $barra = $barra ?? false;
-    $cor = $cor ?? 'bg-lte-purple';
+    $corForcada = $corForcada ?? null;
+    $cor = $corForcada ?? ($colaborador?->cor_classe ?? ($cor ?? 'bg-lte-purple'));
     $style = $style ?? '';
     $fixo = $fixo ?? false;
     $areaForcada = $areaForcada ?? null;
     $texto = $texto ?? null;
-    $rotulo = $rotulo ?? ($colaborador ? mb_strtoupper($colaborador->nome_completo) : '');
-    $nivelTexto = $nivelTexto ?? ($colaborador?->nivel_curto);
+    $rotulo = $colaborador?->rotulo_card ?? ($rotulo ?? '');
+    $nivelTexto = $colaborador?->nivel_card_texto ?? ($nivelTexto ?? null);
     $regiaoTexto = $regiaoTexto ?? ($colaborador?->regiao);
 @endphp
 

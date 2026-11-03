@@ -118,11 +118,14 @@ class ColaboradorController extends Controller
     {
         return $request->validate([
             'nome_completo' => ['required', 'string', 'max:150'],
+            'rotulo' => ['nullable', 'string', 'max:150'],
             'cargo' => ['required', 'string', 'max:100'],
             'setor' => ['nullable', 'string', 'max:100'],
             'regiao' => ['nullable', 'string', 'max:100'],
             'nivel' => ['required', Rule::in(array_keys(Colaborador::NIVEIS))],
+            'nivel_card' => ['nullable', 'string', 'max:50'],
             'area' => ['required', Rule::in(array_keys(Colaborador::AREAS))],
+            'cor' => ['required', Rule::in(array_keys(Colaborador::CORES))],
             'ordem' => ['nullable', 'integer', 'min:0', 'max:999'],
             'ric' => ['nullable', 'boolean'],
             'grupo_id' => ['nullable', Rule::exists('grupos', 'id')],

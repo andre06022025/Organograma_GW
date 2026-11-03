@@ -9,10 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('colaboradores', function (Blueprint $table) {
+            $table->string('rotulo', 150)->nullable()->after('nome_completo');
             $table->string('regiao', 100)->nullable()->after('setor');
             $table->string('nivel', 20)->nullable()->after('regiao');
-            $table->string('area', 20)->nullable()->after('nivel');
-            $table->unsignedSmallInteger('ordem')->default(0)->after('area');
+            $table->string('nivel_card', 50)->nullable()->after('nivel');
+            $table->string('area', 20)->nullable()->after('nivel_card');
+            $table->string('cor', 20)->default('roxo')->after('area');
+            $table->unsignedSmallInteger('ordem')->default(0)->after('cor');
             $table->boolean('ric')->default(false);
 
             $table->index('nivel');
@@ -25,7 +28,7 @@ return new class extends Migration
         Schema::table('colaboradores', function (Blueprint $table) {
             $table->dropIndex(['nivel']);
             $table->dropIndex(['area']);
-            $table->dropColumn(['regiao', 'nivel', 'area', 'ordem', 'ric']);
+            $table->dropColumn(['rotulo', 'regiao', 'nivel', 'nivel_card', 'area', 'cor', 'ordem', 'ric']);
         });
     }
 };

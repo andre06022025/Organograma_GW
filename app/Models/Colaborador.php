@@ -35,8 +35,20 @@ class Colaborador extends Model
         'corporativo' => 'Corporativo',
     ];
 
+    /**
+     * Identificadores de cor usados nos cards do organograma.
+     * As classes precisam existir literalmente para o Tailwind gerar o CSS
+     * (resources/css/app.css inclui os arquivos de app no @source).
+     */
+    public const CORES = [
+        'roxo' => ['label' => 'Roxo', 'classe' => 'bg-lte-purple'],
+        'azul' => ['label' => 'Azul', 'classe' => 'bg-lte-steel'],
+        'laranja' => ['label' => 'Laranja', 'classe' => 'bg-lte-ambar'],
+    ];
+
     protected $fillable = [
         'nome_completo',
+        'rotulo',
         'cargo',
         'foto_path',
         'gestor_id',
@@ -44,7 +56,9 @@ class Colaborador extends Model
         'setor',
         'regiao',
         'nivel',
+        'nivel_card',
         'area',
+        'cor',
         'ordem',
         'ric',
         'grupo_id',
@@ -155,12 +169,43 @@ class Colaborador extends Model
     }
 
     /**
-     * Classe de cor do card conforme área + nível.
-     * As classes precisam existir literalmente para o Tailwind gerar o CSS
-     * (resources/css/app.css inclui os arquivos de app no @source).
+     * Classe de cor do card: usa o identificador gravado no banco.
+     */
+    public function getCorClasseAttribute(): string
+    {
+        return self::CORES[$this->cor]['classe'] ?? 'bg-lte-purple';
+    }
+
+    public function getCorLabelAttribute(): string
+    {
+        return self::CORES[$this->cor]['label'] ?? 'Roxo';
+    }
+
+    /**
+     * Nome exibido no card (rótulo curto opcional).
+     */
+    public function getRotuloCardAttribute(): string
+    {
+        return $this->rotulo ?: mb_strtoupper((string) $this->nome_completo);
+    }
+
+    /**
+     * Texto de nível exibido no card (opcional).
+     */
+    public function getNivelCardTextoAttribute(): string
+    {
+        return $this->nivel_card ?: $this->nivel_curto;
+    }
+
+    /**
+     * Cor do cabeçalho do modal (acompanha a cor do card).
      */
     public function getCorNivelAttribute(): string
     {
+        if ($this->cor) {
+            return $this->cor_classe;
+        }
+
         if ($this->nivel === 'direcao') {
             return 'bg-lte-orange';
         }
@@ -224,11 +269,15 @@ class Colaborador extends Model
         return [
             'id' => $this->id,
             'nome' => $this->nome_completo,
+            'rotulo' => $this->rotulo_card,
             'cargo' => $this->cargo,
             'setor' => $this->setor,
             'regiao' => $this->regiao,
             'nivel' => $this->nivel,
+            'nivel_card' => $this->nivel_card_texto,
             'label_nivel' => $this->nivel_label,
+            'cor' => $this->cor,
+            'cor_classe' => $this->cor_classe,
             'cor_nivel' => $this->cor_nivel,
             'area' => $this->area,
             'grupo' => $this->grupo ? [

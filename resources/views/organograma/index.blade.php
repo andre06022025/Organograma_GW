@@ -165,7 +165,7 @@
                         @foreach(['sergio.luiz@empresa.com.br', 'diogo@empresa.com.br', 'neves@empresa.com.br'] as $emailRic)
                             @include('organograma.partials._cell', [
                                 'colaborador' => $m[$emailRic] ?? null,
-                                'cor' => $laranja,
+                                'corForcada' => $laranja,
                                 'compacto' => true,
                                 'areaForcada' => 'apoio',
                                 'style' => 'border-top: 1px solid rgba(255,255,255,0.35);',
