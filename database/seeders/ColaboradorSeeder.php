@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cadastro;
 use App\Models\Colaborador;
 use App\Models\Grupo;
 use Illuminate\Database\Seeder;
@@ -10,7 +11,11 @@ class ColaboradorSeeder extends Seeder
 {
     public function run(): void
     {
-        Colaborador::truncate();
+        // Zera o vínculo dos cadastros para permitir recriar os colaboradores.
+        Cadastro::query()->update(['gestor_id' => null]);
+
+        // delete() respeita as chaves estrangeiras; truncate não.
+        Colaborador::query()->delete();
 
         // Buscar grupos por nome para obter IDs
         $grupoTI = Grupo::where('nome', 'TI')->first();

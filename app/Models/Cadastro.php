@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Cadastro extends Model
 {
@@ -14,6 +15,11 @@ class Cadastro extends Model
     protected $fillable = [
         'nome',
         'tipo',
+        'gestor_id',
+        'sistema',
+        'contrato',
+        'data_contrato',
+        'informacoes',
         'operacao',
         'operadores',
         'numero_pocos',
@@ -24,7 +30,24 @@ class Cadastro extends Model
         'operadores' => 'array',
         'numero_pocos' => 'integer',
         'quantidade_operadores' => 'integer',
+        'data_contrato' => 'date',
     ];
+
+    public const SISTEMAS = [
+        'Sistemas 1' => 'Sistemas 1',
+        'Sistemas 2' => 'Sistemas 2',
+        'Sistemas 3+4' => 'Sistemas 3+4',
+        'Sistemas 5' => 'Sistemas 5',
+        'Sistemas 6' => 'Sistemas 6',
+        'Sistemas 7' => 'Sistemas 7',
+        'Sistemas 8' => 'Sistemas 8',
+        'Sistemas 9' => 'Sistemas 9',
+    ];
+
+    public function gestor(): BelongsTo
+    {
+        return $this->belongsTo(Colaborador::class, 'gestor_id');
+    }
 
     public const TIPOS = [
         'ETA' => 'ETA',

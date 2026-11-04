@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cadastro;
 use App\Models\Colaborador;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,6 +35,22 @@ class OrganogramaController extends Controller
     {
         $colaborador = Colaborador::with(['gestor', 'grupo'])->findOrFail($id);
 
+        $cadastros = Cadastro::where('gestor_id', $colaborador->id)
+            ->orderBy('nome')
+            ->get()
+            ->map(fn ($c) => [
+                'nome' => $c->nome,
+                'tipo' => $c->tipo,
+                'sistema' => $c->sistema,
+                'contrato' => $c->contrato,
+                'data_contrato' => $c->data_contrato?->format('d/m/Y'),
+                'operacao' => $c->operacao,
+                'operadores' => $c->operadores ?? [],
+                'numero_pocos' => $c->numero_pocos,
+                'quantidade_operadores' => $c->quantidade_operadores,
+                'informacoes' => $c->informacoes,
+            ]);
+
         return response()->json([
             'id' => $colaborador->id,
             'nome' => $colaborador->nome_completo,
@@ -58,6 +75,7 @@ class OrganogramaController extends Controller
                 'nome' => $colaborador->gestor->nome_completo,
                 'cargo' => $colaborador->gestor->cargo,
             ] : null,
+            'cadastros' => $cadastros,
         ]);
     }
 

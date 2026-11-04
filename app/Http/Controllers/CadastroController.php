@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cadastro;
+use App\Models\Colaborador;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -11,7 +12,7 @@ class CadastroController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Cadastro::query();
+        $query = Cadastro::with('gestor');
 
         if ($request->filled('busca')) {
             $termo = $request->busca;
@@ -22,6 +23,14 @@ class CadastroController extends Controller
             $query->where('tipo', $request->tipo);
         }
 
+        if ($request->filled('gestor')) {
+            $query->where('gestor_id', $request->gestor);
+        }
+
+        if ($request->filled('sistema')) {
+            $query->where('sistema', $request->sistema);
+        }
+
         // A paginação/ordenação é feita pelo DataTable no cliente.
         $cadastros = $query->orderBy('nome')->get();
 
@@ -30,14 +39,19 @@ class CadastroController extends Controller
             ->orderBy('tipo')
             ->pluck('tipo');
 
-        return view('cadastros.index', compact('cadastros', 'tipos'));
+        $gestores = $this->gestores();
+        $sistemas = Cadastro::SISTEMAS;
+
+        return view('cadastros.index', compact('cadastros', 'tipos', 'gestores', 'sistemas'));
     }
 
     public function create()
     {
         $cadastro = new Cadastro();
+        $gestores = $this->gestores();
+        $sistemas = Cadastro::SISTEMAS;
 
-        return view('cadastros.create', compact('cadastro'));
+        return view('cadastros.create', compact('cadastro', 'gestores', 'sistemas'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -51,7 +65,10 @@ class CadastroController extends Controller
 
     public function edit(Cadastro $cadastro)
     {
-        return view('cadastros.edit', compact('cadastro'));
+        $gestores = $this->gestores();
+        $sistemas = Cadastro::SISTEMAS;
+
+        return view('cadastros.edit', compact('cadastro', 'gestores', 'sistemas'));
     }
 
     public function update(Request $request, Cadastro $cadastro): RedirectResponse
@@ -63,11 +80,23 @@ class CadastroController extends Controller
             ->with('success', 'Cadastro atualizado com sucesso!');
     }
 
+    private function gestores()
+    {
+        return Colaborador::whereNull('deleted_at')
+            ->orderBy('nome_completo')
+            ->get(['id', 'nome_completo', 'cargo']);
+    }
+
     private function validar(Request $request): array
     {
         $dados = $request->validate([
             'nome' => ['required', 'string', 'max:200'],
             'tipo' => ['required', Rule::in(array_keys(Cadastro::TIPOS))],
+            'gestor_id' => ['nullable', Rule::exists('colaboradores', 'id')],
+            'sistema' => ['nullable', Rule::in(array_keys(Cadastro::SISTEMAS))],
+            'contrato' => ['nullable', 'string', 'max:150'],
+            'data_contrato' => ['nullable', 'date'],
+            'informacoes' => ['nullable', 'string'],
             'operacao' => ['nullable', 'string', 'max:150'],
             'operadores' => ['nullable', 'array', 'max:4'],
             'operadores.*' => ['nullable', 'string', 'max:150'],

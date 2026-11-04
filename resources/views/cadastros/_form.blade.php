@@ -20,6 +20,44 @@
         </select>
     </div>
 
+    <div class="col-md-6 mb-3">
+        <label class="form-label font-weight-bold">Gestor</label>
+        <select name="gestor_id" class="form-control">
+            <option value="">Sem gestor</option>
+            @foreach($gestores as $gestor)
+                <option value="{{ $gestor->id }}" {{ (string) old('gestor_id', $cadastro->gestor_id) === (string) $gestor->id ? 'selected' : '' }}>
+                    {{ $gestor->nome_completo }} ({{ $gestor->cargo }})
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label class="form-label font-weight-bold">Sistema</label>
+        <select name="sistema" class="form-control">
+            <option value="">Sem sistema</option>
+            @foreach($sistemas as $valor => $rotulo)
+                <option value="{{ $valor }}" {{ old('sistema', $cadastro->sistema) === $valor ? 'selected' : '' }}>{{ $rotulo }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label font-weight-bold">Contrato</label>
+        <input type="text" name="contrato" class="form-control" value="{{ old('contrato', $cadastro->contrato) }}"
+               maxlength="150" placeholder="Número/identificação do contrato">
+    </div>
+    <div class="col-md-6 mb-3">
+        <label class="form-label font-weight-bold">Data do contrato</label>
+        <input type="date" name="data_contrato" class="form-control"
+               value="{{ old('data_contrato', $cadastro->data_contrato?->format('Y-m-d')) }}">
+    </div>
+
+    <div class="col-12 mb-3">
+        <label class="form-label font-weight-bold">Informações da gestão / contratos</label>
+        <textarea name="informacoes" rows="3" class="form-control"
+                  placeholder="Contratos, observações e informações da gestão">{{ old('informacoes', $cadastro->informacoes) }}</textarea>
+    </div>
+
     <div class="col-md-12 mb-3">
         <label class="form-label font-weight-bold">Operação</label>
         <input type="text" name="operacao" class="form-control" value="{{ old('operacao', $cadastro->operacao) }}"
