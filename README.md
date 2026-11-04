@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.2.0
+**Versão:** v1.2.1
 
 ---
 
@@ -90,6 +90,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.2.1** — Lista de colaboradores passa a exibir todos os registros (removido o limite de 20 da paginação; DataTable mostra todos por padrão).
 - **v1.2.0** — Foto do colaborador ao lado do nome (placeholder Bootstrap) e modal para envio/troca da foto direto do organograma.
 - **v1.1.0** — Base de colaboradores passa a alimentar os cards (cor, rótulo e nível vêm do banco); layout estilo planilha; tamanhos proporcionais à tela; botão de restaurar UI minimizada.
 - **v1.0.0** — Correções de layout, migrations, modal e remoção de autenticação/rotas mortas.

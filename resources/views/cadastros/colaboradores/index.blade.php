@@ -211,7 +211,7 @@
                 { orderable: false, targets: [0, 9] }, // Foto e Ações não ordenáveis
                 { searchable: false, targets: [0, 9] }
             ],
-            pageLength: 25,
+            pageLength: -1,
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
             order: [[1, 'asc']], // Ordenar por Nome Completo
         });

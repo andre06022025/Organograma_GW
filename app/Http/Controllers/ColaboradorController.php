@@ -27,7 +27,8 @@ class ColaboradorController extends Controller
             $query->where('setor', $request->setor);
         }
 
-        $colaboradores = $query->ordenados()->paginate(20)->withQueryString();
+        // Retorna todos os colaboradores: a paginação/ordenação é feita pelo DataTable no cliente.
+        $colaboradores = $query->ordenados()->get();
 
         $setores = Colaborador::whereNull('deleted_at')->distinct()->pluck('setor')->filter()->sort()->values();
         $grupos = \App\Models\Grupo::ordenados()->get(['id', 'nome', 'numero']);
