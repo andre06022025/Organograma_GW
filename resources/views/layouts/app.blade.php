@@ -276,6 +276,9 @@
                 <a href="{{ route('organograma.index') }}" class="flex items-center gap-2 px-2.5 py-2 bg-lte-orange text-white font-semibold rounded">
                     <i class="fa-solid fa-sitemap w-4"></i> Organograma Completo
                 </a>
+                <a href="{{ route('organograma2.index') }}" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition">
+                    <i class="fa-solid fa-sitemap w-4"></i> Organograma 2 (Alternativo)
+                </a>
                 <a href="#" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition" onclick="filterNodes('producao')">
                     <i class="fa-solid fa-industry w-4"></i> Áreas de Produção
                 </a>

@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.1
+**Versão:** v1.8.0
 
 ---
 
@@ -22,6 +22,7 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - Ao clicar no cadastro, um modal exibe todos os dados.
 - No organograma, o modal do gestor lista os cadastros; cada card mostra o nome do cadastro com um botão + para expandir os detalhes (sistema, operação, operadores, poços e quantidade).
 - Arrastar e soltar cards do organograma para reorganizar, com posição salva automaticamente no banco.
+- Organograma 2: visão alternativa em árvore clássica (cima para baixo), com fotos de pessoa e linhas conectoras.
 - Sistemas 3 e 4 independentes: colunas, cards, cadastros e filtros separados.
 
 ---
@@ -79,6 +80,14 @@ No **organograma**, ao abrir o card de um gestor, o modal lista os cadastros. Ca
 
 ---
 
+## Organograma 2 (alternativo)
+
+Acesso: `/organograma2`
+
+Visão alternativa em árvore clássica (cima para baixo), com caixas conectadas por linhas. Usa as mesmas informações do organograma principal (nome, cargo, região, nível, cor e foto). A foto é exibida como ícone de pessoa do Bootstrap. O organograma principal (em planilha) não foi alterado.
+
+---
+
 ## Instalação
 
 ```bash
@@ -123,6 +132,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.8.0** — Organograma 2 (alternativo): visão em árvore clássica com cards conectados por linhas, fotos de pessoa e informações já existentes. Sem alterar o organograma principal.
 - **v1.7.1** — João (Sistemas 3) movido para o espaço vazio abaixo de Julio, preenchendo a grade da coluna.
 - **v1.7.0** — Sistemas 3 e 4 independentes em todos os pontos: colunas, cards, cadastros (ETA/EPAR) e filtros do organograma separados.
 - **v1.6.3** — Card do gestor no organograma: cada cadastro aparece recolhido com o próprio nome e um botão + para expandir os detalhes (sistema, operação, operadores, poços e quantidade).

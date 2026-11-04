@@ -294,6 +294,7 @@ class Colaborador extends Model
             'cor' => $this->cor,
             'cor_classe' => $this->cor_classe,
             'cor_nivel' => $this->cor_nivel,
+            'tem_foto' => $this->tem_foto,
             'area' => $this->area,
             'grupo' => $this->grupo ? [
                 'id' => $this->grupo->id,
