@@ -611,17 +611,7 @@
             listaCadastros.innerHTML = '';
 
             if (Array.isArray(data.cadastros) && data.cadastros.length > 0) {
-                // Agrupa os cadastros por sistema.
-                const grupos = {};
                 data.cadastros.forEach(function (c) {
-                    const chave = c.sistema || 'Sem sistema';
-                    if (!grupos[chave]) grupos[chave] = [];
-                    grupos[chave].push(c);
-                });
-
-                Object.keys(grupos).sort().forEach(function (sistema) {
-                    const itens = grupos[sistema];
-
                     const card = document.createElement('div');
                     card.className = 'rounded border border-lte-border dark:border-lte-border-dark bg-lte-gray-bg dark:bg-lte-gray-bg-dark overflow-hidden';
 
@@ -632,7 +622,7 @@
 
                     const titulo = document.createElement('span');
                     titulo.className = 'font-bold';
-                    titulo.textContent = sistema;
+                    titulo.textContent = c.nome + ' (' + c.tipo + ')';
 
                     const icone = document.createElement('span');
                     icone.className = 'text-base font-bold leading-none shrink-0';
@@ -642,32 +632,28 @@
                     botao.appendChild(icone);
 
                     const detalhes = document.createElement('div');
-                    detalhes.className = 'hidden px-2 pb-2 space-y-1.5';
+                    detalhes.className = 'hidden px-2 pb-2 space-y-0.5';
 
-                    itens.forEach(function (c) {
-                        const bloco = document.createElement('div');
-                        bloco.className = 'pt-1.5 border-t border-lte-border dark:border-lte-border-dark';
+                    const linhas = [];
+                    if (c.sistema) linhas.push('Sistema: ' + c.sistema);
+                    if (c.operacao) linhas.push('Operação: ' + c.operacao);
+                    if (c.operadores && c.operadores.length) linhas.push('Operadores: ' + c.operadores.join(', '));
+                    if (c.numero_pocos) linhas.push('Nº Poços: ' + c.numero_pocos);
+                    if (c.quantidade_operadores) linhas.push('Qtd Operadores: ' + c.quantidade_operadores);
 
-                        const nome = document.createElement('p');
-                        nome.className = 'font-bold text-lte-text dark:text-lte-text-dark';
-                        nome.textContent = c.nome + ' (' + c.tipo + ')';
-                        bloco.appendChild(nome);
-
-                        const linhas = [];
-                        if (c.operacao) linhas.push('Operação: ' + c.operacao);
-                        if (c.operadores && c.operadores.length) linhas.push('Operadores: ' + c.operadores.join(', '));
-                        if (c.numero_pocos) linhas.push('Nº Poços: ' + c.numero_pocos);
-                        if (c.quantidade_operadores) linhas.push('Qtd Operadores: ' + c.quantidade_operadores);
-
-                        linhas.forEach(function (texto) {
-                            const p = document.createElement('p');
-                            p.className = 'text-lte-text-muted dark:text-lte-text-muted-dark';
-                            p.textContent = texto;
-                            bloco.appendChild(p);
-                        });
-
-                        detalhes.appendChild(bloco);
+                    linhas.forEach(function (texto) {
+                        const p = document.createElement('p');
+                        p.className = 'text-lte-text-muted dark:text-lte-text-muted-dark';
+                        p.textContent = texto;
+                        detalhes.appendChild(p);
                     });
+
+                    if (!linhas.length) {
+                        const p = document.createElement('p');
+                        p.className = 'text-lte-text-muted dark:text-lte-text-muted-dark';
+                        p.textContent = 'Sem informações adicionais.';
+                        detalhes.appendChild(p);
+                    }
 
                     botao.addEventListener('click', function () {
                         const aberto = !detalhes.classList.contains('hidden');
