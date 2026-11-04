@@ -28,7 +28,7 @@
             'colaborador' => $m['thiago@empresa.com.br'] ?? null,
             'cor' => $laranja,
             'barra' => true,
-            'texto' => 'DIREÇÃO (THIAGO)',
+            'texto' => 'DIREÇÃO (' . strtoupper($m['thiago@empresa.com.br']->nome_completo ?? 'THIAGO') . ')',
             'fixo' => true,
         ])
 
@@ -44,14 +44,14 @@
                         'colaborador' => $m['renato.capuano@empresa.com.br'] ?? null,
                         'cor' => $roxo,
                         'barra' => true,
-                        'texto' => 'SUPERINTENDÊNCIA (RENATO CAPUANO)',
+                        'texto' => 'SUPERINTENDÊNCIA (' . strtoupper($m['renato.capuano@empresa.com.br']->nome_completo ?? 'RENATO CAPUANO') . ')',
                         'style' => 'grid-column: 1 / span 2; grid-row: 1;',
                     ])
                     @include('organograma.partials._cell', [
                         'colaborador' => $m['arthur@empresa.com.br'] ?? null,
                         'cor' => $azul,
                         'barra' => true,
-                        'texto' => 'SUPERINTENDÊNCIA (ARTHUR)',
+                        'texto' => 'SUPERINTENDÊNCIA (' . strtoupper($m['arthur@empresa.com.br']->nome_completo ?? 'ARTHUR') . ')',
                         'style' => 'grid-column: 3 / span 4; grid-row: 1;',
                     ])
 
@@ -60,7 +60,7 @@
                         'colaborador' => $m['neves@empresa.com.br'] ?? null,
                         'cor' => $roxo,
                         'barra' => true,
-                        'texto' => 'GER. CORPORATIVA (NEVES)',
+                        'texto' => 'GER. CORPORATIVA (' . strtoupper($m['neves@empresa.com.br']->nome_completo ?? 'NEVES') . ')',
                         'style' => 'grid-column: 1 / span 2; grid-row: 2;',
                     ])
                     <div style="grid-column: 3 / span 4; grid-row: 2;"
@@ -138,7 +138,7 @@
                         'colaborador' => $m['arthur@empresa.com.br'] ?? null,
                         'cor' => $azul,
                         'barra' => true,
-                        'texto' => 'SUPERINTENDÊNCIA (ARTHUR)',
+                        'texto' => 'SUPERINTENDÊNCIA (' . strtoupper($m['arthur@empresa.com.br']->nome_completo ?? 'ARTHUR') . ')',
                         'areaForcada' => 'apoio',
                         'style' => 'grid-column: 3 / span 3; grid-row: 1;',
                     ])
@@ -146,7 +146,7 @@
                         'colaborador' => $m['capuano@empresa.com.br'] ?? null,
                         'cor' => $roxo,
                         'barra' => true,
-                        'texto' => 'SUPERINT. (CAPUANO)',
+                        'texto' => 'SUPERINT. (' . strtoupper($m['capuano@empresa.com.br']->nome_completo ?? 'CAPUANO') . ')',
                         'style' => 'grid-column: 6 / span 2; grid-row: 1;',
                     ])
 
