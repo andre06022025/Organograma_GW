@@ -18,39 +18,42 @@
     }
 
     .tree-card {
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        min-width: 100px;
+        max-width: 140px;
+        border-radius: 0.4rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
         transition: transform 0.15s ease, box-shadow 0.15s ease;
         cursor: pointer;
+        padding: 0.25rem 0.5rem;
     }
 
     .tree-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
     }
 
     .dark .tree-card:hover {
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     }
 
     .tree-children {
         display: flex;
         justify-content: center;
-        gap: 1.25rem;
+        gap: 0.75rem;
         position: relative;
-        padding-top: 2.25rem;
-        margin-top: 0.25rem;
+        padding-top: 1.5rem;
+        margin-top: 0.15rem;
     }
 
     /* Linha vertical que desce do card pai até a barra horizontal */
     .tree-children::before {
         content: '';
         position: absolute;
-        top: -1.25rem;
+        top: -1rem;
         left: 50%;
         transform: translateX(-50%);
         width: 2px;
-        height: 1.25rem;
+        height: 1rem;
         background: #94a3b8;
     }
 
@@ -58,9 +61,9 @@
     .tree-children::after {
         content: '';
         position: absolute;
-        top: 1rem;
-        left: 1.25rem;
-        right: 1.25rem;
+        top: 0.5rem;
+        left: 0.75rem;
+        right: 0.75rem;
         height: 2px;
         background: #94a3b8;
     }
@@ -74,7 +77,7 @@
     /* Linha vertical que desce da barra até o card filho */
     .tree-child {
         position: relative;
-        padding-top: 1.5rem;
+        padding-top: 1rem;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -87,7 +90,7 @@
         left: 50%;
         transform: translateX(-50%);
         width: 2px;
-        height: 1.5rem;
+        height: 1rem;
         background: #94a3b8;
     }
 
@@ -97,17 +100,17 @@
     }
 
     .tree-children:has(> .tree-child:only-child)::before {
-        height: 2.5rem;
+        height: 1.75rem;
     }
 
     .tree-children:has(> .tree-child:only-child) > .tree-child::before {
-        height: 2.5rem;
+        height: 1.75rem;
     }
 </style>
 @endsection
 
 @section('organograma-content')
-    <div class="w-full min-w-[1200px] flex flex-col items-center gap-6">
+    <div class="tree w-fit mx-auto flex flex-col items-center gap-4">
 
         @if(empty($arvore))
             <p class="text-[11px] text-slate-500 dark:text-slate-400 py-6">
@@ -119,4 +122,12 @@
             @endforeach
         @endif
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () { fitToScreen(); }, 300);
+    });
+</script>
 @endsection

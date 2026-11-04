@@ -462,7 +462,7 @@
         // ==========================================
         let currentZoom = 1.0;
         const ZOOM_MIN = 0.5;
-        const ZOOM_MAX = 1.5;
+        const ZOOM_MAX = 2.0;
         const ZOOM_STEP = 0.1;
         
         let filteredNodes = new Set();
@@ -484,10 +484,11 @@
             if (!viewport || !container) return;
             
             const containerRect = container.getBoundingClientRect();
-            const viewportRect = viewport.getBoundingClientRect();
+            const target = document.querySelector('.tree') || viewport;
+            const targetRect = target.getBoundingClientRect();
             
-            const scaleX = (containerRect.width * 0.9) / viewportRect.width;
-            const scaleY = (containerRect.height * 0.9) / viewportRect.height;
+            const scaleX = (containerRect.width * 0.9) / targetRect.width;
+            const scaleY = (containerRect.height * 0.9) / targetRect.height;
             const scale = Math.min(scaleX, scaleY, ZOOM_MAX);
             
             currentZoom = Math.max(ZOOM_MIN, Math.min(scale, ZOOM_MAX));
