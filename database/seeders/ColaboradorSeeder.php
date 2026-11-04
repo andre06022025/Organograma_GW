@@ -650,6 +650,54 @@ class ColaboradorSeeder extends Seeder
             Colaborador::where('email', $email)->update($dados);
         }
 
+        // =========================================================
+        // ORDEM DE EXIBIÇÃO NA ÁRVORE (Organograma 2)
+        // =========================================================
+        $ordens = [
+            'renato.capuano@empresa.com.br' => 1,
+            'arthur@empresa.com.br' => 2,
+            'capuano@empresa.com.br' => 3,
+            'neves@empresa.com.br' => 1,
+            'freddy@empresa.com.br' => 2,
+            'leonardo.m@empresa.com.br' => 3,
+            'vilela@empresa.com.br' => 4,
+            'wellington@empresa.com.br' => 5,
+            'andre.s5@empresa.com.br' => 1,
+            'rodrigo@empresa.com.br' => 2,
+            'sergio.luiz@empresa.com.br' => 3,
+            'pedro@empresa.com.br' => 4,
+            'diogo@empresa.com.br' => 5,
+            'ricardo@empresa.com.br' => 1,
+            'marilia@empresa.com.br' => 2,
+            'pedro.alcantara@empresa.com.br' => 3,
+            'carlos@empresa.com.br' => 4,
+            'andre.cco@empresa.com.br' => 5,
+            'beatriz@empresa.com.br' => 6,
+            'denis@empresa.com.br' => 1,
+            'paulo@empresa.com.br' => 2,
+            'vagner@empresa.com.br' => 1,
+            'eric@empresa.com.br' => 2,
+            'joao@empresa.com.br' => 3,
+            'julio@empresa.com.br' => 1,
+            'joao.s34@empresa.com.br' => 2,
+            'lucas@empresa.com.br' => 1,
+            'alan@empresa.com.br' => 2,
+            'ana.luiza@empresa.com.br' => 1,
+            'deivison@empresa.com.br' => 2,
+            'lagus@empresa.com.br' => 1,
+            'rafael@empresa.com.br' => 1,
+            'gabriel@empresa.com.br' => 1,
+            'diego.manut@empresa.com.br' => 1,
+            'leonardo.ne@empresa.com.br' => 2,
+            'nelson@empresa.com.br' => 3,
+            'osias@empresa.com.br' => 4,
+            'trainee.eng@empresa.com.br' => 5,
+        ];
+
+        foreach ($ordens as $email => $ordem) {
+            Colaborador::where('email', $email)->update(['ordem' => $ordem]);
+        }
+
         $this->command->info('Colaboradores criados: ' . Colaborador::count());
         $this->command->info('Participantes do RIC: ' . Colaborador::where('ric', true)->count());
     }

@@ -259,7 +259,7 @@ class Colaborador extends Model
         $porId = $todos->keyBy('id');
 
         // Ordena por peso de nível e nome
-        $ordenados = $todos->sortBy(fn ($c) => [$c->peso_nivel, mb_strtolower((string) $c->nome_completo)]);
+        $ordenados = $todos->sortBy(fn ($c) => [$c->peso_nivel, $c->ordem, mb_strtolower((string) $c->nome_completo)]);
 
         // Garante que cada nó tenha sua coleção de subordinados
         foreach ($todos as $colaborador) {
@@ -304,7 +304,7 @@ class Colaborador extends Model
             'email' => $this->email,
             'foto_url' => $this->foto_url,
             'children' => $this->subordinados
-                ->sortBy(fn ($s) => [$s->peso_nivel, mb_strtolower((string) $s->nome_completo)])
+                ->sortBy(fn ($s) => [$s->ordem, mb_strtolower((string) $s->nome_completo)])
                 ->map(fn ($s) => $s->toTreeNode())
                 ->values()
                 ->toArray(),

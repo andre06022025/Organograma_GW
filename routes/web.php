@@ -28,6 +28,7 @@ Route::prefix('organograma')->name('organograma.')->group(function () {
 // Organograma 2 (alternativo)
 Route::prefix('organograma2')->name('organograma2.')->group(function () {
     Route::get('/', [Organograma2Controller::class, 'index'])->name('index');
+    Route::post('/posicoes', [Organograma2Controller::class, 'salvarPosicoes'])->name('posicoes');
 });
 
 // Cadastros routes (sem autenticação)

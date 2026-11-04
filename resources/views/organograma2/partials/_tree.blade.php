@@ -46,7 +46,7 @@
     @if(count($children))
         <div class="tree-children">
             @foreach($children as $filho)
-                <div class="tree-child">
+                <div class="tree-child" data-id="{{ $filho['id'] }}" data-draggable="true">
                     @include('organograma2.partials._tree', ['node' => $filho])
                 </div>
             @endforeach
