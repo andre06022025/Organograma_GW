@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.0
+**Versão:** v1.7.1
 
 ---
 
@@ -123,6 +123,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.7.1** — João (Sistemas 3) movido para o espaço vazio abaixo de Julio, preenchendo a grade da coluna.
 - **v1.7.0** — Sistemas 3 e 4 independentes em todos os pontos: colunas, cards, cadastros (ETA/EPAR) e filtros do organograma separados.
 - **v1.6.3** — Card do gestor no organograma: cada cadastro aparece recolhido com o próprio nome e um botão + para expandir os detalhes (sistema, operação, operadores, poços e quantidade).
 - **v1.6.2** — Card do gestor no organograma: cadastros agrupados por sistema, exibindo apenas o nome do sistema e um botão + para expandir os detalhes.

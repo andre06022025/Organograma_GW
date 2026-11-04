@@ -107,6 +107,7 @@
                     {{-- Linha 6: Supervisão 2 / Operadores Líderes --}}
                     @include('organograma.partials._cell', ['colaborador' => $m['paulo@empresa.com.br'] ?? null,    'cor' => $roxo, 'style' => 'grid-column: 1; grid-row: 6;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['eric@empresa.com.br'] ?? null,     'cor' => $roxo, 'style' => 'grid-column: 2; grid-row: 6;'])
+                    @include('organograma.partials._cell', ['colaborador' => $m['joao.s34@empresa.com.br'] ?? null, 'cor' => $roxo, 'style' => 'grid-column: 3; grid-row: 6;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['alan@empresa.com.br'] ?? null,     'cor' => $roxo, 'style' => 'grid-column: 4; grid-row: 6;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['everton@empresa.com.br'] ?? null,  'cor' => $roxo, 'style' => 'grid-column: 5; grid-row: 6;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['cesar@empresa.com.br'] ?? null,    'cor' => $roxo, 'style' => 'grid-column: 6; grid-row: 6;'])
@@ -116,7 +117,6 @@
 
                     {{-- Linha 7: Supervisão 3 --}}
                     @include('organograma.partials._cell', ['colaborador' => $m['joao@empresa.com.br'] ?? null,     'cor' => $roxo, 'style' => 'grid-column: 2; grid-row: 7;'])
-                    @include('organograma.partials._cell', ['colaborador' => $m['joao.s34@empresa.com.br'] ?? null, 'cor' => $roxo, 'style' => 'grid-column: 3; grid-row: 7;'])
                 </div>
             </div>
 
