@@ -178,6 +178,7 @@
     </style>
     
     @yield('css')
+    @yield('styles')
 </head>
 <body class="bg-lte-gray-bg dark:bg-lte-gray-bg-dark font-sans text-lte-text dark:text-lte-text-dark text-xs antialiased h-screen overflow-hidden flex flex-col">
 
@@ -269,6 +270,9 @@
                 <li class="nav-header text-[10px] text-uppercase tracking-wide text-slate-500 mt-2 mb-1 px-2">CADASTROS</li>
                 <a href="{{ route('cadastros.colaboradores.index') }}" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition">
                     <i class="fa-solid fa-users-cog w-4"></i> Colaboradores
+                </a>
+                <a href="{{ route('cadastros.index') }}" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition">
+                    <i class="fa-solid fa-clipboard-list w-4"></i> Cadastros
                 </a>
             </nav>
 

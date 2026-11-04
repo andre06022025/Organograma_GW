@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OrganogramaController;
 use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\CadastroController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,8 @@ Route::prefix('organograma')->name('organograma.')->group(function () {
 
 // Cadastros routes (sem autenticação)
 Route::prefix('cadastros')->name('cadastros.')->group(function () {
+    Route::get('/', [CadastroController::class, 'index'])->name('index');
+
     Route::resource('colaboradores', ColaboradorController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
         ->parameters(['colaboradores' => 'colaborador']);
