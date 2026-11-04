@@ -32,7 +32,8 @@ class Cadastro extends Model
     public const SISTEMAS = [
         'Sistemas 1' => 'Sistemas 1',
         'Sistemas 2' => 'Sistemas 2',
-        'Sistemas 3+4' => 'Sistemas 3+4',
+        'Sistemas 3' => 'Sistemas 3',
+        'Sistemas 4' => 'Sistemas 4',
         'Sistemas 5' => 'Sistemas 5',
         'Sistemas 6' => 'Sistemas 6',
         'Sistemas 7' => 'Sistemas 7',

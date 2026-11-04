@@ -184,12 +184,12 @@ class ColaboradorSeeder extends Seeder
         ]);
 
         // =========================================================
-        // SISTEMAS 3+4
+        // SISTEMAS 3
         // =========================================================
         $cooVilela = Colaborador::create([
             'nome_completo' => 'Vilela',
-            'cargo' => 'Coordenação Sistemas 3+4',
-            'setor' => 'Sistemas 3+4',
+            'cargo' => 'Coordenação Sistemas 3',
+            'setor' => 'Sistemas 3',
             'nivel' => 'coordenacao',
             'area' => 'producao',
             'ordem' => 1,
@@ -198,10 +198,13 @@ class ColaboradorSeeder extends Seeder
             'grupo_id' => $grupoTI?->id,
         ]);
 
+        // =========================================================
+        // SISTEMAS 4
+        // =========================================================
         $cooWellington = Colaborador::create([
             'nome_completo' => 'Wellington',
-            'cargo' => 'Coordenação Sistemas 3+4',
-            'setor' => 'Sistemas 3+4',
+            'cargo' => 'Coordenação Sistemas 4',
+            'setor' => 'Sistemas 4',
             'nivel' => 'coordenacao',
             'area' => 'producao',
             'ordem' => 1,
@@ -213,7 +216,7 @@ class ColaboradorSeeder extends Seeder
         Colaborador::create([
             'nome_completo' => 'Julio',
             'cargo' => 'Supervisão 1',
-            'setor' => 'Sistemas 3+4',
+            'setor' => 'Sistemas 3',
             'nivel' => 'supervisao',
             'area' => 'producao',
             'ordem' => 2,
@@ -225,7 +228,7 @@ class ColaboradorSeeder extends Seeder
         Colaborador::create([
             'nome_completo' => 'Alan',
             'cargo' => 'Supervisão 2',
-            'setor' => 'Sistemas 3+4',
+            'setor' => 'Sistemas 4',
             'nivel' => 'supervisao',
             'area' => 'producao',
             'ordem' => 3,
@@ -237,7 +240,7 @@ class ColaboradorSeeder extends Seeder
         Colaborador::create([
             'nome_completo' => 'João',
             'cargo' => 'Supervisão 3',
-            'setor' => 'Sistemas 3+4',
+            'setor' => 'Sistemas 3',
             'nivel' => 'supervisao',
             'area' => 'producao',
             'ordem' => 4,
@@ -249,7 +252,7 @@ class ColaboradorSeeder extends Seeder
         Colaborador::create([
             'nome_completo' => 'Lucas',
             'cargo' => 'Operador Líder',
-            'setor' => 'Sistemas 3+4',
+            'setor' => 'Sistemas 4',
             'nivel' => 'operador_lider',
             'area' => 'producao',
             'ordem' => 5,
