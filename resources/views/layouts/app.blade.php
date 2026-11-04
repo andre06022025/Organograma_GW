@@ -611,30 +611,74 @@
             listaCadastros.innerHTML = '';
 
             if (Array.isArray(data.cadastros) && data.cadastros.length > 0) {
+                // Agrupa os cadastros por sistema.
+                const grupos = {};
                 data.cadastros.forEach(function (c) {
-                    const box = document.createElement('div');
-                    box.className = 'p-2 rounded border border-lte-border dark:border-lte-border-dark bg-lte-gray-bg dark:bg-lte-gray-bg-dark';
+                    const chave = c.sistema || 'Sem sistema';
+                    if (!grupos[chave]) grupos[chave] = [];
+                    grupos[chave].push(c);
+                });
 
-                    const titulo = document.createElement('p');
-                    titulo.className = 'font-bold text-lte-text dark:text-lte-text-dark';
-                    titulo.textContent = c.nome + ' (' + c.tipo + ')';
-                    box.appendChild(titulo);
+                Object.keys(grupos).sort().forEach(function (sistema) {
+                    const itens = grupos[sistema];
 
-                    const linhas = [];
-                    if (c.sistema) linhas.push('Sistema: ' + c.sistema);
-                    if (c.operacao) linhas.push('Operação: ' + c.operacao);
-                    if (c.operadores && c.operadores.length) linhas.push('Operadores: ' + c.operadores.join(', '));
-                    if (c.numero_pocos) linhas.push('Nº Poços: ' + c.numero_pocos);
-                    if (c.quantidade_operadores) linhas.push('Qtd Operadores: ' + c.quantidade_operadores);
+                    const card = document.createElement('div');
+                    card.className = 'rounded border border-lte-border dark:border-lte-border-dark bg-lte-gray-bg dark:bg-lte-gray-bg-dark overflow-hidden';
 
-                    linhas.forEach(function (texto) {
-                        const p = document.createElement('p');
-                        p.className = 'text-lte-text-muted dark:text-lte-text-muted-dark';
-                        p.textContent = texto;
-                        box.appendChild(p);
+                    const botao = document.createElement('button');
+                    botao.type = 'button';
+                    botao.className = 'w-full flex items-center justify-between gap-2 p-2 text-left text-lte-text dark:text-lte-text-dark hover:bg-slate-200/60 dark:hover:bg-slate-700/40';
+                    botao.setAttribute('aria-expanded', 'false');
+
+                    const titulo = document.createElement('span');
+                    titulo.className = 'font-bold';
+                    titulo.textContent = sistema;
+
+                    const icone = document.createElement('span');
+                    icone.className = 'text-base font-bold leading-none shrink-0';
+                    icone.textContent = '+';
+
+                    botao.appendChild(titulo);
+                    botao.appendChild(icone);
+
+                    const detalhes = document.createElement('div');
+                    detalhes.className = 'hidden px-2 pb-2 space-y-1.5';
+
+                    itens.forEach(function (c) {
+                        const bloco = document.createElement('div');
+                        bloco.className = 'pt-1.5 border-t border-lte-border dark:border-lte-border-dark';
+
+                        const nome = document.createElement('p');
+                        nome.className = 'font-bold text-lte-text dark:text-lte-text-dark';
+                        nome.textContent = c.nome + ' (' + c.tipo + ')';
+                        bloco.appendChild(nome);
+
+                        const linhas = [];
+                        if (c.operacao) linhas.push('Operação: ' + c.operacao);
+                        if (c.operadores && c.operadores.length) linhas.push('Operadores: ' + c.operadores.join(', '));
+                        if (c.numero_pocos) linhas.push('Nº Poços: ' + c.numero_pocos);
+                        if (c.quantidade_operadores) linhas.push('Qtd Operadores: ' + c.quantidade_operadores);
+
+                        linhas.forEach(function (texto) {
+                            const p = document.createElement('p');
+                            p.className = 'text-lte-text-muted dark:text-lte-text-muted-dark';
+                            p.textContent = texto;
+                            bloco.appendChild(p);
+                        });
+
+                        detalhes.appendChild(bloco);
                     });
 
-                    listaCadastros.appendChild(box);
+                    botao.addEventListener('click', function () {
+                        const aberto = !detalhes.classList.contains('hidden');
+                        detalhes.classList.toggle('hidden');
+                        icone.textContent = aberto ? '+' : '−';
+                        botao.setAttribute('aria-expanded', aberto ? 'false' : 'true');
+                    });
+
+                    card.appendChild(botao);
+                    card.appendChild(detalhes);
+                    listaCadastros.appendChild(card);
                 });
 
                 secaoCadastros.classList.remove('hidden');
