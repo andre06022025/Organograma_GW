@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.4.0
+**Versão:** v1.5.0
 
 ---
 
@@ -19,6 +19,7 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - CRUD de colaboradores.
 - Lista em DataTable com filtros, ordenação e exportação (Excel, PDF, impressão e cópia).
 - Cadastros de unidades/clientes (ETA/EPAR) em DataTable, com cadastro/edição, filtros por nome/tipo e exportação.
+- Arrastar e soltar cards do organograma para reorganizar, com posição salva automaticamente no banco.
 
 ---
 
@@ -39,11 +40,18 @@ A tabela `colaboradores` é a única fonte dos cards. Campos usados:
 | `cor` | Identificador de cor: `roxo`, `azul` ou `laranja` |
 | `ordem` | Ordem dentro do setor |
 | `ric` | Participa da gestão compartilhada RIC |
+| `card_coluna` | Coluna do card no grid (salva pelo drag-and-drop) |
+| `card_linha` | Linha do card no grid |
+| `card_colspan` | Quantidade de colunas que o card ocupa |
 | `setor` | Sistema/área (ex.: `Sistemas 1`, `LABOR`) |
 | `gestor_id` | Gestor direto |
 | `grupo_id` | Grupo corporativo |
 
 As cores são mapeadas no modelo (`Colaborador::CORES`) para as classes CSS do tema, funcionando no modo claro e escuro.
+
+### Drag and drop
+
+Arraste um card e solte sobre outro **da mesma área** e com o **mesmo número de colunas** para trocar as posições. A troca é salva automaticamente em `card_coluna`, `card_linha` e `card_colspan` e permanece após recarregar a página. Barras de cabeçalho (superintendências) e os cards compactos da RIC não são arrastáveis.
 
 ---
 
@@ -108,6 +116,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.5.0** — Drag and drop dos cards do organograma, com troca de posição e persistência automática (coluna, linha e span).
 - **v1.4.0** — Cadastros com botão Novo, edição por linha e campos operacionais (Operação, até 4 Operadores, Nº de Poços e Qtd. de Operadores), vazios quando não informados.
 - **v1.3.0** — Tabela `cadastros` (ETA/EPAR) com 156 registros, página em DataTable e item no menu abaixo de Colaboradores.
 - **v1.2.1** — Lista de colaboradores passa a exibir todos os registros (removido o limite de 20 da paginação; DataTable mostra todos por padrão).

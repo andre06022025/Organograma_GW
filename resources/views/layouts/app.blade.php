@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Organograma Corporativo - General Water')</title>
     
@@ -48,6 +49,20 @@
             transform: none;
             box-shadow: none;
             filter: brightness(1.1);
+        }
+
+        /* Drag and drop dos cards */
+        .node-cell[data-draggable="true"] {
+            cursor: grab;
+        }
+        .node-cell.dragging {
+            opacity: 0.45;
+            cursor: grabbing;
+            transform: none !important;
+        }
+        .node-cell.drag-over {
+            outline: 2px dashed #ffffff;
+            outline-offset: -3px;
         }
         
         #viewportCanvas {
@@ -658,6 +673,120 @@
         }
 
         // ==========================================
+        // DRAG AND DROP DOS CARDS
+        // ==========================================
+        let draggedCard = null;
+
+        function initDragAndDrop() {
+            const cards = document.querySelectorAll('.node-cell[data-draggable="true"]');
+            if (!cards.length) return;
+
+            cards.forEach(card => {
+                card.setAttribute('draggable', 'true');
+
+                card.addEventListener('dragstart', function (e) {
+                    draggedCard = this;
+                    this.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', this.dataset.id || '');
+                });
+
+                card.addEventListener('dragend', function () {
+                    this.classList.remove('dragging');
+                    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+                    draggedCard = null;
+                });
+
+                card.addEventListener('dragover', function (e) {
+                    if (!podeTrocar(draggedCard, this)) return;
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    this.classList.add('drag-over');
+                });
+
+                card.addEventListener('dragleave', function () {
+                    this.classList.remove('drag-over');
+                });
+
+                card.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+                    if (!podeTrocar(draggedCard, this)) return;
+
+                    const origem = draggedCard;
+                    const destino = this;
+
+                    const colunaOrigem = origem.style.gridColumn;
+                    const linhaOrigem = origem.style.gridRow;
+
+                    origem.style.gridColumn = destino.style.gridColumn;
+                    origem.style.gridRow = destino.style.gridRow;
+                    destino.style.gridColumn = colunaOrigem;
+                    destino.style.gridRow = linhaOrigem;
+
+                    salvarPosicoes([parsePosicao(origem), parsePosicao(destino)]);
+                });
+            });
+        }
+
+        function podeTrocar(origem, destino) {
+            if (!origem || origem === destino) return false;
+            if (!destino.classList.contains('node-cell')) return false;
+            if (origem.dataset.sector !== destino.dataset.sector) return false;
+            return cardSpan(origem) === cardSpan(destino);
+        }
+
+        function cardSpan(el) {
+            const valor = el.style.gridColumn || '';
+            const match = valor.match(/span\s+(\d+)/i);
+            return match ? parseInt(match[1], 10) : 1;
+        }
+
+        function parsePosicao(el) {
+            const coluna = el.style.gridColumn || '';
+            const linha = el.style.gridRow || '';
+            const match = coluna.match(/^(\d+)(?:\s*\/\s*span\s+(\d+))?/i);
+
+            return {
+                id: parseInt(el.dataset.id, 10),
+                coluna: match ? parseInt(match[1], 10) : 1,
+                colspan: match && match[2] ? parseInt(match[2], 10) : 1,
+                linha: parseInt(linha, 10) || 1,
+            };
+        }
+
+        function salvarPosicoes(posicoes) {
+            const token = document.querySelector('meta[name="csrf-token"]');
+            fetch('/organograma/posicoes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': token ? token.content : '',
+                },
+                body: JSON.stringify({ posicoes: posicoes }),
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        mostrarToast('Posição salva!');
+                    }
+                })
+                .catch(function () {
+                    // Em caso de falha, a posição anterior volta no próximo carregamento.
+                });
+        }
+
+        function mostrarToast(mensagem) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-lg';
+            toast.textContent = mensagem;
+            document.body.appendChild(toast);
+            setTimeout(function () {
+                toast.remove();
+            }, 2500);
+        }
+
+        // ==========================================
         // MINIMIZAR UI (TOPBAR + SIDEBAR)
         // ==========================================
         function toggleMinimizeUI() {
@@ -694,6 +823,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             initTheme();
             initMinimizeUI();
+            initDragAndDrop();
             
             // Atalhos teclado
             document.addEventListener('keydown', function(e) {

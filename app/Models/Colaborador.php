@@ -61,6 +61,9 @@ class Colaborador extends Model
         'cor',
         'ordem',
         'ric',
+        'card_coluna',
+        'card_linha',
+        'card_colspan',
         'grupo_id',
     ];
 
@@ -70,6 +73,9 @@ class Colaborador extends Model
         'deleted_at' => 'datetime',
         'ric' => 'boolean',
         'ordem' => 'integer',
+        'card_coluna' => 'integer',
+        'card_linha' => 'integer',
+        'card_colspan' => 'integer',
     ];
 
     protected $hidden = [

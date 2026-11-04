@@ -61,6 +61,27 @@ class OrganogramaController extends Controller
         ]);
     }
 
+    public function salvarPosicoes(Request $request): JsonResponse
+    {
+        $dados = $request->validate([
+            'posicoes' => ['required', 'array'],
+            'posicoes.*.id' => ['required', 'integer', 'exists:colaboradores,id'],
+            'posicoes.*.coluna' => ['required', 'integer', 'min:1'],
+            'posicoes.*.linha' => ['required', 'integer', 'min:1'],
+            'posicoes.*.colspan' => ['required', 'integer', 'min:1', 'max:9'],
+        ]);
+
+        foreach ($dados['posicoes'] as $posicao) {
+            Colaborador::whereKey($posicao['id'])->update([
+                'card_coluna' => $posicao['coluna'],
+                'card_linha' => $posicao['linha'],
+                'card_colspan' => $posicao['colspan'],
+            ]);
+        }
+
+        return response()->json(['ok' => true]);
+    }
+
     public function atualizarFoto(Request $request, Colaborador $colaborador): RedirectResponse
     {
         $request->validate([

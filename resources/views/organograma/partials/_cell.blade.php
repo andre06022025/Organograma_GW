@@ -10,6 +10,17 @@
     $rotulo = $colaborador?->rotulo_card ?? ($rotulo ?? '');
     $nivelTexto = $colaborador?->nivel_card_texto ?? ($nivelTexto ?? null);
     $regiaoTexto = $regiaoTexto ?? ($colaborador?->regiao);
+
+    // Posição salva via drag-and-drop (quando existir) sobrepõe a posição padrão.
+    $posicaoStyle = $style;
+    if ($colaborador && empty($compacto) && !$barra && $colaborador->card_coluna) {
+        $posicaoStyle = preg_replace('/grid-column\s*:\s*[^;]+;?/i', '', $posicaoStyle);
+        $posicaoStyle = preg_replace('/grid-row\s*:\s*[^;]+;?/i', '', $posicaoStyle);
+        $posicaoStyle = trim($posicaoStyle);
+        $posicaoStyle .= ' grid-column: ' . $colaborador->card_coluna . ' / span ' . ($colaborador->card_colspan ?: 1) . ';';
+        $posicaoStyle .= ' grid-row: ' . $colaborador->card_linha . ';';
+        $posicaoStyle = trim($posicaoStyle);
+    }
 @endphp
 
 @if($barra)
@@ -54,7 +65,8 @@
         </div>
     @else
         <div class="node-card node-cell {{ $cor }} text-white text-center px-1 py-1 leading-tight flex flex-col items-center justify-center min-h-[clamp(52px,4.4vw,84px)] cursor-pointer select-none"
-             @if($style) style="{{ $style }}" @endif
+             data-draggable="true"
+             @if($posicaoStyle) style="{{ $posicaoStyle }}" @endif
              role="button"
              tabindex="0"
              onclick="openCardModal({{ $colaborador->id }})"
