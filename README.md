@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.6.0
+**Versão:** v1.6.1
 
 ---
 
@@ -18,9 +18,9 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - Botão para minimizar topbar/sidebar e botão flutuante para restaurar.
 - CRUD de colaboradores.
 - Lista em DataTable com filtros, ordenação e exportação (Excel, PDF, impressão e cópia).
-- Cadastros de unidades/clientes (ETA/EPAR) em DataTable, com cadastro/edição, gestor, sistema, contrato, data e informações da gestão.
-- Ao clicar no cadastro, um modal exibe todos os contratos e informações da gestão.
-- No organograma, o modal do gestor lista os cadastros/contratos sob responsabilidade dele.
+- Cadastros de unidades/clientes (ETA/EPAR) em DataTable, com cadastro/edição, gestor, sistema e campos operacionais.
+- Ao clicar no cadastro, um modal exibe todos os dados.
+- No organograma, o modal do gestor lista os cadastros sob responsabilidade dele.
 - Arrastar e soltar cards do organograma para reorganizar, com posição salva automaticamente no banco.
 
 ---
@@ -67,17 +67,14 @@ A tabela `cadastros` armazena as unidades/clientes do grupo:
 | `tipo` | `ETA` ou `EPAR` |
 | `gestor_id` | Gestor responsável (colaborador) |
 | `sistema` | Sistema atribuído (Sistemas 1 a 9) |
-| `contrato` | Identificação do contrato |
-| `data_contrato` | Data do contrato |
-| `informacoes` | Informações da gestão/contratos |
 | `operacao` | Operação (opcional) |
 | `operadores` | Até 4 operadores (JSON) |
 | `numero_pocos` | Número de poços (opcional) |
 | `quantidade_operadores` | Quantidade de operadores (opcional) |
 
-A página **Cadastros** (`/cadastros`) lista os registros em DataTable, com busca, filtros por tipo/gestor/sistema, cadastro/edição e exportação. Ao clicar em uma linha, um modal exibe todos os dados, contratos e informações da gestão. Campos sem informação ficam vazios. Acesso pelo menu lateral, abaixo de Colaboradores.
+A página **Cadastros** (`/cadastros`) lista os registros em DataTable, com busca, filtros por tipo/gestor/sistema, cadastro/edição e exportação. Ao clicar em uma linha, um modal exibe todos os dados. Campos sem informação ficam vazios. Acesso pelo menu lateral, abaixo de Colaboradores.
 
-No **organograma**, ao abrir o card de um gestor, o modal lista os cadastros/contratos sob responsabilidade dele.
+No **organograma**, ao abrir o card de um gestor, o modal lista os cadastros sob responsabilidade dele.
 
 ---
 
@@ -125,6 +122,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.6.1** — Removidos os campos contrato, data do contrato e informações da gestão dos cadastros (banco, formulário, lista, modal e card do gestor).
 - **v1.6.0** — Cadastros com gestor, sistema, contrato, data e informações da gestão; modal de detalhes ao clicar na linha; card do gestor no organograma lista os contratos/cadastros sob sua responsabilidade.
 - **v1.5.0** — Drag and drop dos cards do organograma, com troca de posição e persistência automática (coluna, linha e span).
 - **v1.4.0** — Cadastros com botão Novo, edição por linha e campos operacionais (Operação, até 4 Operadores, Nº de Poços e Qtd. de Operadores), vazios quando não informados.

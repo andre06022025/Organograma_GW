@@ -17,9 +17,6 @@ class Cadastro extends Model
         'tipo',
         'gestor_id',
         'sistema',
-        'contrato',
-        'data_contrato',
-        'informacoes',
         'operacao',
         'operadores',
         'numero_pocos',
@@ -30,7 +27,6 @@ class Cadastro extends Model
         'operadores' => 'array',
         'numero_pocos' => 'integer',
         'quantidade_operadores' => 'integer',
-        'data_contrato' => 'date',
     ];
 
     public const SISTEMAS = [

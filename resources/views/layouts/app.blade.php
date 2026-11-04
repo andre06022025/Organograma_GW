@@ -359,10 +359,10 @@
                     <span id="modalEmail">-</span>
                 </div>
 
-                <!-- CADASTROS / CONTRATOS SOB GESTÃO -->
+                <!-- CADASTROS SOB GESTÃO -->
                 <div id="modalCadastrosSection" class="hidden pt-2 border-t border-lte-border dark:border-lte-border-dark">
                     <h4 class="font-bold text-lte-text-muted dark:text-lte-text-muted-dark uppercase tracking-wide text-[10px] mb-1">
-                        Contratos / cadastros sob gestão
+                        Cadastros sob gestão
                     </h4>
                     <div id="modalCadastrosList" class="space-y-1.5 max-h-48 overflow-y-auto text-[11px]"></div>
                 </div>
@@ -622,13 +622,10 @@
 
                     const linhas = [];
                     if (c.sistema) linhas.push('Sistema: ' + c.sistema);
-                    if (c.contrato) linhas.push('Contrato: ' + c.contrato);
-                    if (c.data_contrato) linhas.push('Data: ' + c.data_contrato);
                     if (c.operacao) linhas.push('Operação: ' + c.operacao);
                     if (c.operadores && c.operadores.length) linhas.push('Operadores: ' + c.operadores.join(', '));
                     if (c.numero_pocos) linhas.push('Nº Poços: ' + c.numero_pocos);
                     if (c.quantidade_operadores) linhas.push('Qtd Operadores: ' + c.quantidade_operadores);
-                    if (c.informacoes) linhas.push(c.informacoes);
 
                     linhas.forEach(function (texto) {
                         const p = document.createElement('p');

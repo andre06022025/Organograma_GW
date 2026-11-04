@@ -42,13 +42,10 @@ class OrganogramaController extends Controller
                 'nome' => $c->nome,
                 'tipo' => $c->tipo,
                 'sistema' => $c->sistema,
-                'contrato' => $c->contrato,
-                'data_contrato' => $c->data_contrato?->format('d/m/Y'),
                 'operacao' => $c->operacao,
                 'operadores' => $c->operadores ?? [],
                 'numero_pocos' => $c->numero_pocos,
                 'quantidade_operadores' => $c->quantidade_operadores,
-                'informacoes' => $c->informacoes,
             ]);
 
         return response()->json([

@@ -94,8 +94,6 @@
                             <th style="width: 80px;">Tipo</th>
                             <th style="width: 140px;">Gestor</th>
                             <th style="width: 110px;">Sistema</th>
-                            <th style="width: 120px;">Contrato</th>
-                            <th style="width: 100px;">Data</th>
                             <th style="width: 130px;">Operação</th>
                             <th style="width: 170px;">Operadores</th>
                             <th style="width: 90px;">Nº Poços</th>
@@ -110,13 +108,10 @@
                                 data-tipo="{{ $cadastro->tipo }}"
                                 data-gestor="{{ $cadastro->gestor?->nome_completo }}"
                                 data-sistema="{{ $cadastro->sistema }}"
-                                data-contrato="{{ $cadastro->contrato }}"
-                                data-data="{{ $cadastro->data_contrato?->format('d/m/Y') }}"
                                 data-operacao="{{ $cadastro->operacao }}"
                                 data-operadores="{{ json_encode($cadastro->operadores ?? []) }}"
                                 data-pocos="{{ $cadastro->numero_pocos }}"
                                 data-qtd="{{ $cadastro->quantidade_operadores }}"
-                                data-informacoes="{{ $cadastro->informacoes }}"
                                 onclick="openCadastroDetalhes(this)">
                                 <td class="font-weight-bold">{{ $cadastro->nome }}</td>
                                 <td>
@@ -128,8 +123,6 @@
                                 </td>
                                 <td>{{ $cadastro->gestor?->nome_completo ?? '' }}</td>
                                 <td>{{ $cadastro->sistema ?? '' }}</td>
-                                <td>{{ $cadastro->contrato ?? '' }}</td>
-                                <td>{{ $cadastro->data_contrato?->format('d/m/Y') ?? '' }}</td>
                                 <td>{{ $cadastro->operacao ?? '' }}</td>
                                 <td>
                                     @if(!empty($cadastro->operadores))
@@ -194,14 +187,6 @@
                     <span id="detSistema" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
                 </div>
                 <div>
-                    <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Contrato:</span>
-                    <span id="detContrato" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
-                </div>
-                <div>
-                    <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Data:</span>
-                    <span id="detData" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
-                </div>
-                <div>
                     <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Nº Poços:</span>
                     <span id="detPocos" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
                 </div>
@@ -219,11 +204,6 @@
             <div>
                 <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Operadores:</span>
                 <div id="detOperadores" class="text-lte-text dark:text-lte-text-dark">-</div>
-            </div>
-
-            <div>
-                <span class="text-lte-text-muted dark:text-lte-text-muted-dark block font-semibold">Informações da gestão / contratos:</span>
-                <p id="detInformacoes" class="mt-1 bg-lte-gray-bg dark:bg-lte-gray-bg-dark p-2 rounded border border-lte-border dark:border-lte-border-dark text-lte-text dark:text-lte-text-dark leading-relaxed whitespace-pre-line">-</p>
             </div>
         </div>
 
@@ -257,12 +237,9 @@
         document.getElementById('detTipo').textContent = d.tipo || '-';
         document.getElementById('detGestor').textContent = d.gestor || '-';
         document.getElementById('detSistema').textContent = d.sistema || '-';
-        document.getElementById('detContrato').textContent = d.contrato || '-';
-        document.getElementById('detData').textContent = d.data || '-';
         document.getElementById('detOperacao').textContent = d.operacao || '-';
         document.getElementById('detPocos').textContent = d.pocos || '-';
         document.getElementById('detQtd').textContent = d.qtd || '-';
-        document.getElementById('detInformacoes').textContent = d.informacoes || '-';
 
         let operadores = [];
         try {
@@ -340,8 +317,8 @@
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
             order: [[0, 'asc']],
             columnDefs: [
-                { orderable: false, targets: [10] },
-                { searchable: false, targets: [10] }
+                { orderable: false, targets: [8] },
+                { searchable: false, targets: [8] }
             ]
         });
     });
