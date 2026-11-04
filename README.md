@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.3.0
+**Versão:** v1.4.0
 
 ---
 
@@ -18,7 +18,7 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - Botão para minimizar topbar/sidebar e botão flutuante para restaurar.
 - CRUD de colaboradores.
 - Lista em DataTable com filtros, ordenação e exportação (Excel, PDF, impressão e cópia).
-- Cadastros de unidades/clientes (ETA/EPAR) em DataTable, com filtros por nome/tipo e exportação.
+- Cadastros de unidades/clientes (ETA/EPAR) em DataTable, com cadastro/edição, filtros por nome/tipo e exportação.
 
 ---
 
@@ -55,8 +55,12 @@ A tabela `cadastros` armazena as unidades/clientes do grupo:
 |---|---|
 | `nome` | Nome da unidade/cliente |
 | `tipo` | `ETA` ou `EPAR` |
+| `operacao` | Operação (opcional) |
+| `operadores` | Até 4 operadores (JSON) |
+| `numero_pocos` | Número de poços (opcional) |
+| `quantidade_operadores` | Quantidade de operadores (opcional) |
 
-A página **Cadastros** (`/cadastros`) lista os registros em DataTable, com busca, filtro por tipo e exportação. Acesso pelo menu lateral, abaixo de Colaboradores.
+A página **Cadastros** (`/cadastros`) lista os registros em DataTable, com busca, filtro por tipo, cadastro/edição e exportação. Campos sem informação ficam vazios. Acesso pelo menu lateral, abaixo de Colaboradores.
 
 ---
 
@@ -104,6 +108,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.4.0** — Cadastros com botão Novo, edição por linha e campos operacionais (Operação, até 4 Operadores, Nº de Poços e Qtd. de Operadores), vazios quando não informados.
 - **v1.3.0** — Tabela `cadastros` (ETA/EPAR) com 156 registros, página em DataTable e item no menu abaixo de Colaboradores.
 - **v1.2.1** — Lista de colaboradores passa a exibir todos os registros (removido o limite de 20 da paginação; DataTable mostra todos por padrão).
 - **v1.2.0** — Foto do colaborador ao lado do nome (placeholder Bootstrap) e modal para envio/troca da foto direto do organograma.

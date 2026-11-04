@@ -14,6 +14,16 @@ class Cadastro extends Model
     protected $fillable = [
         'nome',
         'tipo',
+        'operacao',
+        'operadores',
+        'numero_pocos',
+        'quantidade_operadores',
+    ];
+
+    protected $casts = [
+        'operadores' => 'array',
+        'numero_pocos' => 'integer',
+        'quantidade_operadores' => 'integer',
     ];
 
     public const TIPOS = [

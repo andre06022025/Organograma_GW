@@ -26,6 +26,10 @@ Route::prefix('organograma')->name('organograma.')->group(function () {
 // Cadastros routes (sem autenticação)
 Route::prefix('cadastros')->name('cadastros.')->group(function () {
     Route::get('/', [CadastroController::class, 'index'])->name('index');
+    Route::get('create', [CadastroController::class, 'create'])->name('create');
+    Route::post('/', [CadastroController::class, 'store'])->name('store');
+    Route::get('{cadastro}/edit', [CadastroController::class, 'edit'])->name('edit');
+    Route::put('{cadastro}', [CadastroController::class, 'update'])->name('update');
 
     Route::resource('colaboradores', ColaboradorController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])

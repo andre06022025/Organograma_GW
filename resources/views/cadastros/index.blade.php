@@ -15,10 +15,22 @@
             <i class="fas fa-clipboard-list text-lte-purple mr-2"></i> Cadastros
             <span class="badge badge-pill badge-secondary ml-1">{{ $cadastros->count() }}</span>
         </h4>
-        <a href="{{ route('organograma.index') }}" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-sitemap mr-1"></i> Ir para o organograma
-        </a>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('cadastros.create') }}" class="btn btn-lte-purple mr-2">
+                <i class="fas fa-plus mr-1"></i> Novo Cadastro
+            </a>
+            <a href="{{ route('organograma.index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-sitemap mr-1"></i> Organograma
+            </a>
+        </div>
     </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    @endif
 
     <!-- Filtros -->
     <div class="card mb-4">
@@ -59,7 +71,12 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th>Nome</th>
-                            <th style="width: 100px;">Tipo</th>
+                            <th style="width: 90px;">Tipo</th>
+                            <th style="width: 150px;">Operação</th>
+                            <th style="width: 200px;">Operadores</th>
+                            <th style="width: 110px;">Nº Poços</th>
+                            <th style="width: 130px;">Qtd Operadores</th>
+                            <th style="width: 80px;">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,10 +90,26 @@
                                         <span class="badge badge-warning">EPAR</span>
                                     @endif
                                 </td>
+                                <td>{{ $cadastro->operacao ?? '' }}</td>
+                                <td>
+                                    @if(!empty($cadastro->operadores))
+                                        @foreach($cadastro->operadores as $operador)
+                                            <div class="small">{{ $operador }}</div>
+                                        @endforeach
+                                    @endif
+                                </td>
+                                <td>{{ $cadastro->numero_pocos ?? '' }}</td>
+                                <td>{{ $cadastro->quantidade_operadores ?? '' }}</td>
+                                <td>
+                                    <a href="{{ route('cadastros.edit', $cadastro) }}"
+                                       class="btn btn-sm btn-outline-primary" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="2" class="text-center text-muted py-5">
+                                <td colspan="7" class="text-center text-muted py-5">
                                     <i class="fas fa-clipboard-list fa-2x mb-2 d-block"></i>
                                     Nenhum cadastro encontrado.
                                 </td>
@@ -117,29 +150,37 @@
                 {
                     extend: 'excelHtml5',
                     text: '<i class="fas fa-file-excel mr-1"></i> Excel',
-                    className: 'btn btn-success btn-sm'
+                    className: 'btn btn-success btn-sm',
+                    exportOptions: { columns: ':not(:last-child)' }
                 },
                 {
                     extend: 'pdfHtml5',
                     text: '<i class="fas fa-file-pdf mr-1"></i> PDF',
                     className: 'btn btn-danger btn-sm',
                     orientation: 'landscape',
-                    pageSize: 'A4'
+                    pageSize: 'A4',
+                    exportOptions: { columns: ':not(:last-child)' }
                 },
                 {
                     extend: 'print',
                     text: '<i class="fas fa-print mr-1"></i> Imprimir',
-                    className: 'btn btn-info btn-sm'
+                    className: 'btn btn-info btn-sm',
+                    exportOptions: { columns: ':not(:last-child)' }
                 },
                 {
                     extend: 'copyHtml5',
                     text: '<i class="fas fa-copy mr-1"></i> Copiar',
-                    className: 'btn btn-secondary btn-sm'
+                    className: 'btn btn-secondary btn-sm',
+                    exportOptions: { columns: ':not(:last-child)' }
                 }
             ],
             pageLength: -1,
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-            order: [[0, 'asc']]
+            order: [[0, 'asc']],
+            columnDefs: [
+                { orderable: false, targets: [6] },
+                { searchable: false, targets: [6] }
+            ]
         });
     });
 </script>
