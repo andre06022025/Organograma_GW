@@ -353,6 +353,11 @@
                     </div>
                 </div>
 
+                <div class="text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
+                    <span class="font-semibold">Data de contratação:</span>
+                    <span id="modalDataContratacao" class="font-bold text-lte-text dark:text-lte-text-dark">-</span>
+                </div>
+
                 <!-- CONTATO -->
                 <div class="flex items-center gap-1.5 pt-2 border-t border-lte-border dark:border-lte-border-dark text-[11px] text-lte-text-muted dark:text-lte-text-muted-dark">
                     <i class="fa-solid fa-envelope text-lte-orange"></i>
@@ -604,6 +609,7 @@
             document.getElementById('modalGrupo').textContent = data.grupo ? data.grupo.nome + ' (' + data.grupo.numero + ')' : '-';
             document.getElementById('modalGestor').textContent = data.gestor ? data.gestor.nome : '-';
             document.getElementById('modalEmail').textContent = data.email || '-';
+            document.getElementById('modalDataContratacao').textContent = data.data_contratacao || '-';
             document.getElementById('modalUserId').textContent = '#' + data.id;
 
             const secaoCadastros = document.getElementById('modalCadastrosSection');

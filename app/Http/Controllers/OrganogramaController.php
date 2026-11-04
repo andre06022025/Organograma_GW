@@ -59,6 +59,7 @@ class OrganogramaController extends Controller
             'cor_nivel' => $colaborador->cor_nivel,
             'area' => $colaborador->area,
             'setor' => $colaborador->setor,
+            'data_contratacao' => $colaborador->data_contratacao?->format('d/m/Y'),
             'regiao' => $colaborador->regiao,
             'area_atuacao' => $colaborador->regiao ?: $colaborador->setor,
             'email' => $colaborador->email,

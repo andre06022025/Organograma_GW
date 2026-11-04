@@ -114,9 +114,6 @@
                     @include('organograma.partials._cell', ['colaborador' => $m['deivison@empresa.com.br'] ?? null, 'cor' => $azul, 'style' => 'grid-column: 7; grid-row: 6;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['lagus@empresa.com.br'] ?? null,    'cor' => $azul, 'style' => 'grid-column: 8; grid-row: 6;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['rafael@empresa.com.br'] ?? null,   'cor' => $azul, 'style' => 'grid-column: 9; grid-row: 6;'])
-
-                    {{-- Linha 7: Supervisão 3 --}}
-                    @include('organograma.partials._cell', ['colaborador' => $m['joao@empresa.com.br'] ?? null,     'cor' => $roxo, 'style' => 'grid-column: 2; grid-row: 7;'])
                 </div>
             </div>
 

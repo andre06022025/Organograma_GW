@@ -115,6 +115,10 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label font-weight-bold">Data de Contratação</label>
+                                <input type="date" name="data_contratacao" class="form-control" value="{{ old('data_contratacao', $colaborador->data_contratacao?->format('Y-m-d')) }}">
+                            </div>
                             <div class="col-12 mb-2">
                                 <div class="form-check">
                                     <input type="checkbox" name="ric" id="ric" value="1" class="form-check-input" {{ old('ric', $colaborador->ric) ? 'checked' : '' }}>

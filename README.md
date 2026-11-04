@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.2
+**Versão:** v1.7.3
 
 ---
 
@@ -19,6 +19,7 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - CRUD de colaboradores.
 - Lista em DataTable com filtros, ordenação e exportação (Excel, PDF, impressão e cópia).
 - Cadastros de unidades/clientes (ETA/EPAR) em DataTable, com cadastro/edição, gestor, sistema e campos operacionais.
+- Data de contratação no cadastro de colaboradores.
 - Ao clicar no cadastro, um modal exibe todos os dados.
 - No organograma, o modal do gestor lista os cadastros; cada card mostra o nome do cadastro com um botão + para expandir os detalhes (sistema, operação, operadores, poços e quantidade).
 - Arrastar e soltar cards do organograma para reorganizar, com posição salva automaticamente no banco.
@@ -47,6 +48,7 @@ A tabela `colaboradores` é a única fonte dos cards. Campos usados:
 | `card_linha` | Linha do card no grid |
 | `card_colspan` | Quantidade de colunas que o card ocupa |
 | `setor` | Sistema/Área (ex.: `Sistemas 1`, `LABOR`) |
+| `data_contratacao` | Data de contratação (opcional) |
 | `gestor_id` | Gestor direto |
 | `grupo_id` | Grupo corporativo |
 
@@ -123,6 +125,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.7.3** — Data de contratação no cadastro de colaboradores (campo no formulário, na lista e no modal do organograma).
 - **v1.7.2** — Removido o Organograma 2 (alternativo) e todo o código associado (rota, controller, views, link do menu e scripts).
 - **v1.7.1** — João (Sistemas 3) movido para o espaço vazio abaixo de Julio, preenchendo a grade da coluna.
 - **v1.7.0** — Sistemas 3 e 4 independentes em todos os pontos: colunas, cards, cadastros (ETA/EPAR) e filtros do organograma separados.

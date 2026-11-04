@@ -122,6 +122,7 @@ class ColaboradorController extends Controller
             'rotulo' => ['nullable', 'string', 'max:150'],
             'cargo' => ['required', 'string', 'max:100'],
             'setor' => ['nullable', 'string', 'max:100'],
+            'data_contratacao' => ['nullable', 'date'],
             'regiao' => ['nullable', 'string', 'max:100'],
             'nivel' => ['required', Rule::in(array_keys(Colaborador::NIVEIS))],
             'nivel_card' => ['nullable', 'string', 'max:50'],
