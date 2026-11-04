@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\OrganogramaController;
-use App\Http\Controllers\Organograma2Controller;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\CadastroController;
 use Illuminate\Support\Facades\Route;
@@ -23,12 +22,6 @@ Route::prefix('organograma')->name('organograma.')->group(function () {
     Route::get('/detalhes/{id}', [OrganogramaController::class, 'detalhes'])->name('detalhes');
     Route::post('/posicoes', [OrganogramaController::class, 'salvarPosicoes'])->name('posicoes');
     Route::post('/{colaborador}/foto', [OrganogramaController::class, 'atualizarFoto'])->name('foto');
-});
-
-// Organograma 2 (alternativo)
-Route::prefix('organograma2')->name('organograma2.')->group(function () {
-    Route::get('/', [Organograma2Controller::class, 'index'])->name('index');
-    Route::post('/posicoes', [Organograma2Controller::class, 'salvarPosicoes'])->name('posicoes');
 });
 
 // Cadastros routes (sem autenticação)

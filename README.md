@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.8.2
+**Versão:** v1.7.2
 
 ---
 
@@ -22,8 +22,6 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - Ao clicar no cadastro, um modal exibe todos os dados.
 - No organograma, o modal do gestor lista os cadastros; cada card mostra o nome do cadastro com um botão + para expandir os detalhes (sistema, operação, operadores, poços e quantidade).
 - Arrastar e soltar cards do organograma para reorganizar, com posição salva automaticamente no banco.
-- Organograma 2: visão alternativa em árvore clássica (cima para baixo), com fotos de pessoa e linhas conectoras.
-- Organograma 2: drag and drop dos cards para reorganizar a ordem dos filhos, com persistência automática.
 - Sistemas 3 e 4 independentes: colunas, cards, cadastros e filtros separados.
 
 ---
@@ -48,7 +46,7 @@ A tabela `colaboradores` é a única fonte dos cards. Campos usados:
 | `card_coluna` | Coluna do card no grid (salva pelo drag-and-drop) |
 | `card_linha` | Linha do card no grid |
 | `card_colspan` | Quantidade de colunas que o card ocupa |
-| `setor` | Sistema/área (ex.: `Sistemas 1`, `LABOR`) |
+| `setor` | Sistema/Área (ex.: `Sistemas 1`, `LABOR`) |
 | `gestor_id` | Gestor direto |
 | `grupo_id` | Grupo corporativo |
 
@@ -78,14 +76,6 @@ A tabela `cadastros` armazena as unidades/clientes do grupo:
 A página **Cadastros** (`/cadastros`) lista os registros em DataTable, com busca, filtros por tipo/gestor/sistema, cadastro/edição e exportação. Ao clicar em uma linha, um modal exibe todos os dados. Campos sem informação ficam vazios. Acesso pelo menu lateral, abaixo de Colaboradores.
 
 No **organograma**, ao abrir o card de um gestor, o modal lista os cadastros. Cada card aparece recolhido, mostrando o nome do cadastro e um botão **+** para expandir os detalhes (sistema, operação, operadores, poços e quantidade).
-
----
-
-## Organograma 2 (alternativo)
-
-Acesso: `/organograma2`
-
-Visão alternativa em árvore clássica (cima para baixo), com caixas conectadas por linhas. Usa as mesmas informações do organograma principal (nome, cargo, região, nível, cor e foto). A foto é exibida como ícone de pessoa do Bootstrap. O organograma principal (em planilha) não foi alterado.
 
 ---
 
@@ -133,9 +123,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
-- **v1.8.2** — Organograma 2 com drag and drop: arraste os cards para reorganizar a ordem dos filhos, com persistência automática.
-- **v1.8.1** - Organograma 2 compactado: cards, fontes e conectores menores; auto-fit na carga para ocupar a tela; zoom máximo 2.0.
-- **v1.8.0** — Organograma 2 (alternativo): visão em árvore clássica com cards conectados por linhas, fotos de pessoa e informações já existentes. Sem alterar o organograma principal.
+- **v1.7.2** — Removido o Organograma 2 (alternativo) e todo o código associado (rota, controller, views, link do menu e scripts).
 - **v1.7.1** — João (Sistemas 3) movido para o espaço vazio abaixo de Julio, preenchendo a grade da coluna.
 - **v1.7.0** — Sistemas 3 e 4 independentes em todos os pontos: colunas, cards, cadastros (ETA/EPAR) e filtros do organograma separados.
 - **v1.6.3** — Card do gestor no organograma: cada cadastro aparece recolhido com o próprio nome e um botão + para expandir os detalhes (sistema, operação, operadores, poços e quantidade).

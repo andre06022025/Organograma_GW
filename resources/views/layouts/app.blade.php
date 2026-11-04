@@ -64,23 +64,6 @@
             outline: 2px dashed #ffffff;
             outline-offset: -3px;
         }
-
-        /* Drag and drop da arvore (Organograma 2) */
-        .tree-child[data-draggable="true"] .tree-card {
-            cursor: grab;
-        }
-        .tree-child.dragging {
-            opacity: 0.45;
-            cursor: grabbing;
-        }
-        .tree-child.dragging .tree-card {
-            cursor: grabbing;
-        }
-        .tree-child.drag-over {
-            outline: 2px dashed #ffffff;
-            outline-offset: -4px;
-            border-radius: 0.5rem;
-        }
         
         #viewportCanvas {
             transform-origin: top center;
@@ -293,9 +276,6 @@
                 <a href="{{ route('organograma.index') }}" class="flex items-center gap-2 px-2.5 py-2 bg-lte-orange text-white font-semibold rounded">
                     <i class="fa-solid fa-sitemap w-4"></i> Organograma Completo
                 </a>
-                <a href="{{ route('organograma2.index') }}" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition">
-                    <i class="fa-solid fa-sitemap w-4"></i> Organograma 2 (Alternativo)
-                </a>
                 <a href="#" class="flex items-center gap-2 px-2.5 py-2 text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800 rounded transition" onclick="filterNodes('producao')">
                     <i class="fa-solid fa-industry w-4"></i> Áreas de Produção
                 </a>
@@ -479,7 +459,7 @@
         // ==========================================
         let currentZoom = 1.0;
         const ZOOM_MIN = 0.5;
-        const ZOOM_MAX = 2.0;
+        const ZOOM_MAX = 1.5;
         const ZOOM_STEP = 0.1;
         
         let filteredNodes = new Set();
@@ -501,11 +481,10 @@
             if (!viewport || !container) return;
             
             const containerRect = container.getBoundingClientRect();
-            const target = document.querySelector('.tree') || viewport;
-            const targetRect = target.getBoundingClientRect();
+            const viewportRect = viewport.getBoundingClientRect();
             
-            const scaleX = (containerRect.width * 0.9) / targetRect.width;
-            const scaleY = (containerRect.height * 0.9) / targetRect.height;
+            const scaleX = (containerRect.width * 0.9) / viewportRect.width;
+            const scaleY = (containerRect.height * 0.9) / viewportRect.height;
             const scale = Math.min(scaleX, scaleY, ZOOM_MAX);
             
             currentZoom = Math.max(ZOOM_MIN, Math.min(scale, ZOOM_MAX));
@@ -882,90 +861,6 @@
         }
 
         // ==========================================
-        // DRAG AND DROP DA ARVORE (Organograma 2)
-        // ==========================================
-        let draggedTree = null;
-
-        function initTreeDrag() {
-            const containers = document.querySelectorAll('.tree-children');
-            if (!containers.length) return;
-
-            containers.forEach(container => {
-                const children = container.querySelectorAll(':scope > .tree-child');
-                if (!children.length) return;
-
-                children.forEach(child => {
-                    child.setAttribute('draggable', 'true');
-
-                    child.addEventListener('dragstart', function (e) {
-                        draggedTree = this;
-                        this.classList.add('dragging');
-                        e.dataTransfer.effectAllowed = 'move';
-                        e.dataTransfer.setData('text/plain', this.dataset.id || '');
-                        e.stopPropagation();
-                    });
-
-                    child.addEventListener('dragend', function () {
-                        this.classList.remove('dragging');
-                        document.querySelectorAll('.tree-child.drag-over').forEach(el => el.classList.remove('drag-over'));
-                        draggedTree = null;
-                    });
-
-                    child.addEventListener('dragover', function (e) {
-                        e.stopPropagation();
-                        if (!draggedTree || draggedTree === this) return;
-                        if (draggedTree.parentNode !== container) return;
-                        e.preventDefault();
-                        e.dataTransfer.dropEffect = 'move';
-                        this.classList.add('drag-over');
-                    });
-
-                    child.addEventListener('dragleave', function () {
-                        this.classList.remove('drag-over');
-                    });
-
-                    child.addEventListener('drop', function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        this.classList.remove('drag-over');
-                        if (!draggedTree || draggedTree === this) return;
-                        if (draggedTree.parentNode !== container) return;
-
-                        const rect = this.getBoundingClientRect();
-                        const midX = rect.left + rect.width / 2;
-                        if (e.clientX < midX) {
-                            container.insertBefore(draggedTree, this);
-                        } else {
-                            container.insertBefore(draggedTree, this.nextSibling);
-                        }
-
-                        salvarOrdemTree(container);
-                    });
-                });
-            });
-        }
-
-        function salvarOrdemTree(container) {
-            const siblings = container.querySelectorAll(':scope > .tree-child');
-            const ordens = [];
-            siblings.forEach((sib, idx) => {
-                if (sib.dataset.id) {
-                    ordens.push({ id: parseInt(sib.dataset.id, 10), ordem: idx });
-                }
-            });
-            const token = document.querySelector('meta[name="csrf-token"]');
-            fetch('/organograma2/posicoes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': token ? token.content : '',
-                },
-                body: JSON.stringify({ ordens: ordens }),
-            }).catch(function () {});
-        }
-
-        // ==========================================
         // MINIMIZAR UI (TOPBAR + SIDEBAR)
         // ==========================================
         function toggleMinimizeUI() {
@@ -1003,7 +898,6 @@
             initTheme();
             initMinimizeUI();
             initDragAndDrop();
-            initTreeDrag();
             
             // Atalhos teclado
             document.addEventListener('keydown', function(e) {
