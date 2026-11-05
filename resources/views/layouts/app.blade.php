@@ -338,46 +338,82 @@
     </div>
 
     <!-- Painel de edição dos cards (modo edição) -->
-    <div id="cardEditPanel" class="fixed top-16 right-3 z-40 w-64 bg-lte-card-bg dark:bg-lte-card-bg-dark border border-lte-border dark:border-lte-border-dark rounded-lg shadow-2xl hidden text-xs">
+    <div id="cardEditPanel"
+         class="hidden bg-lte-card-bg dark:bg-lte-card-bg-dark border border-lte-border dark:border-lte-border-dark rounded-lg shadow-2xl text-xs"
+         style="position: fixed; top: 112px; right: 12px; width: 320px; max-height: calc(100vh - 128px); overflow-y: auto; z-index: 40;">
         <div class="bg-lte-purple text-white px-3 py-2 rounded-t-lg flex items-center justify-between">
-            <span class="font-bold uppercase tracking-wide text-[10px]">Editar card</span>
-            <button type="button" onclick="closeEditPanel()" class="text-white/80 hover:text-white">
+            <span class="font-bold uppercase tracking-wide text-[11px]">Editar card</span>
+            <button type="button" onclick="voltarEdicaoCard()" class="text-white/80 hover:text-white" title="Voltar sem salvar">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
-        <div class="p-3 space-y-2">
+
+        <div id="editCardHint" class="p-4 text-center text-lte-text-muted dark:text-lte-text-muted-dark">
+            Clique em um card do organograma para editar.
+        </div>
+
+        <div id="editCardForm" class="hidden p-3 space-y-3">
             <div>
                 <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Nome / texto</label>
                 <input type="text" id="editCardName" maxlength="255"
-                       class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                       class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
             </div>
-            <div id="editCardPosicaoFields" class="space-y-2">
+
+            <div id="editCardPosicaoFields" class="space-y-3">
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Coluna</label>
-                        <input type="number" id="editCardColuna" min="1" max="12"
-                               class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                        <div class="flex items-stretch gap-1">
+                            <button type="button" onclick="ajustarNumeroCard('editCardColuna', -1)"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none">−</button>
+                            <input type="number" id="editCardColuna" min="1" max="9"
+                                   class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                            <button type="button" onclick="ajustarNumeroCard('editCardColuna', 1)"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none">+</button>
+                        </div>
                     </div>
                     <div>
                         <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Linha</label>
-                        <input type="number" id="editCardLinha" min="1" max="20"
-                               class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                        <div class="flex items-stretch gap-1">
+                            <button type="button" onclick="ajustarNumeroCard('editCardLinha', -1)"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none">−</button>
+                            <input type="number" id="editCardLinha" min="1" max="20"
+                                   class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                            <button type="button" onclick="ajustarNumeroCard('editCardLinha', 1)"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none">+</button>
+                        </div>
                     </div>
                 </div>
+
                 <div>
                     <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Largura (colunas)</label>
-                    <input type="number" id="editCardColspan" min="1" max="9"
-                           class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                    <div class="flex items-stretch gap-1">
+                        <button type="button" onclick="ajustarNumeroCard('editCardColspan', -1)"
+                                class="w-9 rounded bg-slate-200 dark:bg-slate-700 font-bold text-base leading-none">−</button>
+                        <input type="number" id="editCardColspan" min="1" max="9"
+                               class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                        <button type="button" onclick="ajustarNumeroCard('editCardColspan', 1)"
+                                class="w-9 rounded bg-slate-200 dark:bg-slate-700 font-bold text-base leading-none">+</button>
+                    </div>
                 </div>
             </div>
+
             <p id="editCardFullWidthHint" class="hidden text-[10px] text-amber-700 dark:text-amber-400">
                 Card de largura total: apenas o texto pode ser alterado.
             </p>
+
+            <p class="text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
+                As alterações são aplicadas somente ao clicar em <strong>Salvar</strong>.
+            </p>
+
             <input type="hidden" id="editCardId">
             <input type="hidden" id="editCardBar" value="0">
+
             <div class="flex justify-end gap-2 pt-1">
-                <button type="button" onclick="closeEditPanel()" class="px-2 py-1 rounded bg-slate-500 text-white">Fechar</button>
-                <button type="button" onclick="salvarCardEdit()" class="px-3 py-1 rounded bg-lte-purple text-white font-semibold">Salvar</button>
+                <button type="button" onclick="voltarEdicaoCard()"
+                        class="px-3 py-1.5 rounded bg-slate-500 hover:bg-slate-600 text-white font-semibold">Voltar</button>
+                <button type="button" onclick="salvarCardEdit()"
+                        class="px-4 py-1.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white font-semibold">Salvar</button>
             </div>
         </div>
     </div>
@@ -976,10 +1012,44 @@
             });
 
             if (!editMode) {
-                closeEditPanel();
+                voltarEdicaoCard();
             } else {
+                mostrarPainelEdicao();
+                document.getElementById('editCardForm').classList.add('hidden');
+                document.getElementById('editCardHint').classList.remove('hidden');
                 mostrarToast('Modo edição ativo: clique em um card para editar ou arraste para mover.');
             }
+        }
+
+        function mostrarPainelEdicao() {
+            const panel = document.getElementById('cardEditPanel');
+            if (panel) panel.classList.remove('hidden');
+        }
+
+        function limparSelecaoCard() {
+            document.querySelectorAll('.node-cell.card-selected').forEach(el => el.classList.remove('card-selected'));
+            selectedCardEl = null;
+        }
+
+        function voltarEdicaoCard() {
+            limparSelecaoCard();
+            const panel = document.getElementById('cardEditPanel');
+            if (panel) panel.classList.add('hidden');
+            const form = document.getElementById('editCardForm');
+            const hint = document.getElementById('editCardHint');
+            if (form) form.classList.add('hidden');
+            if (hint) hint.classList.remove('hidden');
+        }
+
+        function ajustarNumeroCard(id, delta) {
+            const input = document.getElementById(id);
+            if (!input) return;
+            const min = parseInt(input.getAttribute('min'), 10) || 1;
+            const max = parseInt(input.getAttribute('max'), 10) || 99;
+            let valor = parseInt(input.value, 10);
+            if (isNaN(valor)) valor = min;
+            valor = Math.max(min, Math.min(max, valor + delta));
+            input.value = valor;
         }
 
         function handleCardClick(card) {
@@ -1052,14 +1122,9 @@
             document.getElementById('editCardPosicaoFields').classList.toggle('hidden', fullWidth);
             document.getElementById('editCardFullWidthHint').classList.toggle('hidden', !fullWidth);
 
-            document.getElementById('cardEditPanel').classList.remove('hidden');
-        }
-
-        function closeEditPanel() {
-            const panel = document.getElementById('cardEditPanel');
-            if (panel) panel.classList.add('hidden');
-            document.querySelectorAll('.node-cell.card-selected').forEach(el => el.classList.remove('card-selected'));
-            selectedCardEl = null;
+            document.getElementById('editCardForm').classList.remove('hidden');
+            document.getElementById('editCardHint').classList.add('hidden');
+            mostrarPainelEdicao();
         }
 
         function salvarCardEdit() {

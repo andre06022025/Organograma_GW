@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.9.0
+**Versão:** v1.9.1
 
 ---
 
@@ -61,7 +61,8 @@ Arraste um card e solte sobre outro **da mesma área** e com o **mesmo número d
 Clique no botão **Editar** na barra superior para ativar o modo edição. Com ele ativo:
 
 - Clique em qualquer card, inclusive nas barras fixas, para abrir o painel **Editar card**.
-- No painel, altere o nome/texto, a coluna, a linha e a largura (em colunas) e clique em **Salvar**.
+- No painel, altere o nome/texto e use os botões **−** / **+** para ajustar coluna, linha e largura.
+- Clique em **Salvar** para aplicar. Em caso de erro, clique em **Voltar** para fechar sem salvar.
 - Arraste um card sobre outro da mesma área e com a mesma largura para trocar as posições.
 - A barra de Direção ocupa a largura total: nela apenas o texto pode ser alterado.
 
@@ -144,6 +145,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.9.1** — Painel de edição reposicionado e corrigido: campos e botões −/+ para coluna, linha e largura, com botões Salvar e Voltar.
 - **v1.9.0** — Modo edição reformulado com painel lateral: clique em qualquer card, inclusive nas barras fixas, para alterar texto, coluna, linha e largura, com persistência automática.
 - **v1.7.9** — Módulo de edição no organograma: botão Editar ativa arrastar, renomear e ajustar largura dos cards, com salvamento automático.
 - **v1.7.8** — Removido o campo Nível; o informativo do card passa a usar apenas o cargo do colaborador.
