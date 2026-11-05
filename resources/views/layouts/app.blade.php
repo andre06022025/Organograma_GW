@@ -68,18 +68,9 @@
         }
 
         /* Modo edição */
-        body.edit-mode .card-width-control {
-            display: flex;
-        }
-        body.edit-mode .card-drag-handle {
-            display: flex;
-        }
-        body.edit-mode .card-name[contenteditable="true"] {
-            outline: 1px dashed rgba(255, 255, 255, 0.85);
-            outline-offset: 2px;
-            border-radius: 3px;
-            background: rgba(0, 0, 0, 0.15);
-            cursor: text;
+        body.edit-mode .node-cell.card-selected {
+            outline: 3px solid #f59e0b;
+            outline-offset: -3px;
         }
         #editModeToggle.is-active {
             background-color: #059669 !important;
@@ -344,6 +335,51 @@
             </div>
 
         </main>
+    </div>
+
+    <!-- Painel de edição dos cards (modo edição) -->
+    <div id="cardEditPanel" class="fixed top-16 right-3 z-40 w-64 bg-lte-card-bg dark:bg-lte-card-bg-dark border border-lte-border dark:border-lte-border-dark rounded-lg shadow-2xl hidden text-xs">
+        <div class="bg-lte-purple text-white px-3 py-2 rounded-t-lg flex items-center justify-between">
+            <span class="font-bold uppercase tracking-wide text-[10px]">Editar card</span>
+            <button type="button" onclick="closeEditPanel()" class="text-white/80 hover:text-white">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="p-3 space-y-2">
+            <div>
+                <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Nome / texto</label>
+                <input type="text" id="editCardName" maxlength="255"
+                       class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+            </div>
+            <div id="editCardPosicaoFields" class="space-y-2">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Coluna</label>
+                        <input type="number" id="editCardColuna" min="1" max="12"
+                               class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Linha</label>
+                        <input type="number" id="editCardLinha" min="1" max="20"
+                               class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Largura (colunas)</label>
+                    <input type="number" id="editCardColspan" min="1" max="9"
+                           class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                </div>
+            </div>
+            <p id="editCardFullWidthHint" class="hidden text-[10px] text-amber-700 dark:text-amber-400">
+                Card de largura total: apenas o texto pode ser alterado.
+            </p>
+            <input type="hidden" id="editCardId">
+            <input type="hidden" id="editCardBar" value="0">
+            <div class="flex justify-end gap-2 pt-1">
+                <button type="button" onclick="closeEditPanel()" class="px-2 py-1 rounded bg-slate-500 text-white">Fechar</button>
+                <button type="button" onclick="salvarCardEdit()" class="px-3 py-1 rounded bg-lte-purple text-white font-semibold">Salvar</button>
+            </div>
+        </div>
     </div>
 
     <!-- Modal Detalhes do Colaborador -->
@@ -833,13 +869,13 @@
                     const origem = draggedCard;
                     const destino = this;
 
-                    const colunaOrigem = origem.style.gridColumn;
-                    const linhaOrigem = origem.style.gridRow;
+                    const posOrigem = parsePosicao(origem);
+                    const posDestino = parsePosicao(destino);
 
-                    origem.style.gridColumn = destino.style.gridColumn;
-                    origem.style.gridRow = destino.style.gridRow;
-                    destino.style.gridColumn = colunaOrigem;
-                    destino.style.gridRow = linhaOrigem;
+                    origem.style.gridColumn = posDestino.coluna + ' / span ' + posDestino.colspan;
+                    origem.style.gridRow = posDestino.linha;
+                    destino.style.gridColumn = posOrigem.coluna + ' / span ' + posOrigem.colspan;
+                    destino.style.gridRow = posOrigem.linha;
 
                     salvarPosicoes([parsePosicao(origem), parsePosicao(destino)]);
                 });
@@ -854,21 +890,33 @@
         }
 
         function cardSpan(el) {
-            const valor = el.style.gridColumn || '';
-            const match = valor.match(/span\s+(\d+)/i);
-            return match ? parseInt(match[1], 10) : 1;
+            const cs = getComputedStyle(el);
+            const inicio = parseInt(cs.gridColumnStart, 10);
+            const fim = String(cs.gridColumnEnd || '');
+            if (fim.indexOf('span') !== -1) {
+                return parseInt(fim.replace('span', ''), 10) || 1;
+            }
+            const fimNum = parseInt(fim, 10);
+            return (!isNaN(fimNum) && fimNum > inicio) ? fimNum - inicio : 1;
         }
 
         function parsePosicao(el) {
-            const coluna = el.style.gridColumn || '';
-            const linha = el.style.gridRow || '';
-            const match = coluna.match(/^(\d+)(?:\s*\/\s*span\s+(\d+))?/i);
+            const cs = getComputedStyle(el);
+            const inicio = parseInt(cs.gridColumnStart, 10) || 1;
+            const fim = String(cs.gridColumnEnd || '');
+            let colspan = 1;
+            if (fim.indexOf('span') !== -1) {
+                colspan = parseInt(fim.replace('span', ''), 10) || 1;
+            } else {
+                const fimNum = parseInt(fim, 10);
+                if (!isNaN(fimNum) && fimNum > inicio) colspan = fimNum - inicio;
+            }
 
             return {
                 id: parseInt(el.dataset.id, 10),
-                coluna: match ? parseInt(match[1], 10) : 1,
-                colspan: match && match[2] ? parseInt(match[2], 10) : 1,
-                linha: parseInt(linha, 10) || 1,
+                coluna: inicio,
+                colspan: colspan,
+                linha: parseInt(cs.gridRowStart, 10) || 1,
             };
         }
 
@@ -907,6 +955,8 @@
         // MODO EDIÇÃO DOS CARDS
         // ==========================================
         let editMode = false;
+        let selectedCardEl = null;
+        let originalCardText = '';
 
         function toggleEditMode() {
             editMode = !editMode;
@@ -922,49 +972,159 @@
             }
 
             document.querySelectorAll('.node-cell[data-draggable="true"]').forEach(card => {
-                card.setAttribute('draggable', 'false');
+                card.setAttribute('draggable', editMode ? 'true' : 'false');
             });
 
-            document.querySelectorAll('.card-drag-handle').forEach(handle => {
-                handle.setAttribute('draggable', editMode ? 'true' : 'false');
-            });
-
-            document.querySelectorAll('.card-name').forEach(span => {
-                span.setAttribute('contenteditable', editMode ? 'true' : 'false');
-            });
-
-            if (editMode) {
-                mostrarToast('Modo edição ativo: arraste, clique no nome ou ajuste a largura.');
+            if (!editMode) {
+                closeEditPanel();
+            } else {
+                mostrarToast('Modo edição ativo: clique em um card para editar ou arraste para mover.');
             }
         }
 
-        function initEditMode() {
-            document.querySelectorAll('.card-name').forEach(span => {
-                span.dataset.original = span.textContent.trim();
-                span.setAttribute('contenteditable', 'false');
+        function handleCardClick(card) {
+            if (editMode) {
+                selectCardForEdit(card);
+                return;
+            }
+            const id = parseInt(card.dataset.id, 10);
+            if (!isNaN(id)) openCardModal(id);
+        }
 
-                span.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        this.blur();
-                    }
-                });
+        function lerPosicaoCard(card) {
+            const style = card.getAttribute('style') || '';
+            let coluna = 1;
+            let colspan = 1;
+            let linha = 1;
 
-                span.addEventListener('blur', function () {
-                    if (!document.body.classList.contains('edit-mode')) return;
-                    const card = this.closest('.node-cell');
-                    if (!card) return;
-                    const nome = this.textContent.trim();
-                    if (!nome) {
-                        this.textContent = this.dataset.original || '';
-                        return;
-                    }
-                    if (nome === this.dataset.original) return;
-                    salvarCard(card.dataset.id, { nome_completo: nome });
-                    card.dataset.nome = nome;
-                    this.dataset.original = nome;
-                });
-            });
+            const colMatch = style.match(/grid-column\s*:\s*(\d+)\s*\/\s*span\s*(\d+)/i);
+            if (colMatch) {
+                coluna = parseInt(colMatch[1], 10) || 1;
+                colspan = parseInt(colMatch[2], 10) || 1;
+            } else {
+                const cs = getComputedStyle(card);
+                coluna = parseInt(cs.gridColumnStart, 10) || 1;
+                const fim = String(cs.gridColumnEnd || '');
+                if (fim.indexOf('span') !== -1) {
+                    colspan = parseInt(fim.replace('span', ''), 10) || 1;
+                } else {
+                    const fimNum = parseInt(fim, 10);
+                    colspan = (!isNaN(fimNum) && fimNum > coluna) ? fimNum - coluna : 1;
+                }
+            }
+
+            const rowMatch = style.match(/grid-row\s*:\s*(\d+)/i);
+            if (rowMatch) {
+                linha = parseInt(rowMatch[1], 10) || 1;
+            } else {
+                linha = parseInt(getComputedStyle(card).gridRowStart, 10) || 1;
+            }
+
+            return { coluna: coluna, linha: linha, colspan: colspan };
+        }
+
+        function selectCardForEdit(card) {
+            selectedCardEl = card;
+
+            document.querySelectorAll('.node-cell.card-selected').forEach(el => el.classList.remove('card-selected'));
+            card.classList.add('card-selected');
+
+            const nameEl = card.querySelector('.card-name');
+            const pos = lerPosicaoCard(card);
+            const fullWidth = card.dataset.fixo === 'true';
+            const isBar = card.dataset.bar === 'true';
+            const nomeAtual = isBar
+                ? (nameEl ? nameEl.textContent.trim() : '')
+                : (card.dataset.nome || (nameEl ? nameEl.textContent.trim() : ''));
+
+            document.getElementById('editCardId').value = card.dataset.id || '';
+            document.getElementById('editCardBar').value = isBar ? '1' : '0';
+            document.getElementById('editCardName').value = nomeAtual;
+            originalCardText = nomeAtual;
+            document.getElementById('editCardColuna').value = pos.coluna;
+            document.getElementById('editCardLinha').value = pos.linha;
+            document.getElementById('editCardColspan').value = pos.colspan;
+
+            const maxCol = card.dataset.sector === 'apoio' ? 7 : 9;
+            document.getElementById('editCardColuna').max = maxCol;
+            document.getElementById('editCardColspan').max = maxCol;
+
+            document.getElementById('editCardPosicaoFields').classList.toggle('hidden', fullWidth);
+            document.getElementById('editCardFullWidthHint').classList.toggle('hidden', !fullWidth);
+
+            document.getElementById('cardEditPanel').classList.remove('hidden');
+        }
+
+        function closeEditPanel() {
+            const panel = document.getElementById('cardEditPanel');
+            if (panel) panel.classList.add('hidden');
+            document.querySelectorAll('.node-cell.card-selected').forEach(el => el.classList.remove('card-selected'));
+            selectedCardEl = null;
+        }
+
+        function salvarCardEdit() {
+            const id = document.getElementById('editCardId').value;
+            if (!id) return;
+
+            const isBar = document.getElementById('editCardBar').value === '1';
+            const nome = document.getElementById('editCardName').value.trim();
+            const coluna = parseInt(document.getElementById('editCardColuna').value, 10);
+            const linha = parseInt(document.getElementById('editCardLinha').value, 10);
+            const colspan = parseInt(document.getElementById('editCardColspan').value, 10);
+            const fullWidth = selectedCardEl && selectedCardEl.dataset.fixo === 'true';
+            const maxCol = selectedCardEl && selectedCardEl.dataset.sector === 'apoio' ? 7 : 9;
+
+            if (!nome) {
+                mostrarToast('Informe o nome ou texto do card.');
+                return;
+            }
+
+            if (!fullWidth && (
+                isNaN(coluna) || isNaN(linha) || isNaN(colspan) ||
+                coluna < 1 || colspan < 1 ||
+                coluna > maxCol || colspan > maxCol ||
+                (coluna + colspan - 1) > maxCol
+            )) {
+                mostrarToast('Posição inválida: use coluna e largura dentro da área do card.');
+                return;
+            }
+
+            const textoMudou = nome !== originalCardText;
+            let dados = {};
+
+            if (!fullWidth) {
+                dados.card_coluna = coluna;
+                dados.card_linha = linha;
+                dados.card_colspan = colspan;
+            }
+
+            if (textoMudou) {
+                if (isBar || fullWidth) {
+                    dados.card_texto = nome;
+                } else {
+                    dados.nome_completo = nome;
+                }
+            }
+
+            if (Object.keys(dados).length === 0) {
+                mostrarToast('Nenhuma alteração para salvar.');
+                return;
+            }
+
+            if (selectedCardEl) {
+                if (!fullWidth) {
+                    selectedCardEl.style.gridColumn = coluna + ' / span ' + colspan;
+                    selectedCardEl.style.gridRow = linha;
+                }
+                if (textoMudou) {
+                    const nameEl = selectedCardEl.querySelector('.card-name');
+                    if (nameEl) nameEl.textContent = isBar ? nome : nome.toUpperCase();
+                    if (!isBar) selectedCardEl.dataset.nome = nome;
+                    originalCardText = nome;
+                }
+            }
+
+            salvarCard(id, dados);
         }
 
         function salvarCard(id, dados) {
@@ -979,33 +1139,15 @@
                 body: JSON.stringify(dados),
             })
                 .then(function (response) {
-                    if (response.ok) mostrarToast('Card atualizado!');
+                    if (response.ok) {
+                        mostrarToast('Card atualizado!');
+                    } else {
+                        mostrarToast('Não foi possível salvar o card.');
+                    }
                 })
-                .catch(function () {});
-        }
-
-        function changeCardSpan(button, delta) {
-            const card = button.closest('.node-cell');
-            if (!card) return;
-            const spanEl = card.querySelector('.card-span-value');
-            if (!spanEl) return;
-
-            let span = parseInt(spanEl.textContent, 10) || 1;
-            span = Math.max(1, Math.min(3, span + delta));
-            spanEl.textContent = span;
-
-            const coluna = card.style.gridColumn || '';
-            const match = coluna.match(/^(\d+)(?:\s*\/\s*span\s+(\d+))?/i);
-            const start = match ? parseInt(match[1], 10) : 1;
-            const linha = parseInt(card.style.gridRow, 10) || 1;
-
-            card.style.gridColumn = start + ' / span ' + span;
-
-            salvarCard(card.dataset.id, {
-                card_coluna: start,
-                card_linha: linha,
-                card_colspan: span,
-            });
+                .catch(function () {
+                    mostrarToast('Não foi possível salvar o card.');
+                });
         }
 
         // ==========================================
@@ -1046,7 +1188,6 @@
             initTheme();
             initMinimizeUI();
             initDragAndDrop();
-            initEditMode();
             
             // Atalhos teclado
             document.addEventListener('keydown', function(e) {

@@ -82,7 +82,8 @@ class OrganogramaController extends Controller
             'nome_completo' => ['sometimes', 'required', 'string', 'max:150'],
             'card_coluna' => ['sometimes', 'integer', 'min:1', 'max:9'],
             'card_linha' => ['sometimes', 'integer', 'min:1', 'max:20'],
-            'card_colspan' => ['sometimes', 'integer', 'min:1', 'max:3'],
+            'card_colspan' => ['sometimes', 'integer', 'min:1', 'max:9'],
+            'card_texto' => ['sometimes', 'nullable', 'string', 'max:255'],
         ]);
 
         $colaborador->update($dados);

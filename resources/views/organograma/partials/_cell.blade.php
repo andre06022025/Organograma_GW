@@ -11,9 +11,9 @@
     $nivelTexto = $colaborador?->cargo ?? ($nivelTexto ?? null);
     $regiaoTexto = $regiaoTexto ?? ($colaborador?->regiao);
 
-    // Posição salva via drag-and-drop (quando existir) sobrepõe a posição padrão.
+    // Posição salva via painel de edição (quando existir) sobrepõe a posição padrão.
     $posicaoStyle = $style;
-    if ($colaborador && empty($compacto) && !$barra && $colaborador->card_coluna) {
+    if ($colaborador && empty($compacto) && $colaborador->card_coluna) {
         $posicaoStyle = preg_replace('/grid-column\s*:\s*[^;]+;?/i', '', $posicaoStyle);
         $posicaoStyle = preg_replace('/grid-row\s*:\s*[^;]+;?/i', '', $posicaoStyle);
         $posicaoStyle = trim($posicaoStyle);
@@ -21,27 +21,19 @@
         $posicaoStyle .= ' grid-row: ' . $colaborador->card_linha . ';';
         $posicaoStyle = trim($posicaoStyle);
     }
-
-    // Largura atual do card (colspan).
-    $colspanAtual = 1;
-    if ($colaborador && empty($compacto) && !$barra) {
-        if ($colaborador->card_colspan) {
-            $colspanAtual = (int) $colaborador->card_colspan;
-        } elseif (preg_match('/span\s+(\d+)/i', (string) $style, $m)) {
-            $colspanAtual = (int) $m[1];
-        }
-    }
 @endphp
 
 @if($barra)
     <div class="{{ $cor }} text-white text-center font-bold uppercase text-[clamp(9px,0.7vw,13px)] px-1 py-1 leading-tight flex items-center justify-center gap-1.5 min-h-[clamp(24px,1.9vw,36px)]
-                {{ $colaborador ? 'node-card cursor-pointer select-none' : '' }}"
-         @if($style) style="{{ $style }}" @endif
+                {{ $colaborador ? 'node-card node-cell cursor-pointer select-none' : '' }}"
+         @if($posicaoStyle) style="{{ $posicaoStyle }}" @endif
          @if($colaborador)
+             data-draggable="true"
+             data-bar="true"
              role="button"
              tabindex="0"
-             onclick="openCardModal({{ $colaborador->id }})"
-             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCardModal({{ $colaborador->id }});}"
+             onclick="handleCardClick(this)"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleCardClick(this);}"
              @include('organograma.partials._attrs', [
                  'colaborador' => $colaborador,
                  'cor' => $cor,
@@ -52,7 +44,7 @@
         @if($colaborador)
             @include('organograma.partials._avatar', ['colaborador' => $colaborador, 'size' => 'bar'])
         @endif
-        <span>{{ $texto ?? $rotulo }}</span>
+        <span class="card-name">{{ $colaborador?->card_texto ?? $texto ?? $rotulo }}</span>
     </div>
 @elseif($colaborador)
     @if(!empty($compacto))
@@ -79,8 +71,8 @@
              @if($posicaoStyle) style="{{ $posicaoStyle }}" @endif
              role="button"
              tabindex="0"
-             onclick="openCardModal({{ $colaborador->id }})"
-             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCardModal({{ $colaborador->id }});}"
+             onclick="handleCardClick(this)"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleCardClick(this);}"
              @include('organograma.partials._attrs', [
                  'colaborador' => $colaborador,
                  'cor' => $cor,
@@ -98,19 +90,6 @@
             @if($regiaoTexto)
                 <span class="block text-[clamp(7px,0.52vw,9.5px)] leading-tight opacity-90 mt-0.5">{{ $regiaoTexto }}</span>
             @endif
-
-            <div class="card-width-control hidden items-center justify-center gap-1 mt-1 text-[9px]">
-                <button type="button" onclick="event.stopPropagation(); changeCardSpan(this, -1)"
-                        class="px-1 bg-white/25 rounded leading-none" title="Diminuir largura">−</button>
-                <span class="card-span-value font-bold">{{ $colspanAtual }}</span>
-                <button type="button" onclick="event.stopPropagation(); changeCardSpan(this, 1)"
-                        class="px-1 bg-white/25 rounded leading-none" title="Aumentar largura">+</button>
-            </div>
-
-            <div class="card-drag-handle hidden items-center justify-center gap-1 mt-0.5 text-[8px] opacity-80 cursor-grab"
-                 draggable="true" title="Arraste para mover o card">
-                <i class="fas fa-grip-vertical"></i> arrastar
-            </div>
         </div>
     @endif
 @endif

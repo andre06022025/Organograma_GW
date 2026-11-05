@@ -65,6 +65,7 @@ class Colaborador extends Model
         'card_coluna',
         'card_linha',
         'card_colspan',
+        'card_texto',
         'grupo_id',
     ];
 

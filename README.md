@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.9
+**Versão:** v1.9.0
 
 ---
 
@@ -23,7 +23,7 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - Ao clicar no cadastro, um modal exibe todos os dados.
 - No organograma, o modal do gestor lista os cadastros; cada card mostra o nome do cadastro com um botão + para expandir os detalhes (sistema, operação, operadores, poços e quantidade).
 - Arrastar e soltar cards do organograma para reorganizar, com posição salva automaticamente no banco.
-- Modo edição no organograma: arrastar, renomear e ajustar a largura dos cards na própria tela, com persistência automática.
+- Modo edição no organograma: painel lateral para renomear e ajustar posição/largura de todos os cards, inclusive as barras fixas, com persistência automática.
 - Sistemas 3 e 4 independentes: colunas, cards, cadastros e filtros separados.
 
 ---
@@ -54,17 +54,18 @@ As cores são mapeadas no modelo (`Colaborador::CORES`) para as classes CSS do t
 
 ### Drag and drop
 
-Arraste um card e solte sobre outro **da mesma área** e com o **mesmo número de colunas** para trocar as posições. A troca é salva automaticamente em `card_coluna`, `card_linha` e `card_colspan` e permanece após recarregar a página. Barras de cabeçalho (superintendências) e os cards compactos da RIC não são arrastáveis.
+Arraste um card e solte sobre outro **da mesma área** e com o **mesmo número de colunas** para trocar as posições. A troca é salva automaticamente em `card_coluna`, `card_linha` e `card_colspan` e permanece após recarregar a página. As barras fixas (Direção, Superintendência e Gerência) também podem ser movidas e editadas.
 
 ### Modo edição
 
 Clique no botão **Editar** na barra superior para ativar o modo edição. Com ele ativo:
 
-- Arraste pelo ícone de grip (⋮⋮) para mover o card.
-- Clique no nome do card para renomear (Enter ou clique fora para salvar).
-- Use os botões **−** / **+** para alterar a largura do card (1 a 3 colunas).
+- Clique em qualquer card, inclusive nas barras fixas, para abrir o painel **Editar card**.
+- No painel, altere o nome/texto, a coluna, a linha e a largura (em colunas) e clique em **Salvar**.
+- Arraste um card sobre outro da mesma área e com a mesma largura para trocar as posições.
+- A barra de Direção ocupa a largura total: nela apenas o texto pode ser alterado.
 
-As alterações são salvas automaticamente no banco (`nome_completo`, `card_coluna`, `card_linha`, `card_colspan`).
+As alterações são salvas automaticamente no banco (`nome_completo` para pessoas, `card_texto` para barras, `card_coluna`, `card_linha` e `card_colspan`).
 
 ---
 
@@ -143,6 +144,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.9.0** — Modo edição reformulado com painel lateral: clique em qualquer card, inclusive nas barras fixas, para alterar texto, coluna, linha e largura, com persistência automática.
 - **v1.7.9** — Módulo de edição no organograma: botão Editar ativa arrastar, renomear e ajustar largura dos cards, com salvamento automático.
 - **v1.7.8** — Removido o campo Nível; o informativo do card passa a usar apenas o cargo do colaborador.
 - **v1.7.7** — Reestruturado o campo Nível: agora é um texto livre exibido no card; removido o campo "Nível no card".
