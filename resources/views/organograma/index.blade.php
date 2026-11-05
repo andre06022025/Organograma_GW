@@ -128,14 +128,6 @@
 
                     {{-- Linha 1: Lideranças --}}
                     @include('organograma.partials._cell', [
-                        'colaborador' => $m['thiago@empresa.com.br'] ?? null,
-                        'cor' => $laranja,
-                        'barra' => true,
-                        'texto' => 'DIREÇÃO (THIAGO)',
-                        'areaForcada' => 'apoio',
-                        'style' => 'grid-column: 1 / span 2; grid-row: 1;',
-                    ])
-                    @include('organograma.partials._cell', [
                         'colaborador' => $m['arthur@empresa.com.br'] ?? null,
                         'cor' => $azul,
                         'barra' => true,
