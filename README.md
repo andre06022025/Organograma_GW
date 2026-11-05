@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.4
+**Versão:** v1.7.5
 
 ---
 
@@ -98,6 +98,16 @@ php artisan serve --host=0.0.0.0 --port=8080
 
 Acesso: <http://localhost:8080/organograma>
 
+### Como iniciar no Windows
+
+Dê duplo clique em **`start.bat`** (ou rode `powershell -ExecutionPolicy Bypass -File .\start.ps1`). O script:
+
+- encerra qualquer processo antigo na porta 8080 (evita conflito);
+- inicia o servidor em `http://localhost:8080/organograma`;
+- reinicia automaticamente se o servidor cair.
+
+Para parar, use **`stop.ps1`** ou pressione `Ctrl+C`.
+
 ---
 
 ## Stack
@@ -125,6 +135,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.7.5** — Scripts `start.bat`, `start.ps1` e `stop.ps1` para iniciar o servidor com reinício automático e evitar conflito na porta 8080.
 - **v1.7.4** — Barras do organograma (Direção, Superintendência, Gerência Corporativa) passam a exibir o nome do colaborador conforme o cadastro, refletindo alterações no CRUD.
 - **v1.7.3** — Data de contratação no cadastro de colaboradores (campo no formulário, na lista e no modal do organograma).
 - **v1.7.2** — Removido o Organograma 2 (alternativo) e todo o código associado (rota, controller, views, link do menu e scripts).
