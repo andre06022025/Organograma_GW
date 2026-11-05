@@ -88,10 +88,6 @@
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Nível</label>
-                                <input type="text" name="nivel_card" class="form-control" value="{{ old('nivel_card', $colaborador->nivel_card) }}" maxlength="50" placeholder="Ex.: Supervisão 1, Gestão Op.">
-                            </div>
-                            <div class="col-md-4 mb-3">
                                 <label class="form-label font-weight-bold">Ordem</label>
                                 <input type="number" name="ordem" class="form-control" value="{{ old('ordem', $colaborador->ordem ?? 0) }}" min="0" max="999">
                             </div>

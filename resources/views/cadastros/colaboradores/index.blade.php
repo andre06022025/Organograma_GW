@@ -85,7 +85,6 @@
                             <th style="width: 120px;">Grupo</th>
                             <th style="width: 150px;">Gestor</th>
                             <th style="width: 140px;">Área</th>
-                            <th style="width: 130px;">Nível (card)</th>
                             <th style="width: 90px;">Cor</th>
                             <th style="width: 110px;">Contratação</th>
                             <th style="width: 100px;">Ações</th>
@@ -118,9 +117,6 @@
                                 <td>
                                     <small>{{ \App\Models\Colaborador::AREAS[$colab->area] ?? '-' }}</small>
                                 </td>
-                                <td>
-                                    <small>{{ $colab->nivel_card_texto }}</small>
-                                </td>
                                 <td class="text-center">
                                     <span class="badge {{ $colab->cor_classe }} text-white">{{ $colab->cor_label }}</span>
                                 </td>
@@ -144,7 +140,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="11" class="text-center text-muted py-5">
+                                <td colspan="10" class="text-center text-muted py-5">
                                     <i class="fas fa-users fa-2x mb-2 d-block"></i>
                                     Nenhum colaborador encontrado.
                                 </td>
@@ -211,8 +207,8 @@
                 }
             ],
             columnDefs: [
-                { orderable: false, targets: [0, 10] }, // Foto e Ações não ordenáveis
-                { searchable: false, targets: [0, 10] }
+                { orderable: false, targets: [0, 9] }, // Foto e Ações não ordenáveis
+                { searchable: false, targets: [0, 9] }
             ],
             pageLength: -1,
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],

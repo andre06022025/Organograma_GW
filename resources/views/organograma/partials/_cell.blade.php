@@ -8,7 +8,7 @@
     $areaForcada = $areaForcada ?? null;
     $texto = $texto ?? null;
     $rotulo = $colaborador?->rotulo_card ?? ($rotulo ?? '');
-    $nivelTexto = $colaborador?->nivel_card_texto ?? ($nivelTexto ?? null);
+    $nivelTexto = $colaborador?->cargo ?? ($nivelTexto ?? null);
     $regiaoTexto = $regiaoTexto ?? ($colaborador?->regiao);
 
     // Posição salva via drag-and-drop (quando existir) sobrepõe a posição padrão.

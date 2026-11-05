@@ -100,7 +100,6 @@
                     @include('organograma.partials._cell', [
                         'colaborador' => $m['ana.luiza@empresa.com.br'] ?? null,
                         'cor' => $azul,
-                        'nivelTexto' => 'Gestão Op.',
                         'style' => 'grid-column: 7 / span 3; grid-row: 5;',
                     ])
 

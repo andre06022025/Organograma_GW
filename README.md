@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.7
+**Versão:** v1.7.8
 
 ---
 
@@ -35,8 +35,7 @@ A tabela `colaboradores` é a única fonte dos cards. Campos usados:
 |---|---|
 | `nome_completo` | Nome exibido no card |
 | `foto_path` | Foto exibida no card (placeholder Bootstrap quando vazio) |
-| `cargo` | Cargo do colaborador |
-| `nivel_card` | Nível exibido no card (texto livre; se vazio, derivado do cargo) |
+| `cargo` | Cargo do colaborador (exibido no card) |
 | `regiao` | Terceira linha do card (ex.: `Bahia`, `Integrados RMSP`) |
 | `area` | `producao`, `apoio` ou `corporativo` |
 | `cor` | Identificador de cor: `roxo`, `azul` ou `laranja` |
@@ -133,6 +132,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.7.8** — Removido o campo Nível; o informativo do card passa a usar apenas o cargo do colaborador.
 - **v1.7.7** — Reestruturado o campo Nível: agora é um texto livre exibido no card; removido o campo "Nível no card".
 - **v1.7.6** — Rótulo do card passa a ser sempre o nome completo do colaborador (removido o rótulo curto).
 - **v1.7.5** — Scripts `start.bat`, `start.ps1` e `stop.ps1` para iniciar o servidor com reinício automático e evitar conflito na porta 8080.
