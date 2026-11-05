@@ -408,6 +408,10 @@
                 </div>
             </div>
 
+            <p class="text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
+                Dica: arraste o próprio card na grade para reposicionar.
+            </p>
+
             <div id="editCardAlignFields" class="space-y-2">
                 <div>
                     <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Alinhamento horizontal</label>
@@ -936,12 +940,27 @@
                     this.classList.add('dragging');
                     e.dataTransfer.effectAllowed = 'move';
                     e.dataTransfer.setData('text/plain', this.dataset.id || '');
+
+                    // Abre o editor do card que está sendo movido.
+                    if (editMode && selectedCardEl !== this) {
+                        selectCardForEdit(this);
+                    }
+
+                    // Esconde o painel durante o arraste para liberar a visão da grade.
+                    const panel = document.getElementById('cardEditPanel');
+                    if (panel) panel.classList.add('hidden');
                 });
 
                 card.addEventListener('dragend', function () {
                     this.classList.remove('dragging');
                     document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+                    esconderPreviewDrop();
                     draggedCard = null;
+
+                    const panel = document.getElementById('cardEditPanel');
+                    if (panel && editMode && selectedCardEl) {
+                        panel.classList.remove('hidden');
+                    }
                 });
 
                 card.addEventListener('dragover', function (e) {
@@ -956,24 +975,253 @@
                 });
 
                 card.addEventListener('drop', function (e) {
-                    e.preventDefault();
-                    this.classList.remove('drag-over');
                     if (!podeTrocar(draggedCard, this)) return;
 
-                    const origem = draggedCard;
-                    const destino = this;
-
-                    const posOrigem = parsePosicao(origem);
-                    const posDestino = parsePosicao(destino);
-
-                    origem.style.gridColumn = posDestino.coluna + ' / span ' + posDestino.colspan;
-                    origem.style.gridRow = posDestino.linha;
-                    destino.style.gridColumn = posOrigem.coluna + ' / span ' + posOrigem.colspan;
-                    destino.style.gridRow = posOrigem.linha;
-
-                    salvarPosicoes([parsePosicao(origem), parsePosicao(destino)]);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.classList.remove('drag-over');
+                    trocarCards(draggedCard, this);
                 });
             });
+
+            // Permite soltar o card em qualquer coluna/linha da grade, mesmo sobre outro card.
+            document.querySelectorAll('.js-area').forEach(area => {
+                const grid = area.querySelector('.grid');
+                if (!grid) return;
+                grid.style.position = 'relative';
+
+                area.addEventListener('dragover', function (e) {
+                    if (!draggedCard) return;
+                    if (draggedCard.dataset.sector !== area.dataset.area) return;
+
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+
+                    const pos = calcularPosicaoGrid(area, e, draggedCard);
+                    if (pos) mostrarPreviewDrop(grid, pos, draggedCard);
+                });
+
+                area.addEventListener('dragleave', function (e) {
+                    if (!area.contains(e.relatedTarget)) esconderPreviewDrop();
+                });
+
+                area.addEventListener('drop', function (e) {
+                    if (!draggedCard) return;
+                    if (draggedCard.dataset.sector !== area.dataset.area) return;
+                    if (e.defaultPrevented) return;
+
+                    e.preventDefault();
+                    esconderPreviewDrop();
+
+                    const pos = calcularPosicaoGrid(area, e, draggedCard);
+                    if (!pos) return;
+
+                    const ocupante = encontrarCardNaPosicao(area, pos, draggedCard);
+                    if (ocupante) {
+                        trocarCards(draggedCard, ocupante);
+                    } else {
+                        moverCardSalvando(draggedCard, pos);
+                    }
+                });
+            });
+        }
+
+        function trocarCards(origem, destino) {
+            if (!origem || !destino) return;
+
+            const posOrigem = parsePosicao(origem);
+            const posDestino = parsePosicao(destino);
+
+            origem.style.gridColumn = posDestino.coluna + ' / span ' + posDestino.colspan;
+            origem.style.gridRow = posDestino.linha;
+            destino.style.gridColumn = posOrigem.coluna + ' / span ' + posOrigem.colspan;
+            destino.style.gridRow = posOrigem.linha;
+
+            salvarPosicoes([parsePosicao(origem), parsePosicao(destino)]);
+            sincronizarPainelComCard(origem);
+            sincronizarPainelComCard(destino);
+        }
+
+        function encontrarCardNaPosicao(area, pos, ignorar) {
+            const cards = Array.from(area.querySelectorAll('.node-cell'));
+
+            for (const card of cards) {
+                if (card === ignorar) continue;
+                if (card === draggedCard) continue;
+
+                const p = parsePosicao(card);
+                if (p.linha !== pos.linha) continue;
+
+                const sobrepoe = pos.coluna < (p.coluna + p.colspan) &&
+                    (pos.coluna + pos.colspan) > p.coluna;
+
+                if (sobrepoe) return card;
+            }
+
+            return null;
+        }
+
+        function moverCardSalvando(card, pos) {
+            if (!card) return;
+
+            if (editMode && selectedCardEl !== card) {
+                selectCardForEdit(card);
+            }
+
+            card.style.gridColumn = pos.coluna + ' / span ' + pos.colspan;
+            card.style.gridRow = pos.linha;
+
+            if (selectedCardEl === card) {
+                document.getElementById('editCardColuna').value = pos.coluna;
+                document.getElementById('editCardLinha').value = pos.linha;
+                document.getElementById('editCardColspan').value = pos.colspan;
+                atualizarInfoPosicao();
+                originalCardStyle = card.getAttribute('style') || '';
+            }
+
+            salvarPosicoes([parsePosicao(card)]);
+        }
+
+        function calcularPosicaoGrid(area, event, card) {
+            const grid = area.querySelector('.grid');
+            if (!grid) return null;
+
+            const rect = grid.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const cs = getComputedStyle(grid);
+            const colWidths = cs.gridTemplateColumns.split(' ').map(parseFloat).filter(n => !isNaN(n));
+            if (!colWidths.length) return null;
+
+            const colGap = parseFloat(cs.columnGap) || 0;
+            const maxCols = colWidths.length;
+
+            let coluna = maxCols;
+            let acumulado = 0;
+            for (let i = 0; i < colWidths.length; i++) {
+                acumulado += colWidths[i];
+                if (x <= acumulado) {
+                    coluna = i + 1;
+                    break;
+                }
+                acumulado += colGap;
+            }
+
+            const colspan = Math.max(1, Math.min(cardSpan(card), maxCols));
+            coluna = Math.max(1, Math.min(coluna, maxCols - colspan + 1));
+
+            const cells = Array.from(grid.querySelectorAll('.node-cell'));
+            const rowTops = new Map();
+            let ultimoBottom = 0;
+
+            cells.forEach(c => {
+                const rowNum = parseInt(getComputedStyle(c).gridRowStart, 10);
+                if (isNaN(rowNum)) return;
+
+                const r = c.getBoundingClientRect();
+                const top = r.top - rect.top;
+                const bottom = r.bottom - rect.top;
+
+                if (!rowTops.has(rowNum) || top < rowTops.get(rowNum)) {
+                    rowTops.set(rowNum, top);
+                }
+                if (bottom > ultimoBottom) ultimoBottom = bottom;
+            });
+
+            const rows = Array.from(rowTops.entries()).sort((a, b) => a[1] - b[1]);
+            let linha = 1;
+
+            if (rows.length) {
+                for (let i = 0; i < rows.length; i++) {
+                    const nextTop = i + 1 < rows.length ? rows[i + 1][1] : Infinity;
+                    if (y < nextTop) {
+                        linha = rows[i][0];
+                        break;
+                    }
+                }
+                if (y > ultimoBottom + 1) {
+                    linha = rows[rows.length - 1][0] + 1;
+                }
+            }
+
+            return { coluna: coluna, linha: Math.max(1, linha), colspan: colspan };
+        }
+
+        function mostrarPreviewDrop(grid, pos, card) {
+            let preview = document.getElementById('cardDropPreview');
+            if (!preview) {
+                preview = document.createElement('div');
+                preview.id = 'cardDropPreview';
+                grid.appendChild(preview);
+            }
+            if (preview.parentElement !== grid) {
+                grid.appendChild(preview);
+            }
+
+            const rect = grid.getBoundingClientRect();
+            const cs = getComputedStyle(grid);
+            const colWidths = cs.gridTemplateColumns.split(' ').map(parseFloat).filter(n => !isNaN(n));
+            const colGap = parseFloat(cs.columnGap) || 0;
+            const rowGap = parseFloat(cs.rowGap) || 0;
+
+            let left = 0;
+            for (let i = 0; i < pos.coluna - 1 && i < colWidths.length; i++) {
+                left += (colWidths[i] || 0) + colGap;
+            }
+
+            let width = 0;
+            for (let i = pos.coluna - 1; i < pos.coluna - 1 + pos.colspan && i < colWidths.length; i++) {
+                width += colWidths[i] || 0;
+                if (i > pos.coluna - 1) width += colGap;
+            }
+
+            const cells = Array.from(grid.querySelectorAll('.node-cell'));
+            let top = null;
+            let ultimoBottom = 0;
+
+            cells.forEach(c => {
+                const r = c.getBoundingClientRect();
+                const rowNum = parseInt(getComputedStyle(c).gridRowStart, 10);
+                const cardTop = r.top - rect.top;
+                const cardBottom = r.bottom - rect.top;
+
+                if (rowNum === pos.linha) {
+                    if (top === null || cardTop < top) top = cardTop;
+                }
+                if (cardBottom > ultimoBottom) ultimoBottom = cardBottom;
+            });
+
+            if (top === null) {
+                top = ultimoBottom + rowGap;
+            }
+
+            preview.style.position = 'absolute';
+            preview.style.left = left + 'px';
+            preview.style.top = top + 'px';
+            preview.style.width = Math.max(0, width) + 'px';
+            preview.style.height = card.getBoundingClientRect().height + 'px';
+            preview.style.border = '2px dashed rgba(255,255,255,0.95)';
+            preview.style.background = 'rgba(255,255,255,0.18)';
+            preview.style.borderRadius = '4px';
+            preview.style.pointerEvents = 'none';
+            preview.style.zIndex = '5';
+            preview.style.display = 'block';
+        }
+
+        function esconderPreviewDrop() {
+            const preview = document.getElementById('cardDropPreview');
+            if (preview) preview.remove();
+        }
+
+        function sincronizarPainelComCard(card) {
+            if (!card || selectedCardEl !== card) return;
+
+            const pos = parsePosicao(card);
+            document.getElementById('editCardColuna').value = pos.coluna;
+            document.getElementById('editCardLinha').value = pos.linha;
+            document.getElementById('editCardColspan').value = pos.colspan;
+            atualizarInfoPosicao();
+            originalCardStyle = card.getAttribute('style') || '';
         }
 
         function podeTrocar(origem, destino) {
