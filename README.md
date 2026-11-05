@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.6
+**Versão:** v1.7.7
 
 ---
 
@@ -36,9 +36,8 @@ A tabela `colaboradores` é a única fonte dos cards. Campos usados:
 | `nome_completo` | Nome exibido no card |
 | `foto_path` | Foto exibida no card (placeholder Bootstrap quando vazio) |
 | `cargo` | Cargo do colaborador |
+| `nivel_card` | Nível exibido no card (texto livre; se vazio, derivado do cargo) |
 | `regiao` | Terceira linha do card (ex.: `Bahia`, `Integrados RMSP`) |
-| `nivel` | Nível hierárquico (`direcao`, `superintendencia`, `gerencia`, `coordenacao`, `supervisao`, `operador_lider`, `trainee`) |
-| `nivel_card` | Texto de nível exibido no card (ex.: `Gestão Op.`) |
 | `area` | `producao`, `apoio` ou `corporativo` |
 | `cor` | Identificador de cor: `roxo`, `azul` ou `laranja` |
 | `ordem` | Ordem dentro do setor |
@@ -134,6 +133,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.7.7** — Reestruturado o campo Nível: agora é um texto livre exibido no card; removido o campo "Nível no card".
 - **v1.7.6** — Rótulo do card passa a ser sempre o nome completo do colaborador (removido o rótulo curto).
 - **v1.7.5** — Scripts `start.bat`, `start.ps1` e `stop.ps1` para iniciar o servidor com reinício automático e evitar conflito na porta 8080.
 - **v1.7.4** — Barras do organograma (Direção, Superintendência, Gerência Corporativa) passam a exibir o nome do colaborador conforme o cadastro, refletindo alterações no CRUD.

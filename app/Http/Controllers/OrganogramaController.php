@@ -54,7 +54,7 @@ class OrganogramaController extends Controller
             'cargo' => $colaborador->cargo,
             'nivel' => $colaborador->nivel,
             'nivel_card' => $colaborador->nivel_card_texto,
-            'label_nivel' => $colaborador->nivel_label,
+            'label_nivel' => $colaborador->nivel_card_texto,
             'cor' => $colaborador->cor,
             'cor_nivel' => $colaborador->cor_nivel,
             'area' => $colaborador->area,

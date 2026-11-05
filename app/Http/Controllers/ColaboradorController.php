@@ -123,7 +123,7 @@ class ColaboradorController extends Controller
             'setor' => ['nullable', 'string', 'max:100'],
             'data_contratacao' => ['nullable', 'date'],
             'regiao' => ['nullable', 'string', 'max:100'],
-            'nivel' => ['required', Rule::in(array_keys(Colaborador::NIVEIS))],
+            'nivel' => ['nullable', Rule::in(array_keys(Colaborador::NIVEIS))],
             'nivel_card' => ['nullable', 'string', 'max:50'],
             'area' => ['required', Rule::in(array_keys(Colaborador::AREAS))],
             'cor' => ['required', Rule::in(array_keys(Colaborador::CORES))],

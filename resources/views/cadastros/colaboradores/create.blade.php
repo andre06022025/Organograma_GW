@@ -81,22 +81,14 @@
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Nível <span class="text-danger">*</span></label>
-                                <select name="nivel" class="form-control" required>
-                                    @foreach(\App\Models\Colaborador::NIVEIS as $valor => $info)
-                                        <option value="{{ $valor }}" {{ old('nivel', 'supervisao') === $valor ? 'selected' : '' }}>{{ $info['label'] }}</option>
-                                    @endforeach
-                                </select>
+                                <label class="form-label font-weight-bold">Nível</label>
+                                <input type="text" name="nivel_card" class="form-control" value="{{ old('nivel_card') }}" maxlength="50" placeholder="Ex.: Supervisão 1, Gestão Op.">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label font-weight-bold">Ordem</label>
                                 <input type="number" name="ordem" class="form-control" value="{{ old('ordem', 0) }}" min="0" max="999">
                             </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label font-weight-bold">Nível no card</label>
-                                <input type="text" name="nivel_card" class="form-control" value="{{ old('nivel_card') }}" maxlength="50" placeholder="Ex: Gestão Op.">
-                            </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label font-weight-bold">Cor do card <span class="text-danger">*</span></label>
                                 <select name="cor" class="form-control" required>
                                     @foreach(\App\Models\Colaborador::CORES as $valor => $info)
@@ -104,7 +96,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label font-weight-bold">Data de Contratação</label>
                                 <input type="date" name="data_contratacao" class="form-control" value="{{ old('data_contratacao') }}">
                             </div>
