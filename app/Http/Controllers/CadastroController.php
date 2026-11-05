@@ -73,7 +73,7 @@ class CadastroController extends Controller
 
     public function update(Request $request, Cadastro $cadastro): RedirectResponse
     {
-        $cadastro->update($this->validar($request));
+        $cadastro->update($this->validar($request, $cadastro));
 
         return redirect()
             ->route('cadastros.index')
@@ -87,10 +87,17 @@ class CadastroController extends Controller
             ->get(['id', 'nome_completo', 'cargo']);
     }
 
-    private function validar(Request $request): array
+    private function validar(Request $request, ?Cadastro $cadastro = null): array
     {
         $dados = $request->validate([
-            'nome' => ['required', 'string', 'max:200'],
+            'nome' => [
+                'required',
+                'string',
+                'max:200',
+                Rule::unique('cadastros', 'nome')
+                    ->where(fn ($query) => $query->where('tipo', $request->input('tipo')))
+                    ->ignore($cadastro?->id),
+            ],
             'tipo' => ['required', Rule::in(array_keys(Cadastro::TIPOS))],
             'gestor_id' => ['nullable', Rule::exists('colaboradores', 'id')],
             'sistema' => ['nullable', Rule::in(array_keys(Cadastro::SISTEMAS))],
@@ -101,6 +108,7 @@ class CadastroController extends Controller
             'quantidade_operadores' => ['nullable', 'integer', 'min:0'],
         ], [
             'nome.required' => 'Informe o nome do cadastro.',
+            'nome.unique' => 'Já existe um cadastro com esse nome para o tipo selecionado.',
             'tipo.required' => 'Selecione o tipo (ETA ou EPAR).',
             'operadores.max' => 'Informe no máximo 4 operadores.',
         ]);

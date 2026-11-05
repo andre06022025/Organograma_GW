@@ -490,7 +490,7 @@
             <input type="hidden" id="editCardId">
             <input type="hidden" id="editCardBar" value="0">
 
-            <div class="flex justify-end gap-2 pt-1">
+            <div class="flex justify-end gap-2 pt-2 pb-1 sticky bottom-0 z-10 bg-lte-card-bg dark:bg-lte-card-bg-dark border-t border-lte-border dark:border-lte-border-dark -mx-3 px-3">
                 <button type="button" onclick="voltarEdicaoCard()"
                         class="px-3 py-1.5 rounded bg-slate-500 hover:bg-slate-600 text-white font-semibold">Voltar</button>
                 <button type="button" onclick="salvarCardEdit()"
@@ -1356,6 +1356,7 @@
         let currentValign = 'center';
         let originalAlign = 'center';
         let originalValign = 'center';
+        let salvandoCard = false;
 
         function toggleEditMode() {
             editMode = !editMode;
@@ -1627,6 +1628,7 @@
             document.getElementById('editCardId').value = card.dataset.id || '';
             document.getElementById('editCardBar').value = isBar ? '1' : '0';
             document.getElementById('editCardName').value = nomeAtual;
+            document.getElementById('editCardName').maxLength = isBar ? 255 : 150;
             document.getElementById('editCardColuna').value = pos.coluna;
             document.getElementById('editCardLinha').value = pos.linha;
             document.getElementById('editCardColspan').value = pos.colspan;
@@ -1710,36 +1712,68 @@
                 return;
             }
 
-            if (selectedCardEl) {
+            const cardRef = selectedCardEl;
+            const nameEl = cardRef ? cardRef.querySelector('.card-name') : null;
+
+            if (cardRef) {
                 if (!fullWidth) {
-                    selectedCardEl.style.gridColumn = coluna + ' / span ' + colspan;
-                    selectedCardEl.style.gridRow = linha + ' / span ' + rowspan;
+                    cardRef.style.gridColumn = coluna + ' / span ' + colspan;
+                    cardRef.style.gridRow = linha + ' / span ' + rowspan;
                 }
 
-                const nameEl = selectedCardEl.querySelector('.card-name');
                 if (textoMudou && nameEl) {
                     nameEl.textContent = isBar ? nome : nome.toUpperCase();
-                    if (!isBar) selectedCardEl.dataset.nome = nome;
+                    if (!isBar) cardRef.dataset.nome = nome;
                 }
 
-                aplicarAlinhamentoCard(selectedCardEl, currentAlign, currentValign);
-                selectedCardEl.dataset.align = currentAlign;
-                selectedCardEl.dataset.valign = currentValign;
-
-                // Estado atual vira o novo ponto de retorno do botão Voltar.
-                originalCardText = nome;
-                originalAlign = currentAlign;
-                originalValign = currentValign;
-                originalCardStyle = selectedCardEl.getAttribute('style') || '';
-                originalCardName = nameEl ? nameEl.textContent : '';
+                aplicarAlinhamentoCard(cardRef, currentAlign, currentValign);
+                cardRef.dataset.align = currentAlign;
+                cardRef.dataset.valign = currentValign;
             }
 
-            salvarCard(id, dados);
+            salvarCard(id, dados).then(function (sucesso) {
+                if (!cardRef) return;
+
+                if (sucesso) {
+                    // Só considera salvo depois da confirmação do servidor.
+                    originalCardText = nome;
+                    originalAlign = currentAlign;
+                    originalValign = currentValign;
+                    originalCardStyle = cardRef.getAttribute('style') || '';
+                    originalCardName = nameEl ? nameEl.textContent : '';
+                    if (!isBar) cardRef.dataset.nome = nome;
+                    return;
+                }
+
+                // Se falhou, desfaz a pré-visualização para não parecer salvo.
+                if (originalCardStyle) {
+                    cardRef.setAttribute('style', originalCardStyle);
+                } else {
+                    cardRef.removeAttribute('style');
+                }
+                if (nameEl && originalCardName !== '') {
+                    nameEl.textContent = originalCardName;
+                }
+                cardRef.dataset.align = originalAlign;
+                cardRef.dataset.valign = originalValign;
+                if (!isBar) cardRef.dataset.nome = originalCardText;
+            });
         }
 
         function salvarCard(id, dados) {
+            if (salvandoCard) return Promise.resolve(false);
+            salvandoCard = true;
+
             const token = document.querySelector('meta[name="csrf-token"]');
-            fetch('/organograma/card/' + id, {
+            const botao = Array.from(document.querySelectorAll('#editCardForm button'))
+                .find(b => b.textContent.trim() === 'Salvar' || b.textContent.trim() === 'Salvando...');
+
+            if (botao) {
+                botao.disabled = true;
+                botao.textContent = 'Salvando...';
+            }
+
+            return fetch('/organograma/card/' + id, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1748,15 +1782,42 @@
                 },
                 body: JSON.stringify(dados),
             })
-                .then(function (response) {
+                .then(async function (response) {
                     if (response.ok) {
                         mostrarToast('Card atualizado!');
-                    } else {
-                        mostrarToast('Não foi possível salvar o card.');
+                        return true;
                     }
+
+                    if (response.status === 419) {
+                        mostrarToast('Sessão expirada. Recarregue a página com Ctrl+F5.');
+                        return false;
+                    }
+
+                    let mensagem = 'Não foi possível salvar o card (HTTP ' + response.status + ').';
+                    try {
+                        const erro = await response.json();
+                        if (erro && erro.errors) {
+                            const primeiro = Object.values(erro.errors)[0];
+                            if (Array.isArray(primeiro) && primeiro.length) mensagem = primeiro[0];
+                        } else if (erro && erro.message) {
+                            mensagem = erro.message;
+                        }
+                    } catch (e) {
+                        // mantém a mensagem padrão
+                    }
+                    mostrarToast(mensagem);
+                    return false;
                 })
                 .catch(function () {
-                    mostrarToast('Não foi possível salvar o card.');
+                    mostrarToast('Falha de conexão ao salvar o card.');
+                    return false;
+                })
+                .finally(function () {
+                    salvandoCard = false;
+                    if (botao) {
+                        botao.disabled = false;
+                        botao.textContent = 'Salvar';
+                    }
                 });
         }
 

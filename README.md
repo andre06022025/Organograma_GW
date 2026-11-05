@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.9.5
+**Versão:** v1.9.6
 
 ---
 
@@ -148,6 +148,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.9.6** — Correção no salvamento dos cards: se uma gravação falhar, a alteração não é mais marcada como salva e é reenviada na próxima tentativa; botão Salvar fixo no rodapé, mensagens de erro detalhadas e validação de nome duplicado nos cadastros.
 - **v1.9.5** — Editor permite aumentar/diminuir o tamanho do card em largura (colunas) e altura (linhas), com reposicionamento automático perto da borda.
 - **v1.9.4** — Nomes "Áreas de Produção" e "Áreas de Apoio" reposicionados logo abaixo da barra de Direção (Thiago).
 - **v1.9.3** — O próprio card pode ser arrastado para qualquer coluna/linha da grade, com moldura de destino e troca automática se a posição estiver ocupada.

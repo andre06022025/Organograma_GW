@@ -87,6 +87,20 @@ class OrganogramaController extends Controller
             'card_texto' => ['sometimes', 'nullable', 'string', 'max:255'],
             'card_align' => ['sometimes', 'in:left,center,right'],
             'card_valign' => ['sometimes', 'in:top,center,bottom'],
+        ], [
+            'nome_completo.required' => 'Informe o nome do card.',
+            'nome_completo.max' => 'O nome do card deve ter no máximo 150 caracteres.',
+            'card_coluna.min' => 'A coluna deve ser no mínimo 1.',
+            'card_coluna.max' => 'A coluna deve ser no máximo 9.',
+            'card_linha.min' => 'A linha deve ser no mínimo 1.',
+            'card_linha.max' => 'A linha deve ser no máximo 20.',
+            'card_colspan.min' => 'A largura deve ser no mínimo 1 coluna.',
+            'card_colspan.max' => 'A largura deve ser no máximo 9 colunas.',
+            'card_rowspan.min' => 'A altura deve ser no mínimo 1 linha.',
+            'card_rowspan.max' => 'A altura deve ser no máximo 10 linhas.',
+            'card_texto.max' => 'O texto da barra deve ter no máximo 255 caracteres.',
+            'card_align.in' => 'Alinhamento horizontal inválido.',
+            'card_valign.in' => 'Alinhamento vertical inválido.',
         ]);
 
         $colaborador->update($dados);
