@@ -52,8 +52,10 @@
         }
 
         /* Drag and drop dos cards */
-        .node-cell[data-draggable="true"] {
+        body.edit-mode .node-cell[data-draggable="true"] {
             cursor: grab;
+            outline: 2px solid rgba(255, 255, 255, 0.45);
+            outline-offset: -2px;
         }
         .node-cell.dragging {
             opacity: 0.45;
@@ -63,6 +65,29 @@
         .node-cell.drag-over {
             outline: 2px dashed #ffffff;
             outline-offset: -3px;
+        }
+
+        /* Modo edição */
+        body.edit-mode .card-width-control {
+            display: flex;
+        }
+        body.edit-mode .card-drag-handle {
+            display: flex;
+        }
+        body.edit-mode .card-name[contenteditable="true"] {
+            outline: 1px dashed rgba(255, 255, 255, 0.85);
+            outline-offset: 2px;
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.15);
+            cursor: text;
+        }
+        #editModeToggle.is-active {
+            background-color: #059669 !important;
+            border-color: #059669 !important;
+        }
+        #editModeToggle.is-active i,
+        #editModeToggle.is-active span {
+            color: #ffffff !important;
         }
         
         #viewportCanvas {
@@ -234,6 +259,16 @@
                     <i class="fas fa-compress-alt"></i>
                 </button>
             </div>
+
+            <!-- Modo edição (somente organograma) -->
+            @if(request()->routeIs('organograma.index'))
+            <button id="editModeToggle" onclick="toggleEditMode()" title="Modo edição: arrastar, renomear e ajustar largura dos cards"
+                    class="p-2 rounded-lg bg-lte-gray-bg dark:bg-lte-gray-bg-dark border border-lte-border dark:border-lte-border-dark hover:bg-lte-border dark:hover:bg-lte-border-dark transition-colors flex items-center gap-1"
+                    aria-label="Modo edição">
+                <i class="fas fa-pen text-lte-purple text-lg"></i>
+                <span class="hidden sm:inline text-xs font-semibold text-lte-text dark:text-lte-text-dark">Editar</span>
+            </button>
+            @endif
 
             <!-- Theme Toggle -->
             <button id="themeToggle" onclick="toggleTheme()" title="Alternar tema" class="p-2 rounded-lg bg-lte-gray-bg dark:bg-lte-gray-bg-dark border border-lte-border dark:border-lte-border-dark hover:bg-lte-border dark:hover:bg-lte-border-dark transition-colors" aria-label="Alternar tema claro/escuro">
@@ -570,6 +605,8 @@
         // MODAL DETALHES
         // ==========================================
         function openCardModal(nodeId) {
+            if (document.body.classList.contains('edit-mode')) return;
+
             if (/^\d+$/.test(String(nodeId))) {
                 // IDs numéricos: busca os dados no backend
                 fetch(`/organograma/detalhes/${nodeId}`, { headers: { 'Accept': 'application/json' } })
@@ -705,6 +742,8 @@
         // MODAL FOTO
         // ==========================================
         function openPhotoModal(button) {
+            if (document.body.classList.contains('edit-mode')) return;
+
             const id = button.dataset.id;
             const nome = button.dataset.nome || 'Colaborador';
             const foto = button.dataset.foto || '';
@@ -762,8 +801,6 @@
             if (!cards.length) return;
 
             cards.forEach(card => {
-                card.setAttribute('draggable', 'true');
-
                 card.addEventListener('dragstart', function (e) {
                     draggedCard = this;
                     this.classList.add('dragging');
@@ -867,6 +904,111 @@
         }
 
         // ==========================================
+        // MODO EDIÇÃO DOS CARDS
+        // ==========================================
+        let editMode = false;
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            document.body.classList.toggle('edit-mode', editMode);
+
+            const btn = document.getElementById('editModeToggle');
+            if (btn) {
+                btn.classList.toggle('is-active', editMode);
+                const icone = btn.querySelector('i');
+                const texto = btn.querySelector('span');
+                if (icone) icone.className = editMode ? 'fas fa-check text-lg' : 'fas fa-pen text-lte-purple text-lg';
+                if (texto) texto.textContent = editMode ? 'Concluir' : 'Editar';
+            }
+
+            document.querySelectorAll('.node-cell[data-draggable="true"]').forEach(card => {
+                card.setAttribute('draggable', 'false');
+            });
+
+            document.querySelectorAll('.card-drag-handle').forEach(handle => {
+                handle.setAttribute('draggable', editMode ? 'true' : 'false');
+            });
+
+            document.querySelectorAll('.card-name').forEach(span => {
+                span.setAttribute('contenteditable', editMode ? 'true' : 'false');
+            });
+
+            if (editMode) {
+                mostrarToast('Modo edição ativo: arraste, clique no nome ou ajuste a largura.');
+            }
+        }
+
+        function initEditMode() {
+            document.querySelectorAll('.card-name').forEach(span => {
+                span.dataset.original = span.textContent.trim();
+                span.setAttribute('contenteditable', 'false');
+
+                span.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.blur();
+                    }
+                });
+
+                span.addEventListener('blur', function () {
+                    if (!document.body.classList.contains('edit-mode')) return;
+                    const card = this.closest('.node-cell');
+                    if (!card) return;
+                    const nome = this.textContent.trim();
+                    if (!nome) {
+                        this.textContent = this.dataset.original || '';
+                        return;
+                    }
+                    if (nome === this.dataset.original) return;
+                    salvarCard(card.dataset.id, { nome_completo: nome });
+                    card.dataset.nome = nome;
+                    this.dataset.original = nome;
+                });
+            });
+        }
+
+        function salvarCard(id, dados) {
+            const token = document.querySelector('meta[name="csrf-token"]');
+            fetch('/organograma/card/' + id, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': token ? token.content : '',
+                },
+                body: JSON.stringify(dados),
+            })
+                .then(function (response) {
+                    if (response.ok) mostrarToast('Card atualizado!');
+                })
+                .catch(function () {});
+        }
+
+        function changeCardSpan(button, delta) {
+            const card = button.closest('.node-cell');
+            if (!card) return;
+            const spanEl = card.querySelector('.card-span-value');
+            if (!spanEl) return;
+
+            let span = parseInt(spanEl.textContent, 10) || 1;
+            span = Math.max(1, Math.min(3, span + delta));
+            spanEl.textContent = span;
+
+            const coluna = card.style.gridColumn || '';
+            const match = coluna.match(/^(\d+)(?:\s*\/\s*span\s+(\d+))?/i);
+            const start = match ? parseInt(match[1], 10) : 1;
+            const linha = parseInt(card.style.gridRow, 10) || 1;
+
+            card.style.gridColumn = start + ' / span ' + span;
+
+            salvarCard(card.dataset.id, {
+                card_coluna: start,
+                card_linha: linha,
+                card_colspan: span,
+            });
+        }
+
+        // ==========================================
         // MINIMIZAR UI (TOPBAR + SIDEBAR)
         // ==========================================
         function toggleMinimizeUI() {
@@ -904,6 +1046,7 @@
             initTheme();
             initMinimizeUI();
             initDragAndDrop();
+            initEditMode();
             
             // Atalhos teclado
             document.addEventListener('keydown', function(e) {

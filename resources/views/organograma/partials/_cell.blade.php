@@ -21,6 +21,16 @@
         $posicaoStyle .= ' grid-row: ' . $colaborador->card_linha . ';';
         $posicaoStyle = trim($posicaoStyle);
     }
+
+    // Largura atual do card (colspan).
+    $colspanAtual = 1;
+    if ($colaborador && empty($compacto) && !$barra) {
+        if ($colaborador->card_colspan) {
+            $colspanAtual = (int) $colaborador->card_colspan;
+        } elseif (preg_match('/span\s+(\d+)/i', (string) $style, $m)) {
+            $colspanAtual = (int) $m[1];
+        }
+    }
 @endphp
 
 @if($barra)
@@ -82,12 +92,25 @@
 
             <div class="flex items-center justify-center gap-1 w-full min-w-0 mt-0.5">
                 @include('organograma.partials._avatar', ['colaborador' => $colaborador, 'size' => 'sm'])
-                <span class="block text-[clamp(10px,0.72vw,13px)] font-bold uppercase leading-tight break-words">{{ $rotulo }}</span>
+                <span class="card-name block text-[clamp(10px,0.72vw,13px)] font-bold uppercase leading-tight break-words">{{ $rotulo }}</span>
             </div>
 
             @if($regiaoTexto)
                 <span class="block text-[clamp(7px,0.52vw,9.5px)] leading-tight opacity-90 mt-0.5">{{ $regiaoTexto }}</span>
             @endif
+
+            <div class="card-width-control hidden items-center justify-center gap-1 mt-1 text-[9px]">
+                <button type="button" onclick="event.stopPropagation(); changeCardSpan(this, -1)"
+                        class="px-1 bg-white/25 rounded leading-none" title="Diminuir largura">−</button>
+                <span class="card-span-value font-bold">{{ $colspanAtual }}</span>
+                <button type="button" onclick="event.stopPropagation(); changeCardSpan(this, 1)"
+                        class="px-1 bg-white/25 rounded leading-none" title="Aumentar largura">+</button>
+            </div>
+
+            <div class="card-drag-handle hidden items-center justify-center gap-1 mt-0.5 text-[8px] opacity-80 cursor-grab"
+                 draggable="true" title="Arraste para mover o card">
+                <i class="fas fa-grip-vertical"></i> arrastar
+            </div>
         </div>
     @endif
 @endif

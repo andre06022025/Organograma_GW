@@ -76,6 +76,20 @@ class OrganogramaController extends Controller
         ]);
     }
 
+    public function atualizarCard(Request $request, Colaborador $colaborador): JsonResponse
+    {
+        $dados = $request->validate([
+            'nome_completo' => ['sometimes', 'required', 'string', 'max:150'],
+            'card_coluna' => ['sometimes', 'integer', 'min:1', 'max:9'],
+            'card_linha' => ['sometimes', 'integer', 'min:1', 'max:20'],
+            'card_colspan' => ['sometimes', 'integer', 'min:1', 'max:3'],
+        ]);
+
+        $colaborador->update($dados);
+
+        return response()->json(['ok' => true]);
+    }
+
     public function salvarPosicoes(Request $request): JsonResponse
     {
         $dados = $request->validate([

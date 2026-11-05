@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.8
+**Versão:** v1.7.9
 
 ---
 
@@ -23,6 +23,7 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 - Ao clicar no cadastro, um modal exibe todos os dados.
 - No organograma, o modal do gestor lista os cadastros; cada card mostra o nome do cadastro com um botão + para expandir os detalhes (sistema, operação, operadores, poços e quantidade).
 - Arrastar e soltar cards do organograma para reorganizar, com posição salva automaticamente no banco.
+- Modo edição no organograma: arrastar, renomear e ajustar a largura dos cards na própria tela, com persistência automática.
 - Sistemas 3 e 4 independentes: colunas, cards, cadastros e filtros separados.
 
 ---
@@ -54,6 +55,16 @@ As cores são mapeadas no modelo (`Colaborador::CORES`) para as classes CSS do t
 ### Drag and drop
 
 Arraste um card e solte sobre outro **da mesma área** e com o **mesmo número de colunas** para trocar as posições. A troca é salva automaticamente em `card_coluna`, `card_linha` e `card_colspan` e permanece após recarregar a página. Barras de cabeçalho (superintendências) e os cards compactos da RIC não são arrastáveis.
+
+### Modo edição
+
+Clique no botão **Editar** na barra superior para ativar o modo edição. Com ele ativo:
+
+- Arraste pelo ícone de grip (⋮⋮) para mover o card.
+- Clique no nome do card para renomear (Enter ou clique fora para salvar).
+- Use os botões **−** / **+** para alterar a largura do card (1 a 3 colunas).
+
+As alterações são salvas automaticamente no banco (`nome_completo`, `card_coluna`, `card_linha`, `card_colspan`).
 
 ---
 
@@ -132,6 +143,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.7.9** — Módulo de edição no organograma: botão Editar ativa arrastar, renomear e ajustar largura dos cards, com salvamento automático.
 - **v1.7.8** — Removido o campo Nível; o informativo do card passa a usar apenas o cargo do colaborador.
 - **v1.7.7** — Reestruturado o campo Nível: agora é um texto livre exibido no card; removido o campo "Nível no card".
 - **v1.7.6** — Rótulo do card passa a ser sempre o nome completo do colaborador (removido o rótulo curto).

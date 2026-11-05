@@ -21,6 +21,7 @@ Route::prefix('organograma')->name('organograma.')->group(function () {
     Route::get('/', [OrganogramaController::class, 'index'])->name('index');
     Route::get('/detalhes/{id}', [OrganogramaController::class, 'detalhes'])->name('detalhes');
     Route::post('/posicoes', [OrganogramaController::class, 'salvarPosicoes'])->name('posicoes');
+    Route::post('/card/{colaborador}', [OrganogramaController::class, 'atualizarCard'])->name('card');
     Route::post('/{colaborador}/foto', [OrganogramaController::class, 'atualizarFoto'])->name('foto');
 });
 
