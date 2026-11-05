@@ -119,7 +119,6 @@ class ColaboradorController extends Controller
     {
         return $request->validate([
             'nome_completo' => ['required', 'string', 'max:150'],
-            'rotulo' => ['nullable', 'string', 'max:150'],
             'cargo' => ['required', 'string', 'max:100'],
             'setor' => ['nullable', 'string', 'max:100'],
             'data_contratacao' => ['nullable', 'date'],

@@ -183,7 +183,7 @@
                         @endforeach
                     </div>
 
-                    @include('organograma.partials._cell', ['colaborador' => $m['pedro.alcantara@empresa.com.br'] ?? null, 'cor' => $azul, 'rotulo' => 'PEDRO ALC.', 'style' => 'grid-column: 4; grid-row: 4;'])
+                    @include('organograma.partials._cell', ['colaborador' => $m['pedro.alcantara@empresa.com.br'] ?? null, 'cor' => $azul, 'style' => 'grid-column: 4; grid-row: 4;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['carlos@empresa.com.br'] ?? null,          'cor' => $azul, 'style' => 'grid-column: 5; grid-row: 4;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['andre.cco@empresa.com.br'] ?? null,       'cor' => $azul, 'style' => 'grid-column: 6; grid-row: 4;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['beatriz@empresa.com.br'] ?? null,         'cor' => $roxo, 'style' => 'grid-column: 7; grid-row: 4;'])
@@ -191,10 +191,10 @@
                     {{-- Linha 5 --}}
                     @include('organograma.partials._cell', ['colaborador' => $m['gabriel@empresa.com.br'] ?? null,         'cor' => $laranja, 'style' => 'grid-column: 2; grid-row: 5;'])
                     @include('organograma.partials._cell', ['colaborador' => $m['diego.manut@empresa.com.br'] ?? null,     'cor' => $azul,    'style' => 'grid-column: 5; grid-row: 5;'])
-                    @include('organograma.partials._cell', ['colaborador' => $m['trainee.eng@empresa.com.br'] ?? null,     'cor' => $roxo,    'rotulo' => 'ENGª TRAINEE', 'style' => 'grid-column: 7; grid-row: 5;'])
+                    @include('organograma.partials._cell', ['colaborador' => $m['trainee.eng@empresa.com.br'] ?? null,     'cor' => $roxo,    'style' => 'grid-column: 7; grid-row: 5;'])
 
                     {{-- Linha 6 --}}
-                    @include('organograma.partials._cell', ['colaborador' => $m['leonardo.ne@empresa.com.br'] ?? null,     'cor' => $azul,    'rotulo' => 'LEONARDO', 'style' => 'grid-column: 5; grid-row: 6;'])
+                    @include('organograma.partials._cell', ['colaborador' => $m['leonardo.ne@empresa.com.br'] ?? null,     'cor' => $azul,    'style' => 'grid-column: 5; grid-row: 6;'])
 
                     {{-- Linha 7 --}}
                     @include('organograma.partials._cell', ['colaborador' => $m['nelson@empresa.com.br'] ?? null,          'cor' => $azul,    'style' => 'grid-column: 5; grid-row: 7;'])

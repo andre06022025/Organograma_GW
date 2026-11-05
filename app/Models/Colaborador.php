@@ -199,11 +199,11 @@ class Colaborador extends Model
     }
 
     /**
-     * Nome exibido no card (rótulo curto opcional).
+     * Nome exibido no card: sempre o nome completo.
      */
     public function getRotuloCardAttribute(): string
     {
-        return $this->rotulo ?: mb_strtoupper((string) $this->nome_completo);
+        return mb_strtoupper((string) $this->nome_completo);
     }
 
     /**

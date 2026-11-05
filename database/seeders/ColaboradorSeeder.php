@@ -635,15 +635,15 @@ class ColaboradorSeeder extends Seeder
             'ricardo@empresa.com.br' => ['cor' => 'laranja', 'regiao' => 'Laboratório'],
             'marilia@empresa.com.br' => ['cor' => 'laranja', 'regiao' => 'Licenciamento'],
             'gabriel@empresa.com.br' => ['cor' => 'laranja', 'regiao' => 'Coordenação LICENC'],
-            'pedro.alcantara@empresa.com.br' => ['cor' => 'azul', 'rotulo' => 'PEDRO ALC.', 'regiao' => 'Manutenção de Poços'],
+            'pedro.alcantara@empresa.com.br' => ['cor' => 'azul', 'regiao' => 'Manutenção de Poços'],
             'carlos@empresa.com.br' => ['cor' => 'azul', 'regiao' => 'Manutenção + Lodo'],
             'diego.manut@empresa.com.br' => ['cor' => 'azul', 'regiao' => 'Manutenção Industrial'],
-            'leonardo.ne@empresa.com.br' => ['cor' => 'azul', 'rotulo' => 'LEONARDO', 'regiao' => 'Nordeste'],
+            'leonardo.ne@empresa.com.br' => ['cor' => 'azul', 'regiao' => 'Nordeste'],
             'nelson@empresa.com.br' => ['cor' => 'azul', 'regiao' => 'PCM'],
             'osias@empresa.com.br' => ['cor' => 'azul', 'regiao' => 'Lodo'],
             'andre.cco@empresa.com.br' => ['cor' => 'azul', 'regiao' => 'Central de Operações'],
             'beatriz@empresa.com.br' => ['cor' => 'roxo', 'regiao' => 'Engenharia de Processos'],
-            'trainee.eng@empresa.com.br' => ['cor' => 'roxo', 'rotulo' => 'ENGª TRAINEE', 'regiao' => 'Engenharia'],
+            'trainee.eng@empresa.com.br' => ['cor' => 'roxo', 'regiao' => 'Engenharia'],
         ];
 
         foreach ($cards as $email => $dados) {

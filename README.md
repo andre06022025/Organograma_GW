@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.7.5
+**Versão:** v1.7.6
 
 ---
 
@@ -10,7 +10,7 @@ Sistema web de organograma corporativo da General Water: visualização hierárq
 
 - Acesso direto, sem autenticação.
 - Organograma em estilo planilha, com colunas por área (Produção e Apoio) e hierarquia por linhas.
-- Cards com cor, rótulo curto, nível, região, grupo e gestor direto.
+- Cards com cor, nome completo, nível, região, grupo e gestor direto.
 - Foto do colaborador ao lado do nome, com placeholder de pessoa do Bootstrap e modal para envio/troca da foto.
 - Gestão compartilhada (RIC) com cards separados.
 - Zoom, busca por nome/cargo e filtros por área.
@@ -33,9 +33,8 @@ A tabela `colaboradores` é a única fonte dos cards. Campos usados:
 
 | Campo | Uso |
 |---|---|
-| `nome_completo` | Nome exibido (quando não há rótulo) |
+| `nome_completo` | Nome exibido no card |
 | `foto_path` | Foto exibida no card (placeholder Bootstrap quando vazio) |
-| `rotulo` | Rótulo curto do card (ex.: `PEDRO ALC.`) |
 | `cargo` | Cargo do colaborador |
 | `regiao` | Terceira linha do card (ex.: `Bahia`, `Integrados RMSP`) |
 | `nivel` | Nível hierárquico (`direcao`, `superintendencia`, `gerencia`, `coordenacao`, `supervisao`, `operador_lider`, `trainee`) |
@@ -135,6 +134,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.7.6** — Rótulo do card passa a ser sempre o nome completo do colaborador (removido o rótulo curto).
 - **v1.7.5** — Scripts `start.bat`, `start.ps1` e `stop.ps1` para iniciar o servidor com reinício automático e evitar conflito na porta 8080.
 - **v1.7.4** — Barras do organograma (Direção, Superintendência, Gerência Corporativa) passam a exibir o nome do colaborador conforme o cadastro, refletindo alterações no CRUD.
 - **v1.7.3** — Data de contratação no cadastro de colaboradores (campo no formulário, na lista e no modal do organograma).
