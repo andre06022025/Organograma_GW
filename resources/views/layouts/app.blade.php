@@ -484,7 +484,7 @@
             </p>
 
             <p class="text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
-                Pré-visualização em tempo real. Clique em <strong>Salvar</strong> para aplicar ou <strong>Voltar</strong> para desfazer.
+                Salvamento automático ativo. <strong>Salvar</strong> aplica agora; <strong>Voltar</strong> fecha e descarta alterações ainda não salvas.
             </p>
 
             <input type="hidden" id="editCardId">
@@ -1357,6 +1357,8 @@
         let originalAlign = 'center';
         let originalValign = 'center';
         let salvandoCard = false;
+        let salvamentoPendente = false;
+        let autoSaveTimer = null;
 
         function toggleEditMode() {
             editMode = !editMode;
@@ -1376,7 +1378,20 @@
             });
 
             if (!editMode) {
-                voltarEdicaoCard();
+                // Ao sair do modo edição, salva alterações pendentes.
+                if (autoSaveTimer) {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = null;
+                    salvarCardEdit(true);
+                }
+
+                limparSelecaoCard();
+                const panel = document.getElementById('cardEditPanel');
+                if (panel) panel.classList.add('hidden');
+                const form = document.getElementById('editCardForm');
+                const hint = document.getElementById('editCardHint');
+                if (form) form.classList.add('hidden');
+                if (hint) hint.classList.remove('hidden');
             } else {
                 mostrarPainelEdicao();
                 document.getElementById('editCardForm').classList.add('hidden');
@@ -1396,7 +1411,12 @@
         }
 
         function voltarEdicaoCard() {
-            // Desfaz qualquer pré-visualização não salva.
+            // Cancela o salvamento automático pendente e desfaz a pré-visualização.
+            if (autoSaveTimer) {
+                clearTimeout(autoSaveTimer);
+                autoSaveTimer = null;
+            }
+
             if (selectedCardEl) {
                 if (originalCardStyle) {
                     selectedCardEl.setAttribute('style', originalCardStyle);
@@ -1441,6 +1461,15 @@
             previewPosicaoCard();
         }
 
+        function agendarSalvamento() {
+            if (!selectedCardEl) return;
+            if (autoSaveTimer) clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(function () {
+                autoSaveTimer = null;
+                salvarCardEdit(true);
+            }, 600);
+        }
+
         function previewNomeCard() {
             if (!selectedCardEl) return;
             const nome = document.getElementById('editCardName').value;
@@ -1448,6 +1477,7 @@
             if (!nameEl) return;
             const isBar = selectedCardEl.dataset.bar === 'true';
             nameEl.textContent = isBar ? nome : nome.toUpperCase();
+            agendarSalvamento();
         }
 
         function previewPosicaoCard() {
@@ -1479,6 +1509,7 @@
 
             selectedCardEl.style.gridColumn = coluna + ' / span ' + colspan;
             selectedCardEl.style.gridRow = linha + ' / span ' + rowspan;
+            agendarSalvamento();
         }
 
         function aplicarAlinhamentoCard(card, align, valign) {
@@ -1528,12 +1559,14 @@
             currentAlign = valor;
             if (selectedCardEl) aplicarAlinhamentoCard(selectedCardEl, currentAlign, currentValign);
             atualizarBotoesAlinhamento();
+            agendarSalvamento();
         }
 
         function definirAlinhamentoVertical(valor) {
             currentValign = valor;
             if (selectedCardEl) aplicarAlinhamentoCard(selectedCardEl, currentAlign, currentValign);
             atualizarBotoesAlinhamento();
+            agendarSalvamento();
         }
 
         function centralizarCard() {
@@ -1541,6 +1574,7 @@
             currentValign = 'center';
             if (selectedCardEl) aplicarAlinhamentoCard(selectedCardEl, 'center', 'center');
             atualizarBotoesAlinhamento();
+            agendarSalvamento();
         }
 
         function handleCardClick(card) {
@@ -1593,15 +1627,13 @@
         }
 
         function selectCardForEdit(card) {
-            // Descarta a pré-visualização de um card anterior que não foi salvo.
+            // Salva as alterações pendentes do card anterior antes de trocar de card.
             if (selectedCardEl && selectedCardEl !== card) {
-                if (originalCardStyle) {
-                    selectedCardEl.setAttribute('style', originalCardStyle);
-                } else {
-                    selectedCardEl.removeAttribute('style');
+                if (autoSaveTimer) {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = null;
+                    salvarCardEdit(true);
                 }
-                const prevName = selectedCardEl.querySelector('.card-name');
-                if (prevName && originalCardName !== '') prevName.textContent = originalCardName;
             }
 
             selectedCardEl = card;
@@ -1649,7 +1681,21 @@
             mostrarPainelEdicao();
         }
 
-        function salvarCardEdit() {
+        function salvarCardEdit(auto) {
+            auto = auto === true;
+
+            if (autoSaveTimer) {
+                clearTimeout(autoSaveTimer);
+                autoSaveTimer = null;
+            }
+
+            if (!selectedCardEl) return;
+
+            if (salvandoCard) {
+                salvamentoPendente = true;
+                return;
+            }
+
             const id = document.getElementById('editCardId').value;
             if (!id) return;
 
@@ -1670,7 +1716,7 @@
             }
 
             if (!nome) {
-                mostrarToast('Informe o nome ou texto do card.');
+                if (!auto) mostrarToast('Informe o nome ou texto do card.');
                 return;
             }
 
@@ -1680,7 +1726,7 @@
                 coluna > maxCol || colspan > maxCol || rowspan > 6 ||
                 (coluna + colspan - 1) > maxCol
             )) {
-                mostrarToast('Tamanho ou posição inválidos para esta área.');
+                if (!auto) mostrarToast('Tamanho ou posição inválidos para esta área.');
                 return;
             }
 
@@ -1708,7 +1754,7 @@
             if (valignMudou) dados.card_valign = currentValign;
 
             if (Object.keys(dados).length === 0) {
-                mostrarToast('Nenhuma alteração para salvar.');
+                if (!auto) mostrarToast('Nenhuma alteração para salvar.');
                 return;
             }
 
@@ -1735,17 +1781,21 @@
                 if (!cardRef) return;
 
                 if (sucesso) {
-                    // Só considera salvo depois da confirmação do servidor.
-                    originalCardText = nome;
-                    originalAlign = currentAlign;
-                    originalValign = currentValign;
-                    originalCardStyle = cardRef.getAttribute('style') || '';
-                    originalCardName = nameEl ? nameEl.textContent : '';
+                    // Só atualiza o ponto de retorno se o card ainda for o selecionado.
+                    if (selectedCardEl === cardRef) {
+                        originalCardText = nome;
+                        originalAlign = currentAlign;
+                        originalValign = currentValign;
+                        originalCardStyle = cardRef.getAttribute('style') || '';
+                        originalCardName = nameEl ? nameEl.textContent : '';
+                    }
                     if (!isBar) cardRef.dataset.nome = nome;
                     return;
                 }
 
-                // Se falhou, desfaz a pré-visualização para não parecer salvo.
+                // No salvamento automático, mantém a pré-visualização para o usuário corrigir.
+                if (auto) return;
+
                 if (originalCardStyle) {
                     cardRef.setAttribute('style', originalCardStyle);
                 } else {
@@ -1817,6 +1867,15 @@
                     if (botao) {
                         botao.disabled = false;
                         botao.textContent = 'Salvar';
+                    }
+
+                    if (salvamentoPendente) {
+                        salvamentoPendente = false;
+                        if (editMode && selectedCardEl) {
+                            setTimeout(function () {
+                                if (editMode && selectedCardEl) salvarCardEdit(true);
+                            }, 60);
+                        }
                     }
                 });
         }

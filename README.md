@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.9.9
+**Versão:** v1.9.10
 
 ---
 
@@ -66,7 +66,8 @@ Clique no botão **Editar** na barra superior para ativar o modo edição. Com e
 - Use **←** / **→** para mover o card entre as colunas (a legenda mostra a posição atual, ex.: `1/9`) e **↑** / **↓** para mover entre as linhas.
 - Em **Tamanho**, use **Largura (colunas)** e **Altura (linhas)** com **−** / **+** para aumentar ou diminuir o card. Quando a largura cresce perto da borda, o card se reposiciona automaticamente para caber na área.
 - Ajuste o **alinhamento horizontal** (Esquerda, Centro, Direita) e o **alinhamento vertical** (Topo, Meio, Base), ou clique em **Centralizar tudo**.
-- A pré-visualização é em tempo real. Clique em **Salvar** para aplicar ou em **Voltar** para desfazer.
+- As alterações são **salvas automaticamente** após uma pequena pausa; ao trocar de card ou sair do modo edição, o salvamento pendente é aplicado.
+- **Salvar** aplica imediatamente; **Voltar** fecha e descarta alterações ainda não salvas.
 - A barra de Direção ocupa a largura total: nela apenas o texto e o alinhamento podem ser alterados.
 
 As alterações são salvas no banco (`nome_completo` para pessoas, `card_texto` para barras, `card_coluna`, `card_linha`, `card_colspan`, `card_rowspan`, `card_align` e `card_valign`).
@@ -148,6 +149,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.9.10** — Salvamento automático no editor: alterações de nome, tamanho, posição e alinhamento são gravadas após uma pequena pausa e também ao trocar de card ou sair do modo edição.
 - **v1.9.9** — Removido o card laranja "DIREÇÃO (THIAGO)" redundante da Área de Apoio; a barra de Direção do topo permanece.
 - **v1.9.8** — Revertida a alteração da v1.9.7; o layout e a edição das barras de apoio voltam ao estado da v1.9.6.
 - **v1.9.6** — Correção no salvamento dos cards: se uma gravação falhar, a alteração não é mais marcada como salva e é reenviada na próxima tentativa; botão Salvar fixo no rodapé, mensagens de erro detalhadas e validação de nome duplicado nos cadastros.
