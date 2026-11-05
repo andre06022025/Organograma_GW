@@ -36,6 +36,9 @@
 
             {{-- ================= ÁREAS DE PRODUÇÃO ================= --}}
             <div class="js-area flex-[1.33] basis-0 min-w-0" data-area="producao">
+                <div class="text-center text-[clamp(11px,0.85vw,16px)] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200 mb-1">
+                    Áreas de Produção
+                </div>
                 <div class="grid gap-[clamp(2px,0.18vw,4px)]"
                      style="grid-template-columns: 0.8fr 1.15fr 1.15fr 1.15fr 0.9fr 0.9fr 0.75fr 0.75fr 0.75fr;">
 
@@ -63,10 +66,6 @@
                         'texto' => 'GER. CORPORATIVA (' . strtoupper($m['neves@empresa.com.br']->nome_completo ?? 'NEVES') . ')',
                         'style' => 'grid-column: 1 / span 2; grid-row: 2;',
                     ])
-                    <div style="grid-column: 3 / span 4; grid-row: 2;"
-                         class="flex items-center justify-center text-[clamp(11px,0.85vw,16px)] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
-                        Áreas de Produção
-                    </div>
 
                     {{-- Linha 3: Cabeçalhos dos sistemas --}}
                     @include('organograma.partials._cell', ['cor' => $roxo, 'barra' => true, 'texto' => 'SISTEMAS 1',   'style' => 'grid-column: 1; grid-row: 3;'])
@@ -121,6 +120,9 @@
 
             {{-- ================= ÁREAS DE APOIO ================= --}}
             <div class="js-area flex-1 basis-0 min-w-0" data-area="apoio">
+                <div class="text-center text-[clamp(11px,0.85vw,16px)] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200 mb-1">
+                    Áreas de Apoio
+                </div>
                 <div class="grid gap-[clamp(2px,0.18vw,4px)]"
                      style="grid-template-columns: 0.9fr 1fr 0.9fr 0.85fr 1fr 0.9fr 0.75fr;">
 
@@ -149,11 +151,9 @@
                         'style' => 'grid-column: 6 / span 2; grid-row: 1;',
                     ])
 
-                    {{-- Linha 2: título da área (respiro para alinhar com a Gerência Corporativa) --}}
+                    {{-- Linha 2: respiro para alinhar com a Gerência Corporativa --}}
                     <div style="grid-column: 1 / span 7; grid-row: 2;"
-                         class="min-h-[clamp(26px,2vw,38px)] flex items-center justify-center text-[clamp(11px,0.85vw,16px)] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
-                        Áreas de Apoio
-                    </div>
+                         class="min-h-[clamp(26px,2vw,38px)]"></div>
 
                     {{-- Linha 3: Cabeçalhos --}}
                     @include('organograma.partials._cell', ['cor' => $laranja, 'barra' => true, 'texto' => 'LABOR',              'style' => 'grid-column: 1; grid-row: 3;'])
