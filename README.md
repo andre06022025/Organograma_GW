@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.9.4
+**Versão:** v1.9.5
 
 ---
 
@@ -64,12 +64,12 @@ Clique no botão **Editar** na barra superior para ativar o modo edição. Com e
 - **Arraste o próprio card** para qualquer coluna/linha da mesma área. Uma moldura tracejada mostra o destino. Ao soltar, a posição é salva automaticamente; se o destino estiver ocupado, os cards trocam de posição.
 - No painel, altere o nome/texto no campo superior.
 - Use **←** / **→** para mover o card entre as colunas (a legenda mostra a posição atual, ex.: `1/9`) e **↑** / **↓** para mover entre as linhas.
-- Use **−** / **+** para ajustar a largura em colunas.
+- Em **Tamanho**, use **Largura (colunas)** e **Altura (linhas)** com **−** / **+** para aumentar ou diminuir o card. Quando a largura cresce perto da borda, o card se reposiciona automaticamente para caber na área.
 - Ajuste o **alinhamento horizontal** (Esquerda, Centro, Direita) e o **alinhamento vertical** (Topo, Meio, Base), ou clique em **Centralizar tudo**.
 - A pré-visualização é em tempo real. Clique em **Salvar** para aplicar ou em **Voltar** para desfazer.
 - A barra de Direção ocupa a largura total: nela apenas o texto e o alinhamento podem ser alterados.
 
-As alterações são salvas no banco (`nome_completo` para pessoas, `card_texto` para barras, `card_coluna`, `card_linha`, `card_colspan`, `card_align` e `card_valign`).
+As alterações são salvas no banco (`nome_completo` para pessoas, `card_texto` para barras, `card_coluna`, `card_linha`, `card_colspan`, `card_rowspan`, `card_align` e `card_valign`).
 
 ---
 
@@ -148,6 +148,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.9.5** — Editor permite aumentar/diminuir o tamanho do card em largura (colunas) e altura (linhas), com reposicionamento automático perto da borda.
 - **v1.9.4** — Nomes "Áreas de Produção" e "Áreas de Apoio" reposicionados logo abaixo da barra de Direção (Thiago).
 - **v1.9.3** — O próprio card pode ser arrastado para qualquer coluna/linha da grade, com moldura de destino e troca automática se a posição estiver ocupada.
 - **v1.9.2** — Editor com alinhamento horizontal/vertical, botão Centralizar tudo, setas ←/→ e ↑/↓ para mover o card e pré-visualização em tempo real.

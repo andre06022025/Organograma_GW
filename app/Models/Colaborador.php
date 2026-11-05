@@ -65,6 +65,7 @@ class Colaborador extends Model
         'card_coluna',
         'card_linha',
         'card_colspan',
+        'card_rowspan',
         'card_texto',
         'card_align',
         'card_valign',

@@ -393,20 +393,39 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Largura (colunas)</label>
-                    <div class="flex items-stretch gap-1">
-                        <button type="button" onclick="ajustarNumeroCard('editCardColspan', -1)"
-                                class="w-9 rounded bg-slate-200 dark:bg-slate-700 font-bold text-base leading-none"
-                                title="Diminuir largura">−</button>
-                        <input type="number" id="editCardColspan" min="1" max="9" oninput="previewPosicaoCard()"
-                               class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
-                        <button type="button" onclick="ajustarNumeroCard('editCardColspan', 1)"
-                                class="w-9 rounded bg-slate-200 dark:bg-slate-700 font-bold text-base leading-none"
-                                title="Aumentar largura">+</button>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Largura (colunas)</label>
+                        <div class="flex items-stretch gap-1">
+                            <button type="button" onclick="ajustarNumeroCard('editCardColspan', -1)"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none"
+                                    title="Diminuir largura">−</button>
+                            <input type="number" id="editCardColspan" min="1" max="9" oninput="previewPosicaoCard()"
+                                   class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                            <button type="button" onclick="ajustarNumeroCard('editCardColspan', 1)"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none"
+                                    title="Aumentar largura">+</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Altura (linhas)</label>
+                        <div class="flex items-stretch gap-1">
+                            <button type="button" onclick="ajustarNumeroCard('editCardRowspan', -1)"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none"
+                                    title="Diminuir altura">−</button>
+                            <input type="number" id="editCardRowspan" min="1" max="6" oninput="previewPosicaoCard()"
+                                   class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
+                            <button type="button" onclick="ajustarNumeroCard('editCardRowspan', 1)"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none"
+                                    title="Aumentar altura">+</button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <p class="text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
+                Aumentar largura/altura faz o card ocupar as colunas/linhas vizinhas.
+            </p>
 
             <p class="text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
                 Dica: arraste o próprio card na grade para reposicionar.
@@ -1033,9 +1052,9 @@
             const posDestino = parsePosicao(destino);
 
             origem.style.gridColumn = posDestino.coluna + ' / span ' + posDestino.colspan;
-            origem.style.gridRow = posDestino.linha;
+            origem.style.gridRow = posDestino.linha + ' / span ' + posDestino.rowspan;
             destino.style.gridColumn = posOrigem.coluna + ' / span ' + posOrigem.colspan;
-            destino.style.gridRow = posOrigem.linha;
+            destino.style.gridRow = posOrigem.linha + ' / span ' + posOrigem.rowspan;
 
             salvarPosicoes([parsePosicao(origem), parsePosicao(destino)]);
             sincronizarPainelComCard(origem);
@@ -1050,12 +1069,12 @@
                 if (card === draggedCard) continue;
 
                 const p = parsePosicao(card);
-                if (p.linha !== pos.linha) continue;
-
-                const sobrepoe = pos.coluna < (p.coluna + p.colspan) &&
+                const colunasSobrepostas = pos.coluna < (p.coluna + p.colspan) &&
                     (pos.coluna + pos.colspan) > p.coluna;
+                const linhasSobrepostas = pos.linha < (p.linha + p.rowspan) &&
+                    (pos.linha + pos.rowspan) > p.linha;
 
-                if (sobrepoe) return card;
+                if (colunasSobrepostas && linhasSobrepostas) return card;
             }
 
             return null;
@@ -1069,12 +1088,13 @@
             }
 
             card.style.gridColumn = pos.coluna + ' / span ' + pos.colspan;
-            card.style.gridRow = pos.linha;
+            card.style.gridRow = pos.linha + ' / span ' + pos.rowspan;
 
             if (selectedCardEl === card) {
                 document.getElementById('editCardColuna').value = pos.coluna;
                 document.getElementById('editCardLinha').value = pos.linha;
                 document.getElementById('editCardColspan').value = pos.colspan;
+                document.getElementById('editCardRowspan').value = pos.rowspan;
                 atualizarInfoPosicao();
                 originalCardStyle = card.getAttribute('style') || '';
             }
@@ -1108,6 +1128,7 @@
             }
 
             const colspan = Math.max(1, Math.min(cardSpan(card), maxCols));
+            const rowspan = Math.max(1, cardRowSpan(card));
             coluna = Math.max(1, Math.min(coluna, maxCols - colspan + 1));
 
             const cells = Array.from(grid.querySelectorAll('.node-cell'));
@@ -1144,7 +1165,7 @@
                 }
             }
 
-            return { coluna: coluna, linha: Math.max(1, linha), colspan: colspan };
+            return { coluna: coluna, linha: Math.max(1, linha), colspan: colspan, rowspan: rowspan };
         }
 
         function mostrarPreviewDrop(grid, pos, card) {
@@ -1195,11 +1216,18 @@
                 top = ultimoBottom + rowGap;
             }
 
+            const posAtual = parsePosicao(card);
+            const alturaAtual = card.getBoundingClientRect().height;
+            const alturaLinha = posAtual.rowspan > 1
+                ? (alturaAtual - (posAtual.rowspan - 1) * rowGap) / posAtual.rowspan
+                : alturaAtual;
+            const alturaPreview = Math.max(0, alturaLinha * pos.rowspan + (pos.rowspan - 1) * rowGap);
+
             preview.style.position = 'absolute';
             preview.style.left = left + 'px';
             preview.style.top = top + 'px';
             preview.style.width = Math.max(0, width) + 'px';
-            preview.style.height = card.getBoundingClientRect().height + 'px';
+            preview.style.height = alturaPreview + 'px';
             preview.style.border = '2px dashed rgba(255,255,255,0.95)';
             preview.style.background = 'rgba(255,255,255,0.18)';
             preview.style.borderRadius = '4px';
@@ -1220,6 +1248,7 @@
             document.getElementById('editCardColuna').value = pos.coluna;
             document.getElementById('editCardLinha').value = pos.linha;
             document.getElementById('editCardColspan').value = pos.colspan;
+            document.getElementById('editCardRowspan').value = pos.rowspan;
             atualizarInfoPosicao();
             originalCardStyle = card.getAttribute('style') || '';
         }
@@ -1228,13 +1257,24 @@
             if (!origem || origem === destino) return false;
             if (!destino.classList.contains('node-cell')) return false;
             if (origem.dataset.sector !== destino.dataset.sector) return false;
-            return cardSpan(origem) === cardSpan(destino);
+            return cardSpan(origem) === cardSpan(destino) && cardRowSpan(origem) === cardRowSpan(destino);
         }
 
         function cardSpan(el) {
             const cs = getComputedStyle(el);
             const inicio = parseInt(cs.gridColumnStart, 10);
             const fim = String(cs.gridColumnEnd || '');
+            if (fim.indexOf('span') !== -1) {
+                return parseInt(fim.replace('span', ''), 10) || 1;
+            }
+            const fimNum = parseInt(fim, 10);
+            return (!isNaN(fimNum) && fimNum > inicio) ? fimNum - inicio : 1;
+        }
+
+        function cardRowSpan(el) {
+            const cs = getComputedStyle(el);
+            const inicio = parseInt(cs.gridRowStart, 10);
+            const fim = String(cs.gridRowEnd || '');
             if (fim.indexOf('span') !== -1) {
                 return parseInt(fim.replace('span', ''), 10) || 1;
             }
@@ -1254,11 +1294,22 @@
                 if (!isNaN(fimNum) && fimNum > inicio) colspan = fimNum - inicio;
             }
 
+            const inicioLinha = parseInt(cs.gridRowStart, 10) || 1;
+            const fimLinha = String(cs.gridRowEnd || '');
+            let rowspan = 1;
+            if (fimLinha.indexOf('span') !== -1) {
+                rowspan = parseInt(fimLinha.replace('span', ''), 10) || 1;
+            } else {
+                const fimLinhaNum = parseInt(fimLinha, 10);
+                if (!isNaN(fimLinhaNum) && fimLinhaNum > inicioLinha) rowspan = fimLinhaNum - inicioLinha;
+            }
+
             return {
                 id: parseInt(el.dataset.id, 10),
                 coluna: inicio,
                 colspan: colspan,
-                linha: parseInt(cs.gridRowStart, 10) || 1,
+                linha: inicioLinha,
+                rowspan: rowspan,
             };
         }
 
@@ -1402,18 +1453,31 @@
             if (!selectedCardEl) return;
             if (selectedCardEl.dataset.fixo === 'true') return;
 
-            const coluna = parseInt(document.getElementById('editCardColuna').value, 10);
+            let coluna = parseInt(document.getElementById('editCardColuna').value, 10);
             const linha = parseInt(document.getElementById('editCardLinha').value, 10);
-            const colspan = parseInt(document.getElementById('editCardColspan').value, 10);
+            let colspan = parseInt(document.getElementById('editCardColspan').value, 10);
+            let rowspan = parseInt(document.getElementById('editCardRowspan').value, 10);
             const maxCol = selectedCardEl.dataset.sector === 'apoio' ? 7 : 9;
 
-            if (isNaN(coluna) || isNaN(linha) || isNaN(colspan)) return;
-            if (coluna < 1 || colspan < 1) return;
-            if (coluna > maxCol || colspan > maxCol) return;
-            if (coluna + colspan - 1 > maxCol) return;
+            if (isNaN(coluna) || isNaN(linha) || isNaN(colspan) || isNaN(rowspan)) return;
+
+            // Limita a largura/altura ao tamanho da área e reposiciona a coluna
+            // para a esquerda quando o card crescer além da borda.
+            colspan = Math.max(1, Math.min(maxCol, colspan));
+            rowspan = Math.max(1, Math.min(6, rowspan));
+
+            if (coluna < 1) coluna = 1;
+            if (coluna + colspan - 1 > maxCol) {
+                coluna = Math.max(1, maxCol - colspan + 1);
+            }
+
+            document.getElementById('editCardColuna').value = coluna;
+            document.getElementById('editCardColspan').value = colspan;
+            document.getElementById('editCardRowspan').value = rowspan;
+            atualizarInfoPosicao();
 
             selectedCardEl.style.gridColumn = coluna + ' / span ' + colspan;
-            selectedCardEl.style.gridRow = linha;
+            selectedCardEl.style.gridRow = linha + ' / span ' + rowspan;
         }
 
         function aplicarAlinhamentoCard(card, align, valign) {
@@ -1509,14 +1573,22 @@
                 }
             }
 
-            const rowMatch = style.match(/grid-row\s*:\s*(\d+)/i);
+            const rowMatch = style.match(/grid-row\s*:\s*(\d+)\s*\/\s*span\s*(\d+)/i);
+            let rowspan = 1;
             if (rowMatch) {
                 linha = parseInt(rowMatch[1], 10) || 1;
+                rowspan = parseInt(rowMatch[2], 10) || 1;
             } else {
-                linha = parseInt(getComputedStyle(card).gridRowStart, 10) || 1;
+                const rowSimples = style.match(/grid-row\s*:\s*(\d+)/i);
+                if (rowSimples) {
+                    linha = parseInt(rowSimples[1], 10) || 1;
+                } else {
+                    linha = parseInt(getComputedStyle(card).gridRowStart, 10) || 1;
+                }
+                rowspan = cardRowSpan(card);
             }
 
-            return { coluna: coluna, linha: linha, colspan: colspan };
+            return { coluna: coluna, linha: linha, colspan: colspan, rowspan: rowspan };
         }
 
         function selectCardForEdit(card) {
@@ -1558,10 +1630,12 @@
             document.getElementById('editCardColuna').value = pos.coluna;
             document.getElementById('editCardLinha').value = pos.linha;
             document.getElementById('editCardColspan').value = pos.colspan;
+            document.getElementById('editCardRowspan').value = pos.rowspan;
 
             const maxCol = card.dataset.sector === 'apoio' ? 7 : 9;
             document.getElementById('editCardColuna').max = maxCol;
             document.getElementById('editCardColspan').max = maxCol;
+            document.getElementById('editCardRowspan').max = 6;
             atualizarInfoPosicao();
             atualizarBotoesAlinhamento();
 
@@ -1579,11 +1653,19 @@
 
             const isBar = document.getElementById('editCardBar').value === '1';
             const nome = document.getElementById('editCardName').value.trim();
-            const coluna = parseInt(document.getElementById('editCardColuna').value, 10);
+            let coluna = parseInt(document.getElementById('editCardColuna').value, 10);
             const linha = parseInt(document.getElementById('editCardLinha').value, 10);
-            const colspan = parseInt(document.getElementById('editCardColspan').value, 10);
+            let colspan = parseInt(document.getElementById('editCardColspan').value, 10);
+            let rowspan = parseInt(document.getElementById('editCardRowspan').value, 10);
             const fullWidth = selectedCardEl && selectedCardEl.dataset.fixo === 'true';
             const maxCol = selectedCardEl && selectedCardEl.dataset.sector === 'apoio' ? 7 : 9;
+
+            if (!isNaN(colspan)) colspan = Math.max(1, Math.min(maxCol, colspan));
+            if (!isNaN(rowspan)) rowspan = Math.max(1, Math.min(6, rowspan));
+            if (!isNaN(coluna) && !isNaN(colspan) && coluna + colspan - 1 > maxCol) {
+                coluna = Math.max(1, maxCol - colspan + 1);
+                document.getElementById('editCardColuna').value = coluna;
+            }
 
             if (!nome) {
                 mostrarToast('Informe o nome ou texto do card.');
@@ -1591,12 +1673,12 @@
             }
 
             if (!fullWidth && (
-                isNaN(coluna) || isNaN(linha) || isNaN(colspan) ||
-                coluna < 1 || colspan < 1 ||
-                coluna > maxCol || colspan > maxCol ||
+                isNaN(coluna) || isNaN(linha) || isNaN(colspan) || isNaN(rowspan) ||
+                coluna < 1 || colspan < 1 || rowspan < 1 ||
+                coluna > maxCol || colspan > maxCol || rowspan > 6 ||
                 (coluna + colspan - 1) > maxCol
             )) {
-                mostrarToast('Posição inválida: use coluna e largura dentro da área do card.');
+                mostrarToast('Tamanho ou posição inválidos para esta área.');
                 return;
             }
 
@@ -1609,6 +1691,7 @@
                 dados.card_coluna = coluna;
                 dados.card_linha = linha;
                 dados.card_colspan = colspan;
+                dados.card_rowspan = rowspan;
             }
 
             if (textoMudou) {
@@ -1630,7 +1713,7 @@
             if (selectedCardEl) {
                 if (!fullWidth) {
                     selectedCardEl.style.gridColumn = coluna + ' / span ' + colspan;
-                    selectedCardEl.style.gridRow = linha;
+                    selectedCardEl.style.gridRow = linha + ' / span ' + rowspan;
                 }
 
                 const nameEl = selectedCardEl.querySelector('.card-name');

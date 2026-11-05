@@ -83,6 +83,7 @@ class OrganogramaController extends Controller
             'card_coluna' => ['sometimes', 'integer', 'min:1', 'max:9'],
             'card_linha' => ['sometimes', 'integer', 'min:1', 'max:20'],
             'card_colspan' => ['sometimes', 'integer', 'min:1', 'max:9'],
+            'card_rowspan' => ['sometimes', 'integer', 'min:1', 'max:10'],
             'card_texto' => ['sometimes', 'nullable', 'string', 'max:255'],
             'card_align' => ['sometimes', 'in:left,center,right'],
             'card_valign' => ['sometimes', 'in:top,center,bottom'],
@@ -101,14 +102,21 @@ class OrganogramaController extends Controller
             'posicoes.*.coluna' => ['required', 'integer', 'min:1'],
             'posicoes.*.linha' => ['required', 'integer', 'min:1'],
             'posicoes.*.colspan' => ['required', 'integer', 'min:1', 'max:9'],
+            'posicoes.*.rowspan' => ['sometimes', 'integer', 'min:1', 'max:10'],
         ]);
 
         foreach ($dados['posicoes'] as $posicao) {
-            Colaborador::whereKey($posicao['id'])->update([
+            $atualizacao = [
                 'card_coluna' => $posicao['coluna'],
                 'card_linha' => $posicao['linha'],
                 'card_colspan' => $posicao['colspan'],
-            ]);
+            ];
+
+            if (array_key_exists('rowspan', $posicao)) {
+                $atualizacao['card_rowspan'] = $posicao['rowspan'];
+            }
+
+            Colaborador::whereKey($posicao['id'])->update($atualizacao);
         }
 
         return response()->json(['ok' => true]);

@@ -18,7 +18,7 @@
         $posicaoStyle = preg_replace('/grid-row\s*:\s*[^;]+;?/i', '', $posicaoStyle);
         $posicaoStyle = trim($posicaoStyle);
         $posicaoStyle .= ' grid-column: ' . $colaborador->card_coluna . ' / span ' . ($colaborador->card_colspan ?: 1) . ';';
-        $posicaoStyle .= ' grid-row: ' . $colaborador->card_linha . ';';
+        $posicaoStyle .= ' grid-row: ' . $colaborador->card_linha . ' / span ' . ($colaborador->card_rowspan ?: 1) . ';';
         $posicaoStyle = trim($posicaoStyle);
     }
 
