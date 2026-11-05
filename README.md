@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.9.7
+**Versão:** v1.9.8
 
 ---
 
@@ -67,8 +67,7 @@ Clique no botão **Editar** na barra superior para ativar o modo edição. Com e
 - Em **Tamanho**, use **Largura (colunas)** e **Altura (linhas)** com **−** / **+** para aumentar ou diminuir o card. Quando a largura cresce perto da borda, o card se reposiciona automaticamente para caber na área.
 - Ajuste o **alinhamento horizontal** (Esquerda, Centro, Direita) e o **alinhamento vertical** (Topo, Meio, Base), ou clique em **Centralizar tudo**.
 - A pré-visualização é em tempo real. Clique em **Salvar** para aplicar ou em **Voltar** para desfazer.
-- A barra de Direção (topo) ocupa a largura total: nela apenas o texto e o alinhamento podem ser alterados.
-- As barras de liderança da **Área de Apoio** (Direção, Superintendência e Gerência) têm **posição fixa** para não sobrepor os cards: nelas, altere apenas o texto e o alinhamento.
+- A barra de Direção ocupa a largura total: nela apenas o texto e o alinhamento podem ser alterados.
 
 As alterações são salvas no banco (`nome_completo` para pessoas, `card_texto` para barras, `card_coluna`, `card_linha`, `card_colspan`, `card_rowspan`, `card_align` e `card_valign`).
 
@@ -149,7 +148,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
-- **v1.9.7** — Corrigida a sobreposição na coluna 7 da Área de Apoio: as barras de Direção, Superintendência e Gerência da área de apoio agora têm posições fixas (Thiago 1-2, Arthur 3-5, Capuano 6-7), sem conflitar com a área de produção.
+- **v1.9.8** — Revertida a alteração da v1.9.7; o layout e a edição das barras de apoio voltam ao estado da v1.9.6.
 - **v1.9.6** — Correção no salvamento dos cards: se uma gravação falhar, a alteração não é mais marcada como salva e é reenviada na próxima tentativa; botão Salvar fixo no rodapé, mensagens de erro detalhadas e validação de nome duplicado nos cadastros.
 - **v1.9.5** — Editor permite aumentar/diminuir o tamanho do card em largura (colunas) e altura (linhas), com reposicionamento automático perto da borda.
 - **v1.9.4** — Nomes "Áreas de Produção" e "Áreas de Apoio" reposicionados logo abaixo da barra de Direção (Thiago).

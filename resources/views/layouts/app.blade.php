@@ -480,7 +480,7 @@
             </div>
 
             <p id="editCardFullWidthHint" class="hidden text-[10px] text-amber-700 dark:text-amber-400">
-                Posição fixa: apenas o texto e o alinhamento podem ser alterados.
+                Card de largura total: apenas o texto pode ser alterado.
             </p>
 
             <p class="text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
