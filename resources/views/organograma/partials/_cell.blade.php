@@ -21,12 +21,29 @@
         $posicaoStyle .= ' grid-row: ' . $colaborador->card_linha . ';';
         $posicaoStyle = trim($posicaoStyle);
     }
+
+    // Alinhamento do conteúdo do card (horizontal/vertical).
+    $align = $colaborador?->card_align ?: 'center';
+    $valign = $colaborador?->card_valign ?: 'center';
+    $alignMap = ['left' => 'flex-start', 'center' => 'center', 'right' => 'flex-end'];
+    $valignMap = ['top' => 'flex-start', 'center' => 'center', 'bottom' => 'flex-end'];
+    $textAlignMap = ['left' => 'left', 'center' => 'center', 'right' => 'right'];
+
+    $alignCssBar = $colaborador
+        ? ' justify-content: ' . $alignMap[$align] . '; align-items: ' . $valignMap[$valign] . '; text-align: ' . $textAlignMap[$align] . ' !important;'
+        : '';
+    $alignCssCard = $colaborador
+        ? ' align-items: ' . $alignMap[$align] . '; justify-content: ' . $valignMap[$valign] . '; text-align: ' . $textAlignMap[$align] . ' !important;'
+        : '';
+
+    $barStyle = trim($posicaoStyle . $alignCssBar);
+    $cardStyle = trim($posicaoStyle . $alignCssCard);
 @endphp
 
 @if($barra)
     <div class="{{ $cor }} text-white text-center font-bold uppercase text-[clamp(9px,0.7vw,13px)] px-1 py-1 leading-tight flex items-center justify-center gap-1.5 min-h-[clamp(24px,1.9vw,36px)]
                 {{ $colaborador ? 'node-card node-cell cursor-pointer select-none' : '' }}"
-         @if($posicaoStyle) style="{{ $posicaoStyle }}" @endif
+         @if($barStyle) style="{{ $barStyle }}" @endif
          @if($colaborador)
              data-draggable="true"
              data-bar="true"
@@ -68,7 +85,7 @@
     @else
         <div class="node-card node-cell {{ $cor }} text-white text-center px-1 py-1 leading-tight flex flex-col items-center justify-center min-h-[clamp(52px,4.4vw,84px)] cursor-pointer select-none"
              data-draggable="true"
-             @if($posicaoStyle) style="{{ $posicaoStyle }}" @endif
+             @if($cardStyle) style="{{ $cardStyle }}" @endif
              role="button"
              tabindex="0"
              onclick="handleCardClick(this)"
@@ -82,7 +99,8 @@
 
             <span class="block text-[clamp(7.5px,0.56vw,10px)] leading-none opacity-95">{{ $nivelTexto }}</span>
 
-            <div class="flex items-center justify-center gap-1 w-full min-w-0 mt-0.5">
+            <div class="card-name-row flex items-center justify-center gap-1 w-full min-w-0 mt-0.5"
+                 style="justify-content: {{ $alignMap[$align] }};">
                 @include('organograma.partials._avatar', ['colaborador' => $colaborador, 'size' => 'sm'])
                 <span class="card-name block text-[clamp(10px,0.72vw,13px)] font-bold uppercase leading-tight break-words">{{ $rotulo }}</span>
             </div>

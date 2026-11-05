@@ -355,32 +355,40 @@
         <div id="editCardForm" class="hidden p-3 space-y-3">
             <div>
                 <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Nome / texto</label>
-                <input type="text" id="editCardName" maxlength="255"
+                <input type="text" id="editCardName" maxlength="255" oninput="previewNomeCard()"
                        class="w-full border border-lte-border dark:border-lte-border-dark rounded px-2 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
             </div>
 
             <div id="editCardPosicaoFields" class="space-y-3">
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Coluna</label>
+                        <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">
+                            Coluna <span id="editCardColunaInfo" class="font-normal opacity-80">1/9</span>
+                        </label>
                         <div class="flex items-stretch gap-1">
                             <button type="button" onclick="ajustarNumeroCard('editCardColuna', -1)"
-                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none">−</button>
-                            <input type="number" id="editCardColuna" min="1" max="9"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none"
+                                    title="Mover para a esquerda">←</button>
+                            <input type="number" id="editCardColuna" min="1" max="9" oninput="previewPosicaoCard()"
                                    class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
                             <button type="button" onclick="ajustarNumeroCard('editCardColuna', 1)"
-                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none">+</button>
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none"
+                                    title="Mover para a direita">→</button>
                         </div>
                     </div>
                     <div>
-                        <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Linha</label>
+                        <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">
+                            Linha <span id="editCardLinhaInfo" class="font-normal opacity-80">1/20</span>
+                        </label>
                         <div class="flex items-stretch gap-1">
                             <button type="button" onclick="ajustarNumeroCard('editCardLinha', -1)"
-                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none">−</button>
-                            <input type="number" id="editCardLinha" min="1" max="20"
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none"
+                                    title="Mover para cima">↑</button>
+                            <input type="number" id="editCardLinha" min="1" max="20" oninput="previewPosicaoCard()"
                                    class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
                             <button type="button" onclick="ajustarNumeroCard('editCardLinha', 1)"
-                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none">+</button>
+                                    class="w-7 rounded bg-slate-200 dark:bg-slate-700 font-bold leading-none"
+                                    title="Mover para baixo">↓</button>
                         </div>
                     </div>
                 </div>
@@ -389,13 +397,63 @@
                     <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Largura (colunas)</label>
                     <div class="flex items-stretch gap-1">
                         <button type="button" onclick="ajustarNumeroCard('editCardColspan', -1)"
-                                class="w-9 rounded bg-slate-200 dark:bg-slate-700 font-bold text-base leading-none">−</button>
-                        <input type="number" id="editCardColspan" min="1" max="9"
+                                class="w-9 rounded bg-slate-200 dark:bg-slate-700 font-bold text-base leading-none"
+                                title="Diminuir largura">−</button>
+                        <input type="number" id="editCardColspan" min="1" max="9" oninput="previewPosicaoCard()"
                                class="flex-1 min-w-0 text-center border border-lte-border dark:border-lte-border-dark rounded px-1 py-1.5 bg-lte-card-bg dark:bg-slate-800 text-lte-text dark:text-lte-text-dark">
                         <button type="button" onclick="ajustarNumeroCard('editCardColspan', 1)"
-                                class="w-9 rounded bg-slate-200 dark:bg-slate-700 font-bold text-base leading-none">+</button>
+                                class="w-9 rounded bg-slate-200 dark:bg-slate-700 font-bold text-base leading-none"
+                                title="Aumentar largura">+</button>
                     </div>
                 </div>
+            </div>
+
+            <div id="editCardAlignFields" class="space-y-2">
+                <div>
+                    <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Alinhamento horizontal</label>
+                    <div class="grid grid-cols-3 gap-1">
+                        <button type="button" data-align="left" onclick="definirAlinhamento('left')"
+                                title="Alinhar à esquerda"
+                                class="align-btn flex flex-col items-center justify-center gap-0.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-lte-text dark:text-lte-text-dark">
+                            <i class="fas fa-arrow-left"></i><span class="text-[10px]">Esquerda</span>
+                        </button>
+                        <button type="button" data-align="center" onclick="definirAlinhamento('center')"
+                                title="Centralizar"
+                                class="align-btn flex flex-col items-center justify-center gap-0.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-lte-text dark:text-lte-text-dark">
+                            <i class="fas fa-align-center"></i><span class="text-[10px]">Centro</span>
+                        </button>
+                        <button type="button" data-align="right" onclick="definirAlinhamento('right')"
+                                title="Alinhar à direita"
+                                class="align-btn flex flex-col items-center justify-center gap-0.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-lte-text dark:text-lte-text-dark">
+                            <i class="fas fa-arrow-right"></i><span class="text-[10px]">Direita</span>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-lte-text-muted dark:text-lte-text-muted-dark mb-0.5">Alinhamento vertical</label>
+                    <div class="grid grid-cols-3 gap-1">
+                        <button type="button" data-valign="top" onclick="definirAlinhamentoVertical('top')"
+                                title="Alinhar ao topo"
+                                class="valign-btn flex flex-col items-center justify-center gap-0.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-lte-text dark:text-lte-text-dark">
+                            <i class="fas fa-arrow-up"></i><span class="text-[10px]">Topo</span>
+                        </button>
+                        <button type="button" data-valign="center" onclick="definirAlinhamentoVertical('center')"
+                                title="Centralizar verticalmente"
+                                class="valign-btn flex flex-col items-center justify-center gap-0.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-lte-text dark:text-lte-text-dark">
+                            <i class="fas fa-arrows-alt-v"></i><span class="text-[10px]">Meio</span>
+                        </button>
+                        <button type="button" data-valign="bottom" onclick="definirAlinhamentoVertical('bottom')"
+                                title="Alinhar à base"
+                                class="valign-btn flex flex-col items-center justify-center gap-0.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-lte-text dark:text-lte-text-dark">
+                            <i class="fas fa-arrow-down"></i><span class="text-[10px]">Base</span>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" onclick="centralizarCard()"
+                        class="w-full flex items-center justify-center gap-1 py-1.5 rounded bg-slate-200 dark:bg-slate-700 text-lte-text dark:text-lte-text-dark font-semibold"
+                        title="Centralizar horizontal e verticalmente">
+                    <i class="fas fa-crosshairs"></i> Centralizar tudo
+                </button>
             </div>
 
             <p id="editCardFullWidthHint" class="hidden text-[10px] text-amber-700 dark:text-amber-400">
@@ -403,7 +461,7 @@
             </p>
 
             <p class="text-[10px] text-lte-text-muted dark:text-lte-text-muted-dark">
-                As alterações são aplicadas somente ao clicar em <strong>Salvar</strong>.
+                Pré-visualização em tempo real. Clique em <strong>Salvar</strong> para aplicar ou <strong>Voltar</strong> para desfazer.
             </p>
 
             <input type="hidden" id="editCardId">
@@ -993,6 +1051,12 @@
         let editMode = false;
         let selectedCardEl = null;
         let originalCardText = '';
+        let originalCardName = '';
+        let originalCardStyle = '';
+        let currentAlign = 'center';
+        let currentValign = 'center';
+        let originalAlign = 'center';
+        let originalValign = 'center';
 
         function toggleEditMode() {
             editMode = !editMode;
@@ -1032,6 +1096,20 @@
         }
 
         function voltarEdicaoCard() {
+            // Desfaz qualquer pré-visualização não salva.
+            if (selectedCardEl) {
+                if (originalCardStyle) {
+                    selectedCardEl.setAttribute('style', originalCardStyle);
+                } else {
+                    selectedCardEl.removeAttribute('style');
+                }
+
+                const nameEl = selectedCardEl.querySelector('.card-name');
+                if (nameEl && originalCardName !== '') {
+                    nameEl.textContent = originalCardName;
+                }
+            }
+
             limparSelecaoCard();
             const panel = document.getElementById('cardEditPanel');
             if (panel) panel.classList.add('hidden');
@@ -1039,6 +1117,15 @@
             const hint = document.getElementById('editCardHint');
             if (form) form.classList.add('hidden');
             if (hint) hint.classList.remove('hidden');
+        }
+
+        function atualizarInfoPosicao() {
+            const coluna = document.getElementById('editCardColuna');
+            const linha = document.getElementById('editCardLinha');
+            const infoColuna = document.getElementById('editCardColunaInfo');
+            const infoLinha = document.getElementById('editCardLinhaInfo');
+            if (infoColuna && coluna) infoColuna.textContent = coluna.value + '/' + (coluna.max || 9);
+            if (infoLinha && linha) infoLinha.textContent = linha.value + '/' + (linha.max || 20);
         }
 
         function ajustarNumeroCard(id, delta) {
@@ -1050,6 +1137,97 @@
             if (isNaN(valor)) valor = min;
             valor = Math.max(min, Math.min(max, valor + delta));
             input.value = valor;
+            atualizarInfoPosicao();
+            previewPosicaoCard();
+        }
+
+        function previewNomeCard() {
+            if (!selectedCardEl) return;
+            const nome = document.getElementById('editCardName').value;
+            const nameEl = selectedCardEl.querySelector('.card-name');
+            if (!nameEl) return;
+            const isBar = selectedCardEl.dataset.bar === 'true';
+            nameEl.textContent = isBar ? nome : nome.toUpperCase();
+        }
+
+        function previewPosicaoCard() {
+            if (!selectedCardEl) return;
+            if (selectedCardEl.dataset.fixo === 'true') return;
+
+            const coluna = parseInt(document.getElementById('editCardColuna').value, 10);
+            const linha = parseInt(document.getElementById('editCardLinha').value, 10);
+            const colspan = parseInt(document.getElementById('editCardColspan').value, 10);
+            const maxCol = selectedCardEl.dataset.sector === 'apoio' ? 7 : 9;
+
+            if (isNaN(coluna) || isNaN(linha) || isNaN(colspan)) return;
+            if (coluna < 1 || colspan < 1) return;
+            if (coluna > maxCol || colspan > maxCol) return;
+            if (coluna + colspan - 1 > maxCol) return;
+
+            selectedCardEl.style.gridColumn = coluna + ' / span ' + colspan;
+            selectedCardEl.style.gridRow = linha;
+        }
+
+        function aplicarAlinhamentoCard(card, align, valign) {
+            if (!card) return;
+            const alignMap = { left: 'flex-start', center: 'center', right: 'flex-end' };
+            const valignMap = { top: 'flex-start', center: 'center', bottom: 'flex-end' };
+            const textAlignMap = { left: 'left', center: 'center', right: 'right' };
+            const isBar = card.dataset.bar === 'true';
+
+            if (isBar) {
+                card.style.justifyContent = alignMap[align] || 'center';
+                card.style.alignItems = valignMap[valign] || 'center';
+            } else {
+                card.style.alignItems = alignMap[align] || 'center';
+                card.style.justifyContent = valignMap[valign] || 'center';
+                const row = card.querySelector('.card-name-row');
+                if (row) row.style.justifyContent = alignMap[align] || 'center';
+            }
+
+            // AdminLTE define .text-center com !important; o inline também precisa de !important.
+            card.style.setProperty('text-align', textAlignMap[align] || 'center', 'important');
+        }
+
+        function atualizarBotoesAlinhamento() {
+            document.querySelectorAll('#editCardAlignFields .align-btn').forEach(btn => {
+                const ativo = btn.dataset.align === currentAlign;
+                btn.classList.toggle('bg-emerald-600', ativo);
+                btn.classList.toggle('text-white', ativo);
+                btn.classList.toggle('bg-slate-200', !ativo);
+                btn.classList.toggle('dark:bg-slate-700', !ativo);
+                btn.classList.toggle('text-lte-text', !ativo);
+                btn.classList.toggle('dark:text-lte-text-dark', !ativo);
+            });
+
+            document.querySelectorAll('#editCardAlignFields .valign-btn').forEach(btn => {
+                const ativo = btn.dataset.valign === currentValign;
+                btn.classList.toggle('bg-emerald-600', ativo);
+                btn.classList.toggle('text-white', ativo);
+                btn.classList.toggle('bg-slate-200', !ativo);
+                btn.classList.toggle('dark:bg-slate-700', !ativo);
+                btn.classList.toggle('text-lte-text', !ativo);
+                btn.classList.toggle('dark:text-lte-text-dark', !ativo);
+            });
+        }
+
+        function definirAlinhamento(valor) {
+            currentAlign = valor;
+            if (selectedCardEl) aplicarAlinhamentoCard(selectedCardEl, currentAlign, currentValign);
+            atualizarBotoesAlinhamento();
+        }
+
+        function definirAlinhamentoVertical(valor) {
+            currentValign = valor;
+            if (selectedCardEl) aplicarAlinhamentoCard(selectedCardEl, currentAlign, currentValign);
+            atualizarBotoesAlinhamento();
+        }
+
+        function centralizarCard() {
+            currentAlign = 'center';
+            currentValign = 'center';
+            if (selectedCardEl) aplicarAlinhamentoCard(selectedCardEl, 'center', 'center');
+            atualizarBotoesAlinhamento();
         }
 
         function handleCardClick(card) {
@@ -1094,6 +1272,17 @@
         }
 
         function selectCardForEdit(card) {
+            // Descarta a pré-visualização de um card anterior que não foi salvo.
+            if (selectedCardEl && selectedCardEl !== card) {
+                if (originalCardStyle) {
+                    selectedCardEl.setAttribute('style', originalCardStyle);
+                } else {
+                    selectedCardEl.removeAttribute('style');
+                }
+                const prevName = selectedCardEl.querySelector('.card-name');
+                if (prevName && originalCardName !== '') prevName.textContent = originalCardName;
+            }
+
             selectedCardEl = card;
 
             document.querySelectorAll('.node-cell.card-selected').forEach(el => el.classList.remove('card-selected'));
@@ -1107,10 +1296,17 @@
                 ? (nameEl ? nameEl.textContent.trim() : '')
                 : (card.dataset.nome || (nameEl ? nameEl.textContent.trim() : ''));
 
+            originalCardStyle = card.getAttribute('style') || '';
+            originalCardName = nameEl ? nameEl.textContent : '';
+            originalCardText = nomeAtual;
+            currentAlign = card.dataset.align || 'center';
+            currentValign = card.dataset.valign || 'center';
+            originalAlign = currentAlign;
+            originalValign = currentValign;
+
             document.getElementById('editCardId').value = card.dataset.id || '';
             document.getElementById('editCardBar').value = isBar ? '1' : '0';
             document.getElementById('editCardName').value = nomeAtual;
-            originalCardText = nomeAtual;
             document.getElementById('editCardColuna').value = pos.coluna;
             document.getElementById('editCardLinha').value = pos.linha;
             document.getElementById('editCardColspan').value = pos.colspan;
@@ -1118,6 +1314,8 @@
             const maxCol = card.dataset.sector === 'apoio' ? 7 : 9;
             document.getElementById('editCardColuna').max = maxCol;
             document.getElementById('editCardColspan').max = maxCol;
+            atualizarInfoPosicao();
+            atualizarBotoesAlinhamento();
 
             document.getElementById('editCardPosicaoFields').classList.toggle('hidden', fullWidth);
             document.getElementById('editCardFullWidthHint').classList.toggle('hidden', !fullWidth);
@@ -1155,6 +1353,8 @@
             }
 
             const textoMudou = nome !== originalCardText;
+            const alignMudou = currentAlign !== originalAlign;
+            const valignMudou = currentValign !== originalValign;
             let dados = {};
 
             if (!fullWidth) {
@@ -1171,6 +1371,9 @@
                 }
             }
 
+            if (alignMudou) dados.card_align = currentAlign;
+            if (valignMudou) dados.card_valign = currentValign;
+
             if (Object.keys(dados).length === 0) {
                 mostrarToast('Nenhuma alteração para salvar.');
                 return;
@@ -1181,12 +1384,23 @@
                     selectedCardEl.style.gridColumn = coluna + ' / span ' + colspan;
                     selectedCardEl.style.gridRow = linha;
                 }
-                if (textoMudou) {
-                    const nameEl = selectedCardEl.querySelector('.card-name');
-                    if (nameEl) nameEl.textContent = isBar ? nome : nome.toUpperCase();
+
+                const nameEl = selectedCardEl.querySelector('.card-name');
+                if (textoMudou && nameEl) {
+                    nameEl.textContent = isBar ? nome : nome.toUpperCase();
                     if (!isBar) selectedCardEl.dataset.nome = nome;
-                    originalCardText = nome;
                 }
+
+                aplicarAlinhamentoCard(selectedCardEl, currentAlign, currentValign);
+                selectedCardEl.dataset.align = currentAlign;
+                selectedCardEl.dataset.valign = currentValign;
+
+                // Estado atual vira o novo ponto de retorno do botão Voltar.
+                originalCardText = nome;
+                originalAlign = currentAlign;
+                originalValign = currentValign;
+                originalCardStyle = selectedCardEl.getAttribute('style') || '';
+                originalCardName = nameEl ? nameEl.textContent : '';
             }
 
             salvarCard(id, dados);
