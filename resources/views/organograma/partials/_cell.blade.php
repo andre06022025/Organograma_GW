@@ -12,8 +12,9 @@
     $regiaoTexto = $regiaoTexto ?? ($colaborador?->regiao);
 
     // Posição salva via painel de edição (quando existir) sobrepõe a posição padrão.
+    // Cards marcados como fixos mantêm a posição definida no layout.
     $posicaoStyle = $style;
-    if ($colaborador && empty($compacto) && $colaborador->card_coluna) {
+    if ($colaborador && empty($compacto) && empty($fixo) && $colaborador->card_coluna) {
         $posicaoStyle = preg_replace('/grid-column\s*:\s*[^;]+;?/i', '', $posicaoStyle);
         $posicaoStyle = preg_replace('/grid-row\s*:\s*[^;]+;?/i', '', $posicaoStyle);
         $posicaoStyle = trim($posicaoStyle);

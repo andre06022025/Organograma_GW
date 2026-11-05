@@ -126,13 +126,14 @@
                 <div class="grid gap-[clamp(2px,0.18vw,4px)]"
                      style="grid-template-columns: 0.9fr 1fr 0.9fr 0.85fr 1fr 0.9fr 0.75fr;">
 
-                    {{-- Linha 1: Lideranças --}}
+                    {{-- Linha 1: Lideranças (posições fixas na área de apoio) --}}
                     @include('organograma.partials._cell', [
                         'colaborador' => $m['thiago@empresa.com.br'] ?? null,
                         'cor' => $laranja,
                         'barra' => true,
                         'texto' => 'DIREÇÃO (THIAGO)',
                         'areaForcada' => 'apoio',
+                        'fixo' => true,
                         'style' => 'grid-column: 1 / span 2; grid-row: 1;',
                     ])
                     @include('organograma.partials._cell', [
@@ -141,6 +142,7 @@
                         'barra' => true,
                         'texto' => 'SUPERINTENDÊNCIA (' . strtoupper($m['arthur@empresa.com.br']->nome_completo ?? 'ARTHUR') . ')',
                         'areaForcada' => 'apoio',
+                        'fixo' => true,
                         'style' => 'grid-column: 3 / span 3; grid-row: 1;',
                     ])
                     @include('organograma.partials._cell', [
@@ -148,6 +150,8 @@
                         'cor' => $roxo,
                         'barra' => true,
                         'texto' => 'SUPERINT. (' . strtoupper($m['capuano@empresa.com.br']->nome_completo ?? 'CAPUANO') . ')',
+                        'areaForcada' => 'apoio',
+                        'fixo' => true,
                         'style' => 'grid-column: 6 / span 2; grid-row: 1;',
                     ])
 
