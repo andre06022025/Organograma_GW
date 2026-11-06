@@ -680,12 +680,47 @@
             };
         }
 
+        /**
+         * Marca as posições recém-gravadas pelo drag-and-drop como o novo
+         * estado salvo, para que o botão Voltar não desfaça o que já está no
+         * banco.
+         */
+        function registrarPosicoesSalvas(posicoes) {
+            posicoes.forEach(function (p) {
+                if (!p || !p.id) return;
+
+                const el = document.querySelector(
+                    '.node-cell[data-id="' + p.id + '"][data-area="' + p.area + '"]'
+                );
+
+                if (!el) return;
+
+                el.dataset.posPersiste = 'true';
+                el.dataset.posColuna = p.coluna;
+                el.dataset.posLinha = p.linha;
+                el.dataset.posColspan = p.colspan;
+                el.dataset.posRowspan = p.rowspan;
+
+                if (el === selectedCardEl && estadoOriginal) {
+                    estadoOriginal.posicao = {
+                        coluna: p.coluna,
+                        linha: p.linha,
+                        colspan: p.colspan,
+                        rowspan: p.rowspan,
+                    };
+                    originalCardStyle = el.getAttribute('style') || '';
+                    estadoAlterado = false;
+                }
+            });
+        }
+
         function salvarPosicoes(posicoes) {
-            if (!posicoes.length) return;
+            if (!posicoes.length) return Promise.resolve(false);
 
             const area = posicoes[0].area || 'producao';
             const token = document.querySelector('meta[name="csrf-token"]');
-            fetch('/organograma/posicoes', {
+
+            return fetch('/organograma/posicoes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -696,8 +731,9 @@
             })
                 .then(function (response) {
                     if (response.ok) {
+                        registrarPosicoesSalvas(posicoes);
                         mostrarToast('Posição salva!');
-                        return;
+                        return true;
                     }
                     return response.json()
                         .then(function (erro) {
@@ -781,9 +817,135 @@
             }
         }
 
+        // Posição do painel de edição (arrastável), persistida no navegador.
+        let painelPosicaoSalva = null;
+        let painelArrastando = false;
+        let painelDeslocX = 0;
+        let painelDeslocY = 0;
+
+        function carregarPosicaoPainel() {
+            try {
+                const salvo = JSON.parse(localStorage.getItem('organograma.painelEdicao') || 'null');
+                if (salvo && Number.isFinite(salvo.left) && Number.isFinite(salvo.top)) {
+                    return salvo;
+                }
+            } catch (e) {
+                // localStorage indisponível: usa a posição padrão
+            }
+
+            return null;
+        }
+
+        function limitarPosicaoPainel(left, top) {
+            const painel = document.getElementById('cardEditPanel');
+            const largura = (painel && painel.offsetWidth) || 320;
+            const altura = (painel && painel.offsetHeight) || 220;
+            const maxLeft = Math.max(0, window.innerWidth - largura);
+            const maxTop = Math.max(0, window.innerHeight - Math.min(altura, 48));
+
+            return {
+                left: Math.min(Math.max(0, left), maxLeft),
+                top: Math.min(Math.max(0, top), maxTop),
+            };
+        }
+
+        function aplicarPosicaoPainel(left, top) {
+            const painel = document.getElementById('cardEditPanel');
+            if (!painel) return;
+
+            const pos = limitarPosicaoPainel(left, top);
+            painel.style.left = pos.left + 'px';
+            painel.style.top = pos.top + 'px';
+            painel.style.right = 'auto';
+        }
+
         function mostrarPainelEdicao() {
             const panel = document.getElementById('cardEditPanel');
-            if (panel) panel.classList.remove('hidden');
+            if (!panel) return;
+
+            panel.classList.remove('hidden');
+
+            if (!painelPosicaoSalva) painelPosicaoSalva = carregarPosicaoPainel();
+            if (painelPosicaoSalva) aplicarPosicaoPainel(painelPosicaoSalva.left, painelPosicaoSalva.top);
+        }
+
+        /**
+         * Permite arrastar o painel de edição pela tela (pela barra de título),
+         * para que ele não cubra o card que está sendo editado. A posição é
+         * lembrada no navegador.
+         */
+        function initPainelArrastavel() {
+            const painel = document.getElementById('cardEditPanel');
+            const alca = document.getElementById('cardEditPanelHeader');
+
+            if (!painel || !alca) return;
+
+            function iniciarArraste(e) {
+                // O botão de fechar continua clicável.
+                if (e.target.closest('button')) return;
+
+                const ponto = e.touches ? e.touches[0] : e;
+                const rect = painel.getBoundingClientRect();
+
+                painelArrastando = true;
+                painelDeslocX = ponto.clientX - rect.left;
+                painelDeslocY = ponto.clientY - rect.top;
+
+                painel.style.left = rect.left + 'px';
+                painel.style.top = rect.top + 'px';
+                painel.style.right = 'auto';
+                document.body.style.userSelect = 'none';
+
+                if (e.cancelable) e.preventDefault();
+            }
+
+            function moverArraste(e) {
+                if (!painelArrastando) return;
+
+                const ponto = e.touches ? e.touches[0] : e;
+                const pos = limitarPosicaoPainel(
+                    ponto.clientX - painelDeslocX,
+                    ponto.clientY - painelDeslocY
+                );
+
+                painel.style.left = pos.left + 'px';
+                painel.style.top = pos.top + 'px';
+                painel.style.right = 'auto';
+
+                if (e.cancelable) e.preventDefault();
+            }
+
+            function finalizarArraste() {
+                if (!painelArrastando) return;
+
+                painelArrastando = false;
+                document.body.style.userSelect = '';
+
+                painelPosicaoSalva = {
+                    left: parseFloat(painel.style.left) || 0,
+                    top: parseFloat(painel.style.top) || 0,
+                };
+
+                try {
+                    localStorage.setItem('organograma.painelEdicao', JSON.stringify(painelPosicaoSalva));
+                } catch (e) {
+                    // sem persistência: a posição vale só nesta sessão
+                }
+            }
+
+            alca.addEventListener('mousedown', iniciarArraste);
+            alca.addEventListener('touchstart', iniciarArraste, { passive: false });
+            document.addEventListener('mousemove', moverArraste);
+            document.addEventListener('touchmove', moverArraste, { passive: false });
+            document.addEventListener('mouseup', finalizarArraste);
+            document.addEventListener('touchend', finalizarArraste);
+
+            // Reajusta o painel se a janela mudar de tamanho.
+            window.addEventListener('resize', function () {
+                if (!painel.classList.contains('hidden') && painel.style.left) {
+                    aplicarPosicaoPainel(parseFloat(painel.style.left) || 0, parseFloat(painel.style.top) || 0);
+                }
+            });
         }
 
         function limparSelecaoCard() {
@@ -825,6 +987,7 @@
 
             const card = selectedCardEl;
             const id = document.getElementById('editCardId').value;
+            const temAlteracaoPendente = !!estadoAlterado;
 
             // Remove da fila o que ainda não foi gravado para este card.
             if (id) {
@@ -833,8 +996,9 @@
                 });
             }
 
-            // Devolve o card ao estado salvo no banco (descarta as alterações).
-            if (card && estadoOriginal && id && estadoAlterado) {
+            // Só desfaz o que ainda não foi gravado. O que já está salvo no
+            // banco permanece (posição, texto e alinhamento).
+            if (card && estadoOriginal && id && temAlteracaoPendente) {
                 const payload = payloadReverter(estadoOriginal);
                 if (payload) {
                     enfileirarSalvamento({
@@ -845,10 +1009,8 @@
                         reverter: true,
                     });
                 }
-            }
 
-            // Restaura a pré-visualização na tela.
-            if (card) {
+                // Restaura a pré-visualização na tela.
                 if (originalCardStyle) {
                     card.setAttribute('style', originalCardStyle);
                 } else {
@@ -859,8 +1021,8 @@
                 if (nameEl && originalCardName !== '') {
                     nameEl.textContent = originalCardName;
                 }
-                card.dataset.align = estadoOriginal ? estadoOriginal.align : 'center';
-                card.dataset.valign = estadoOriginal ? estadoOriginal.valign : 'center';
+                card.dataset.align = estadoOriginal.align;
+                card.dataset.valign = estadoOriginal.valign;
             }
 
             estadoAlterado = false;
@@ -1394,6 +1556,35 @@
                         if (d.texto !== undefined) {
                             item.card.dataset.texto = d.texto || '';
                         }
+
+                        // O que foi gravado deixa de ser "alteração pendente": o
+                        // Voltar passa a fechar o painel sem desfazer o que já
+                        // está salvo no banco.
+                        if (item.card === selectedCardEl && estadoOriginal && !item.reverter) {
+                            if (d.posicao !== undefined) {
+                                estadoOriginal.posicao = d.posicao;
+                            }
+
+                            if (d.texto !== undefined) {
+                                estadoOriginal.texto = d.texto || null;
+                                estadoOriginal.textoExibido = d.texto || '';
+                            }
+
+                            if (d.nome_completo !== undefined) {
+                                estadoOriginal.nome = d.nome_completo;
+                                estadoOriginal.textoExibido = d.nome_completo;
+                            }
+
+                            if (d.align !== undefined) estadoOriginal.align = d.align;
+                            if (d.valign !== undefined) estadoOriginal.valign = d.valign;
+
+                            // A pré-visualização atual passa a ser o estado salvo.
+                            originalCardStyle = item.card.getAttribute('style') || '';
+                            const nameEl = item.card.querySelector('.card-name');
+                            originalCardName = nameEl ? nameEl.textContent : '';
+
+                            estadoAlterado = false;
+                        }
                     }
 
                     processarFilaSalvamento();
@@ -1438,6 +1629,7 @@
             initTheme();
             initMinimizeUI();
             initDragAndDrop();
+            initPainelArrastavel();
             
             // Atalhos teclado
             document.addEventListener('keydown', function(e) {

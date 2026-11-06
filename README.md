@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.10.0
+**Versão:** v1.10.1
 
 ---
 
@@ -73,7 +73,8 @@ Clique no botão **Editar** na barra superior para ativar o modo edição. Com e
 - Em **Tamanho**, use **Largura (colunas)** e **Altura (linhas)** com **−** / **+** para aumentar ou diminuir o card. Quando a largura cresce perto da borda, o card se reposiciona automaticamente para caber na área.
 - Ajuste o **alinhamento horizontal** (Esquerda, Centro, Direita) e o **alinhamento vertical** (Topo, Meio, Base), ou clique em **Centralizar tudo**.
 - As alterações são **salvas automaticamente** após uma pequena pausa; ao trocar de card ou sair do modo edição, o salvamento pendente é aplicado.
-- **Salvar** aplica imediatamente; **Voltar** devolve o card ao estado em que estava quando foi selecionado (inclusive no banco).
+- **Salvar** aplica imediatamente. **Voltar** fecha o painel: o que já foi gravado permanece, e apenas as alterações ainda não salvas são descartadas.
+- O painel **Editar card** pode ser arrastado pela barra de título para não cobrir o card que está sendo editado; a posição é lembrada no navegador.
 - A barra de Direção ocupa a largura total: nela apenas o texto e o alinhamento podem ser alterados.
 
 As alterações são salvas no banco: `nome_completo` para pessoas (global) e, por área, em
@@ -156,6 +157,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.10.1** — O painel **Editar card** agora pode ser arrastado pela tela (e lembra a posição), para não cobrir o card em edição. O botão **Voltar** passou a descartar somente o que ainda não foi salvo: alterações de posição já gravadas automaticamente permanecem no card em vez de serem desfeitas ao fechar o painel.
 - **v1.10.0** — Posições dos cards passam a ser gravadas **por área** (`card_posicoes` em JSON), eliminando a sobreposição entre as barras da Área de Apoio e permitindo que o mesmo colaborador seja movido de forma independente em cada área. O botão **Voltar** agora devolve o card ao estado salvo. Campo **Nível** incluído no cadastro de colaboradores. Editor com fila de salvamento (não perde edições ao trocar de card durante uma gravação), proteção contra XSS no `confirm()` de exclusão, rótulos acessíveis em todos os formulários, fuso horário `America/Sao_Paulo`, dependências não utilizadas removidas e vulnerabilidades do Symfony atualizadas.
 - **v1.9.10** — Salvamento automático no editor: alterações de nome, tamanho, posição e alinhamento são gravadas após uma pequena pausa e também ao trocar de card ou sair do modo edição.
 - **v1.9.9** — Removido o card laranja "DIREÇÃO (THIAGO)" redundante da Área de Apoio; a barra de Direção do topo permanece.

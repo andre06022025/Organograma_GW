@@ -343,9 +343,13 @@
     <div id="cardEditPanel"
          class="hidden bg-lte-card-bg dark:bg-lte-card-bg-dark border border-lte-border dark:border-lte-border-dark rounded-lg shadow-2xl text-xs"
          style="position: fixed; top: 112px; right: 12px; width: 320px; max-height: calc(100vh - 128px); overflow-y: auto; z-index: 40;">
-        <div class="bg-lte-purple text-white px-3 py-2 rounded-t-lg flex items-center justify-between">
-            <span class="font-bold uppercase tracking-wide text-[11px]">Editar card</span>
-            <button type="button" onclick="voltarEdicaoCard()" class="text-white/80 hover:text-white" title="Voltar sem salvar">
+        <div id="cardEditPanelHeader"
+             class="bg-lte-purple text-white px-3 py-2 rounded-t-lg flex items-center justify-between cursor-move select-none"
+             title="Arraste para mover o painel">
+            <span class="font-bold uppercase tracking-wide text-[11px] flex items-center gap-1.5">
+                <i class="fa-solid fa-grip-vertical opacity-70"></i> Editar card
+            </span>
+            <button type="button" onclick="voltarEdicaoCard()" class="text-white/80 hover:text-white cursor-pointer" title="Fechar e descartar alterações não salvas">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
