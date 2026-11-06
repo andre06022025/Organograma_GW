@@ -11,20 +11,29 @@
     $nivelTexto = $colaborador?->cargo ?? ($nivelTexto ?? null);
     $regiaoTexto = $regiaoTexto ?? ($colaborador?->regiao);
 
-    // Posição salva via painel de edição (quando existir) sobrepõe a posição padrão.
+    // Área da célula. O mesmo colaborador pode aparecer em mais de uma área
+    // (ex.: a barra do Arthur na Produção e na Apoio) e cada área guarda a
+    // sua própria configuração em `card_posicoes`.
+    $areaCard = $area ?? $areaGrade ?? $areaForcada ?? ($colaborador?->area ?: 'producao');
+
+    // Configuração salva para esta área (posição, tamanho, alinhamento, texto).
+    $cfg = $colaborador ? $colaborador->posicaoArea($areaCard) : [];
+    $posicao = $cfg['posicao'] ?? null;
+
+    // Posição salva sobrepõe o layout padrão definido na view.
     $posicaoStyle = $style;
-    if ($colaborador && empty($compacto) && $colaborador->card_coluna) {
+    if ($colaborador && empty($compacto) && $posicao) {
         $posicaoStyle = preg_replace('/grid-column\s*:\s*[^;]+;?/i', '', $posicaoStyle);
         $posicaoStyle = preg_replace('/grid-row\s*:\s*[^;]+;?/i', '', $posicaoStyle);
         $posicaoStyle = trim($posicaoStyle);
-        $posicaoStyle .= ' grid-column: ' . $colaborador->card_coluna . ' / span ' . ($colaborador->card_colspan ?: 1) . ';';
-        $posicaoStyle .= ' grid-row: ' . $colaborador->card_linha . ' / span ' . ($colaborador->card_rowspan ?: 1) . ';';
+        $posicaoStyle .= ' grid-column: ' . $posicao['coluna'] . ' / span ' . $posicao['colspan'] . ';';
+        $posicaoStyle .= ' grid-row: ' . $posicao['linha'] . ' / span ' . $posicao['rowspan'] . ';';
         $posicaoStyle = trim($posicaoStyle);
     }
 
     // Alinhamento do conteúdo do card (horizontal/vertical).
-    $align = $colaborador?->card_align ?: 'center';
-    $valign = $colaborador?->card_valign ?: 'center';
+    $align = $cfg['align'] ?? 'center';
+    $valign = $cfg['valign'] ?? 'center';
     $alignMap = ['left' => 'flex-start', 'center' => 'center', 'right' => 'flex-end'];
     $valignMap = ['top' => 'flex-start', 'center' => 'center', 'bottom' => 'flex-end'];
     $textAlignMap = ['left' => 'left', 'center' => 'center', 'right' => 'right'];
@@ -38,6 +47,9 @@
 
     $barStyle = trim($posicaoStyle . $alignCssBar);
     $cardStyle = trim($posicaoStyle . $alignCssCard);
+
+    // Texto customizado da barra (por área). Sem texto salvo, usa o padrão da view.
+    $textoSalvo = $cfg['texto'] ?? null;
 @endphp
 
 @if($barra)
@@ -55,13 +67,14 @@
                  'colaborador' => $colaborador,
                  'cor' => $cor,
                  'fixo' => $fixo,
-                 'areaForcada' => $areaForcada,
+                 'area' => $areaCard,
+                 'cfg' => $cfg,
              ])
          @endif>
         @if($colaborador)
             @include('organograma.partials._avatar', ['colaborador' => $colaborador, 'size' => 'bar'])
         @endif
-        <span class="card-name">{{ $colaborador?->card_texto ?? $texto ?? $rotulo }}</span>
+        <span class="card-name">{{ $textoSalvo ?? $texto ?? $rotulo }}</span>
     </div>
 @elseif($colaborador)
     @if(!empty($compacto))
@@ -75,7 +88,8 @@
                  'colaborador' => $colaborador,
                  'cor' => $cor,
                  'fixo' => $fixo,
-                 'areaForcada' => $areaForcada,
+                 'area' => $areaCard,
+                 'cfg' => $cfg,
              ])>
             <div class="flex items-center justify-center gap-1 w-full min-w-0">
                 @include('organograma.partials._avatar', ['colaborador' => $colaborador, 'size' => 'xs'])
@@ -94,7 +108,8 @@
                  'colaborador' => $colaborador,
                  'cor' => $cor,
                  'fixo' => $fixo,
-                 'areaForcada' => $areaForcada,
+                 'area' => $areaCard,
+                 'cfg' => $cfg,
              ])>
 
             <span class="block text-[clamp(7.5px,0.56vw,10px)] leading-none opacity-95">{{ $nivelTexto }}</span>

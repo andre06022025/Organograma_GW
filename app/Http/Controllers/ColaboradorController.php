@@ -79,6 +79,13 @@ class ColaboradorController extends Controller
         $dados['ric'] = $request->boolean('ric');
         $dados['ordem'] = (int) ($dados['ordem'] ?? 0);
 
+        if ($request->boolean('remover_foto')) {
+            if ($colaborador->foto_path && Storage::disk('public')->exists($colaborador->foto_path)) {
+                Storage::disk('public')->delete($colaborador->foto_path);
+            }
+            $dados['foto_path'] = null;
+        }
+
         if ($request->hasFile('foto')) {
             if ($colaborador->foto_path && Storage::disk('public')->exists($colaborador->foto_path)) {
                 Storage::disk('public')->delete($colaborador->foto_path);
@@ -124,6 +131,7 @@ class ColaboradorController extends Controller
             'data_contratacao' => ['nullable', 'date'],
             'regiao' => ['nullable', 'string', 'max:100'],
             'area' => ['required', Rule::in(array_keys(Colaborador::AREAS))],
+            'nivel' => ['required', Rule::in(array_keys(Colaborador::NIVEIS))],
             'cor' => ['required', Rule::in(array_keys(Colaborador::CORES))],
             'ordem' => ['nullable', 'integer', 'min:0', 'max:999'],
             'ric' => ['nullable', 'boolean'],

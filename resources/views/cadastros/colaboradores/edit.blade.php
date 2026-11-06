@@ -53,24 +53,24 @@
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label font-weight-bold">Nome Completo <span class="text-danger">*</span></label>
-                                <input type="text" name="nome_completo" class="form-control" value="{{ old('nome_completo', $colaborador->nome_completo) }}" required maxlength="150">
+                                <label for="nome_completo" class="form-label font-weight-bold">Nome Completo <span class="text-danger">*</span></label>
+                                <input type="text" id="nome_completo" name="nome_completo" class="form-control" value="{{ old('nome_completo', $colaborador->nome_completo) }}" required maxlength="150">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label font-weight-bold">Cargo <span class="text-danger">*</span></label>
-                                <input type="text" name="cargo" class="form-control" value="{{ old('cargo', $colaborador->cargo) }}" required maxlength="100">
+                                <label for="cargo" class="form-label font-weight-bold">Cargo <span class="text-danger">*</span></label>
+                                <input type="text" id="cargo" name="cargo" class="form-control" value="{{ old('cargo', $colaborador->cargo) }}" required maxlength="100">
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Setor</label>
-                                <input type="text" name="setor" class="form-control" value="{{ old('setor', $colaborador->setor) }}" maxlength="100">
+                                <label for="setor" class="form-label font-weight-bold">Setor</label>
+                                <input type="text" id="setor" name="setor" class="form-control" value="{{ old('setor', $colaborador->setor) }}" maxlength="100">
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Região / Atuação</label>
-                                <input type="text" name="regiao" class="form-control" value="{{ old('regiao', $colaborador->regiao) }}" maxlength="100">
+                                <label for="regiao" class="form-label font-weight-bold">Região / Atuação</label>
+                                <input type="text" id="regiao" name="regiao" class="form-control" value="{{ old('regiao', $colaborador->regiao) }}" maxlength="100">
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Grupo</label>
-                                <select name="grupo_id" class="form-control">
+                                <label for="grupo_id" class="form-label font-weight-bold">Grupo</label>
+                                <select id="grupo_id" name="grupo_id" class="form-control">
                                     <option value="">Selecione um grupo</option>
                                     @foreach($grupos as $g)
                                         <option value="{{ $g->id }}" {{ old('grupo_id', $colaborador->grupo_id) == $g->id ? 'selected' : '' }}>
@@ -80,28 +80,36 @@
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Área <span class="text-danger">*</span></label>
-                                <select name="area" class="form-control" required>
+                                <label for="area" class="form-label font-weight-bold">Área <span class="text-danger">*</span></label>
+                                <select id="area" name="area" class="form-control" required>
                                     @foreach(\App\Models\Colaborador::AREAS as $valor => $rotulo)
                                         <option value="{{ $valor }}" {{ old('area', $colaborador->area) === $valor ? 'selected' : '' }}>{{ $rotulo }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Ordem</label>
-                                <input type="number" name="ordem" class="form-control" value="{{ old('ordem', $colaborador->ordem ?? 0) }}" min="0" max="999">
+                                <label for="nivel" class="form-label font-weight-bold">Nível <span class="text-danger">*</span></label>
+                                <select id="nivel" name="nivel" class="form-control" required>
+                                    @foreach(\App\Models\Colaborador::NIVEIS as $valor => $info)
+                                        <option value="{{ $valor }}" {{ old('nivel', $colaborador->nivel ?: 'supervisao') === $valor ? 'selected' : '' }}>{{ $info['label'] }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Cor do card <span class="text-danger">*</span></label>
-                                <select name="cor" class="form-control" required>
+                                <label for="ordem" class="form-label font-weight-bold">Ordem</label>
+                                <input type="number" id="ordem" name="ordem" class="form-control" value="{{ old('ordem', $colaborador->ordem ?? 0) }}" min="0" max="999">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="cor" class="form-label font-weight-bold">Cor do card <span class="text-danger">*</span></label>
+                                <select id="cor" name="cor" class="form-control" required>
                                     @foreach(\App\Models\Colaborador::CORES as $valor => $info)
                                         <option value="{{ $valor }}" {{ old('cor', $colaborador->cor ?: 'roxo') === $valor ? 'selected' : '' }}>{{ $info['label'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label font-weight-bold">Data de Contratação</label>
-                                <input type="date" name="data_contratacao" class="form-control" value="{{ old('data_contratacao', $colaborador->data_contratacao?->format('Y-m-d')) }}">
+                                <label for="data_contratacao" class="form-label font-weight-bold">Data de Contratação</label>
+                                <input type="date" id="data_contratacao" name="data_contratacao" class="form-control" value="{{ old('data_contratacao', $colaborador->data_contratacao?->format('Y-m-d')) }}">
                             </div>
                             <div class="col-12 mb-2">
                                 <div class="form-check">
@@ -113,12 +121,12 @@
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label font-weight-bold">E-mail</label>
-                                <input type="email" name="email" class="form-control" value="{{ old('email', $colaborador->email) }}" maxlength="150">
+                                <label for="email" class="form-label font-weight-bold">E-mail</label>
+                                <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $colaborador->email) }}" maxlength="150">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label font-weight-bold">Gestor Direto</label>
-                                <select name="gestor_id" class="form-control">
+                                <label for="gestor_id" class="form-label font-weight-bold">Gestor Direto</label>
+                                <select id="gestor_id" name="gestor_id" class="form-control">
                                     <option value="">Sem gestor (nível superior)</option>
                                     @foreach($gestores as $g)
                                         <option value="{{ $g->id }}" {{ old('gestor_id', $colaborador->gestor_id) == $g->id ? 'selected' : '' }}>

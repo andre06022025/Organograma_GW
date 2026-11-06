@@ -39,12 +39,12 @@
         <div class="card-body">
             <form method="GET" class="row g-3" id="filtrosForm">
                 <div class="col-md-4">
-                    <label class="form-label small">Buscar</label>
+                    <label for="filtroBusca" class="form-label small">Buscar</label>
                     <input type="text" name="busca" class="form-control form-control-sm" 
                            value="{{ request('busca') }}" placeholder="Nome, cargo, setor..." id="filtroBusca">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small">Setor</label>
+                    <label for="filtroSetor" class="form-label small">Setor</label>
                     <select name="setor" class="form-control form-control-sm" id="filtroSetor">
                         <option value="">Todos</option>
                         @foreach($setores as $s)
@@ -53,7 +53,7 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small">Grupo</label>
+                    <label for="filtroGrupo" class="form-label small">Grupo</label>
                     <select name="grupo" class="form-control form-control-sm" id="filtroGrupo">
                         <option value="">Todos</option>
                         @foreach($grupos as $g)
@@ -129,14 +129,13 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('cadastros.colaboradores.destroy', $colab) }}" method="POST" class="d-inline" 
-                                              onsubmit="return confirm('Confirma a exclusão de {{ $colab->nome_completo }}?')">
+                                              onsubmit="return confirm(@js('Confirma a exclusão de ' . $colab->nome_completo . '?'))">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger" title="Excluir">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
-                                    </div>
-                                </td>
+                                    </td>
                             </tr>
                         @empty
                             <tr>

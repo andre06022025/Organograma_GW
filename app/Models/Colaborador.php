@@ -62,13 +62,7 @@ class Colaborador extends Model
         'cor',
         'ordem',
         'ric',
-        'card_coluna',
-        'card_linha',
-        'card_colspan',
-        'card_rowspan',
-        'card_texto',
-        'card_align',
-        'card_valign',
+        'card_posicoes',
         'grupo_id',
     ];
 
@@ -79,9 +73,7 @@ class Colaborador extends Model
         'ric' => 'boolean',
         'ordem' => 'integer',
         'data_contratacao' => 'date',
-        'card_coluna' => 'integer',
-        'card_linha' => 'integer',
-        'card_colspan' => 'integer',
+        'card_posicoes' => 'array',
     ];
 
     protected $hidden = [
@@ -211,13 +203,56 @@ class Colaborador extends Model
     }
 
     /**
+     * Configuração salva do card para uma área específica.
+     *
+     * As posições são escopadas por área porque o mesmo colaborador pode
+     * aparecer em mais de uma área do organograma (ex.: Arthur nas barras de
+     * Produção e Apoio). Cada área guarda a sua própria configuração.
+     */
+    public function posicaoArea(?string $area): array
+    {
+        if (! $area) {
+            return [];
+        }
+
+        $slot = $this->card_posicoes[$area] ?? [];
+
+        return is_array($slot) ? $slot : [];
+    }
+
+    /**
+     * Grava (ou remove, com valor null) a configuração de uma área.
+     */
+    public function setPosicaoArea(string $area, array $dados): void
+    {
+        $posicoes = $this->card_posicoes ?? [];
+        $slot = $posicoes[$area] ?? [];
+
+        foreach ($dados as $chave => $valor) {
+            if ($valor === null) {
+                unset($slot[$chave]);
+                continue;
+            }
+
+            $slot[$chave] = $valor;
+        }
+
+        if ($slot === []) {
+            unset($posicoes[$area]);
+        } else {
+            $posicoes[$area] = $slot;
+        }
+
+        $this->card_posicoes = $posicoes;
+    }
+
+    /**
      * Texto de nível exibido no card (opcional).
      */
     public function getNivelCardTextoAttribute(): string
     {
         return $this->nivel_card ?: $this->nivel_curto;
     }
-
     /**
      * Cor do cabeçalho do modal (acompanha a cor do card).
      */

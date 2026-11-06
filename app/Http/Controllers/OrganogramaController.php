@@ -8,9 +8,25 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class OrganogramaController extends Controller
 {
+    /**
+     * Áreas do organograma. Cada área tem sua própria grade e, portanto,
+     * as posições dos cards são gravadas separadamente por área.
+     */
+    public const AREAS = ['producao', 'apoio', 'corporativo'];
+
+    /**
+     * Limite de colunas por área (as grades têm larguras diferentes).
+     */
+    private const COLUNAS_POR_AREA = [
+        'producao' => 9,
+        'apoio' => 7,
+        'corporativo' => 9,
+    ];
+
     public function index()
     {
         $colaboradores = Colaborador::ativos()
@@ -21,14 +37,7 @@ class OrganogramaController extends Controller
         // Mapa por e-mail: o layout em grade referencia cada pessoa pela chave.
         $m = $colaboradores->keyBy('email');
 
-        $raiz = $colaboradores->firstWhere('nivel', 'direcao')
-            ?? $colaboradores->firstWhere('gestor_id', null);
-
-        $estatisticas = [
-            'total' => $colaboradores->count(),
-        ];
-
-        return view('organograma.index', compact('m', 'raiz', 'estatisticas'));
+        return view('organograma.index', compact('m'));
     }
 
     public function detalhes($id): JsonResponse
@@ -53,7 +62,8 @@ class OrganogramaController extends Controller
             'nome' => $colaborador->nome_completo,
             'cargo' => $colaborador->cargo,
             'nivel' => $colaborador->nivel,
-            'label_nivel' => $colaborador->cargo,
+            'nivel_label' => $colaborador->nivel_label,
+            'label_nivel' => $colaborador->nivel_label,
             'cor' => $colaborador->cor,
             'cor_nivel' => $colaborador->cor_nivel,
             'area' => $colaborador->area,
@@ -76,61 +86,170 @@ class OrganogramaController extends Controller
         ]);
     }
 
+    /**
+     * Salva as alterações de um card dentro de uma área específica.
+     *
+     * O nome do colaborador é global (afeta a pessoa em toda a aplicação),
+     * enquanto texto de barra, posição, tamanho e alinhamento pertencem
+     * apenas à área editada. Campos com valor null removem a customization.
+     */
     public function atualizarCard(Request $request, Colaborador $colaborador): JsonResponse
     {
         $dados = $request->validate([
-            'nome_completo' => ['sometimes', 'required', 'string', 'max:150'],
-            'card_coluna' => ['sometimes', 'integer', 'min:1', 'max:9'],
-            'card_linha' => ['sometimes', 'integer', 'min:1', 'max:20'],
-            'card_colspan' => ['sometimes', 'integer', 'min:1', 'max:9'],
-            'card_rowspan' => ['sometimes', 'integer', 'min:1', 'max:10'],
-            'card_texto' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'card_align' => ['sometimes', 'in:left,center,right'],
-            'card_valign' => ['sometimes', 'in:top,center,bottom'],
+            'area' => ['required', Rule::in(self::AREAS)],
+            'nome_completo' => ['sometimes', 'nullable', 'string', 'max:150'],
+            'texto' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'posicao' => ['sometimes', 'nullable', 'array'],
+            'posicao.coluna' => ['sometimes', 'integer', 'min:1', 'max:9'],
+            'posicao.linha' => ['sometimes', 'integer', 'min:1', 'max:20'],
+            'posicao.colspan' => ['sometimes', 'integer', 'min:1', 'max:9'],
+            'posicao.rowspan' => ['sometimes', 'integer', 'min:1', 'max:6'],
+            'align' => ['sometimes', 'nullable', Rule::in(['left', 'center', 'right'])],
+            'valign' => ['sometimes', 'nullable', Rule::in(['top', 'center', 'bottom'])],
         ], [
-            'nome_completo.required' => 'Informe o nome do card.',
+            'area.required' => 'Informe a área do card.',
+            'area.in' => 'Área inválida.',
             'nome_completo.max' => 'O nome do card deve ter no máximo 150 caracteres.',
-            'card_coluna.min' => 'A coluna deve ser no mínimo 1.',
-            'card_coluna.max' => 'A coluna deve ser no máximo 9.',
-            'card_linha.min' => 'A linha deve ser no mínimo 1.',
-            'card_linha.max' => 'A linha deve ser no máximo 20.',
-            'card_colspan.min' => 'A largura deve ser no mínimo 1 coluna.',
-            'card_colspan.max' => 'A largura deve ser no máximo 9 colunas.',
-            'card_rowspan.min' => 'A altura deve ser no mínimo 1 linha.',
-            'card_rowspan.max' => 'A altura deve ser no máximo 10 linhas.',
-            'card_texto.max' => 'O texto da barra deve ter no máximo 255 caracteres.',
-            'card_align.in' => 'Alinhamento horizontal inválido.',
-            'card_valign.in' => 'Alinhamento vertical inválido.',
+            'texto.max' => 'O texto da barra deve ter no máximo 255 caracteres.',
+            'posicao.coluna.min' => 'A coluna deve ser no mínimo 1.',
+            'posicao.coluna.max' => 'A coluna deve ser no máximo 9.',
+            'posicao.linha.min' => 'A linha deve ser no mínimo 1.',
+            'posicao.linha.max' => 'A linha deve ser no máximo 20.',
+            'posicao.colspan.min' => 'A largura deve ser no mínimo 1 coluna.',
+            'posicao.colspan.max' => 'A largura deve ser no máximo 9 colunas.',
+            'posicao.rowspan.min' => 'A altura deve ser no mínimo 1 linha.',
+            'posicao.rowspan.max' => 'A altura deve ser no máximo 6 linhas.',
+            'align.in' => 'Alinhamento horizontal inválido.',
+            'valign.in' => 'Alinhamento vertical inválido.',
         ]);
 
-        $colaborador->update($dados);
+        $area = $dados['area'];
+        $maxColunas = self::COLUNAS_POR_AREA[$area];
 
-        return response()->json(['ok' => true]);
+        // A posição precisa caber na grade da área.
+        if (isset($dados['posicao']) && is_array($dados['posicao'])) {
+            $posicao = $dados['posicao'];
+
+            foreach (['coluna', 'linha', 'colspan', 'rowspan'] as $campo) {
+                if (! isset($posicao[$campo])) {
+                    return response()->json([
+                        'ok' => false,
+                        'message' => 'Posição incompleta.',
+                    ], 422);
+                }
+            }
+
+            $coluna = (int) $posicao['coluna'];
+            $colspan = (int) $posicao['colspan'];
+
+            if ($coluna + $colspan - 1 > $maxColunas) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => "O card não cabe na grade da área (máximo de {$maxColunas} colunas).",
+                ], 422);
+            }
+        }
+
+        // Nome do colaborador: global.
+        if (array_key_exists('nome_completo', $dados)) {
+            $nome = trim((string) $dados['nome_completo']);
+
+            if ($nome === '') {
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Informe o nome ou texto do card.',
+                ], 422);
+            }
+
+            $colaborador->nome_completo = $nome;
+        }
+
+        // Configuração visual: por área.
+        $slot = [];
+
+        if (array_key_exists('texto', $dados)) {
+            $slot['texto'] = $dados['texto'];
+        }
+
+        if (array_key_exists('posicao', $dados)) {
+            if (! is_array($dados['posicao'])) {
+                $slot['posicao'] = null;
+            } else {
+                $slot['posicao'] = [
+                    'coluna' => (int) $dados['posicao']['coluna'],
+                    'linha' => (int) $dados['posicao']['linha'],
+                    'colspan' => (int) $dados['posicao']['colspan'],
+                    'rowspan' => (int) $dados['posicao']['rowspan'],
+                ];
+            }
+        }
+
+        if (array_key_exists('align', $dados)) {
+            $slot['align'] = $dados['align'];
+        }
+
+        if (array_key_exists('valign', $dados)) {
+            $slot['valign'] = $dados['valign'];
+        }
+
+        if ($slot !== []) {
+            $colaborador->setPosicaoArea($area, $slot);
+        }
+
+        $colaborador->save();
+
+        return response()->json([
+            'ok' => true,
+            'area' => $area,
+            'posicao' => $colaborador->posicaoArea($area),
+        ]);
     }
 
+    /**
+     * Salva as posições dos cards arrastados dentro de uma área.
+     */
     public function salvarPosicoes(Request $request): JsonResponse
     {
         $dados = $request->validate([
+            'area' => ['required', Rule::in(self::AREAS)],
             'posicoes' => ['required', 'array'],
             'posicoes.*.id' => ['required', 'integer', 'exists:colaboradores,id'],
-            'posicoes.*.coluna' => ['required', 'integer', 'min:1'],
-            'posicoes.*.linha' => ['required', 'integer', 'min:1'],
+            'posicoes.*.coluna' => ['required', 'integer', 'min:1', 'max:9'],
+            'posicoes.*.linha' => ['required', 'integer', 'min:1', 'max:20'],
             'posicoes.*.colspan' => ['required', 'integer', 'min:1', 'max:9'],
-            'posicoes.*.rowspan' => ['sometimes', 'integer', 'min:1', 'max:10'],
+            'posicoes.*.rowspan' => ['sometimes', 'integer', 'min:1', 'max:6'],
         ]);
 
-        foreach ($dados['posicoes'] as $posicao) {
-            $atualizacao = [
-                'card_coluna' => $posicao['coluna'],
-                'card_linha' => $posicao['linha'],
-                'card_colspan' => $posicao['colspan'],
-            ];
+        $area = $dados['area'];
+        $maxColunas = self::COLUNAS_POR_AREA[$area];
 
-            if (array_key_exists('rowspan', $posicao)) {
-                $atualizacao['card_rowspan'] = $posicao['rowspan'];
+        foreach ($dados['posicoes'] as $posicao) {
+            $coluna = (int) $posicao['coluna'];
+            $colspan = (int) $posicao['colspan'];
+
+            if ($coluna + $colspan - 1 > $maxColunas) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => "O card não cabe na grade da área (máximo de {$maxColunas} colunas).",
+                ], 422);
             }
 
-            Colaborador::whereKey($posicao['id'])->update($atualizacao);
+            $colaborador = Colaborador::find($posicao['id']);
+
+            if (! $colaborador) {
+                continue;
+            }
+
+            $colaborador->setPosicaoArea($area, [
+                'posicao' => [
+                    'coluna' => $coluna,
+                    'linha' => (int) $posicao['linha'],
+                    'colspan' => $colspan,
+                    'rowspan' => (int) ($posicao['rowspan'] ?? 1),
+                ],
+            ]);
+
+            $colaborador->save();
         }
 
         return response()->json(['ok' => true]);

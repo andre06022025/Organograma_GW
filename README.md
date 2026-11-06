@@ -2,7 +2,7 @@
 
 Sistema web de organograma corporativo da General Water: visualização hierárquica interativa e cadastro de colaboradores.
 
-**Versão:** v1.9.10
+**Versão:** v1.10.0
 
 ---
 
@@ -42,9 +42,12 @@ A tabela `colaboradores` é a única fonte dos cards. Campos usados:
 | `cor` | Identificador de cor: `roxo`, `azul` ou `laranja` |
 | `ordem` | Ordem dentro do setor |
 | `ric` | Participa da gestão compartilhada RIC |
-| `card_coluna` | Coluna do card no grid (salva pelo drag-and-drop) |
-| `card_linha` | Linha do card no grid |
-| `card_colspan` | Quantidade de colunas que o card ocupa |
+| `card_posicoes` | Configuração visual do card **por área** (posição, tamanho, alinhamento e texto customizado), em JSON |
+
+Cada área do organograma (`producao`, `apoio`) guarda a sua própria configuração. Isso
+permite que o mesmo colaborador apareça em mais de uma área — como a barra do Arthur,
+que existe na Produção e na Apoio — e cada uma seja movida e editada de forma independente,
+sem que a alteração de uma área afete a outra.
 | `setor` | Sistema/Área (ex.: `Sistemas 1`, `LABOR`) |
 | `data_contratacao` | Data de contratação (opcional) |
 | `gestor_id` | Gestor direto |
@@ -54,7 +57,10 @@ As cores são mapeadas no modelo (`Colaborador::CORES`) para as classes CSS do t
 
 ### Drag and drop
 
-Arraste um card e solte sobre outro **da mesma área** e com o **mesmo número de colunas** para trocar as posições. A troca é salva automaticamente em `card_coluna`, `card_linha` e `card_colspan` e permanece após recarregar a página. As barras fixas (Direção, Superintendência e Gerência) também podem ser movidas e editadas.
+Arraste um card e solte sobre outro **da mesma área** e com o **mesmo número de colunas** para trocar as posições. A troca é salva automaticamente em `card_posicoes` e permanece após recarregar a página. As barras fixas (Direção, Superintendência e Gerência) também podem ser movidas e editadas.
+
+Como a posição é gravada por área, mover um card na Produção não altera o mesmo
+colaborador na Apoio.
 
 ### Modo edição
 
@@ -67,10 +73,11 @@ Clique no botão **Editar** na barra superior para ativar o modo edição. Com e
 - Em **Tamanho**, use **Largura (colunas)** e **Altura (linhas)** com **−** / **+** para aumentar ou diminuir o card. Quando a largura cresce perto da borda, o card se reposiciona automaticamente para caber na área.
 - Ajuste o **alinhamento horizontal** (Esquerda, Centro, Direita) e o **alinhamento vertical** (Topo, Meio, Base), ou clique em **Centralizar tudo**.
 - As alterações são **salvas automaticamente** após uma pequena pausa; ao trocar de card ou sair do modo edição, o salvamento pendente é aplicado.
-- **Salvar** aplica imediatamente; **Voltar** fecha e descarta alterações ainda não salvas.
+- **Salvar** aplica imediatamente; **Voltar** devolve o card ao estado em que estava quando foi selecionado (inclusive no banco).
 - A barra de Direção ocupa a largura total: nela apenas o texto e o alinhamento podem ser alterados.
 
-As alterações são salvas no banco (`nome_completo` para pessoas, `card_texto` para barras, `card_coluna`, `card_linha`, `card_colspan`, `card_rowspan`, `card_align` e `card_valign`).
+As alterações são salvas no banco: `nome_completo` para pessoas (global) e, por área, em
+`card_posicoes` (`posicao`, `align`, `valign` e `texto`).
 
 ---
 
@@ -149,6 +156,7 @@ database/seeders/ColaboradorSeeder.php
 
 ## Histórico
 
+- **v1.10.0** — Posições dos cards passam a ser gravadas **por área** (`card_posicoes` em JSON), eliminando a sobreposição entre as barras da Área de Apoio e permitindo que o mesmo colaborador seja movido de forma independente em cada área. O botão **Voltar** agora devolve o card ao estado salvo. Campo **Nível** incluído no cadastro de colaboradores. Editor com fila de salvamento (não perde edições ao trocar de card durante uma gravação), proteção contra XSS no `confirm()` de exclusão, rótulos acessíveis em todos os formulários, fuso horário `America/Sao_Paulo`, dependências não utilizadas removidas e vulnerabilidades do Symfony atualizadas.
 - **v1.9.10** — Salvamento automático no editor: alterações de nome, tamanho, posição e alinhamento são gravadas após uma pequena pausa e também ao trocar de card ou sair do modo edição.
 - **v1.9.9** — Removido o card laranja "DIREÇÃO (THIAGO)" redundante da Área de Apoio; a barra de Direção do topo permanece.
 - **v1.9.8** — Revertida a alteração da v1.9.7; o layout e a edição das barras de apoio voltam ao estado da v1.9.6.

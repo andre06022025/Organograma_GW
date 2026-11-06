@@ -40,13 +40,13 @@
         <div class="card-body">
             <form method="GET" action="{{ route('cadastros.index') }}" class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label small">Buscar</label>
-                    <input type="text" name="busca" class="form-control form-control-sm"
+                    <label for="filtroBusca" class="form-label small">Buscar</label>
+                    <input type="text" id="filtroBusca" name="busca" class="form-control form-control-sm"
                            value="{{ request('busca') }}" placeholder="Nome do cadastro...">
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label small">Tipo</label>
-                    <select name="tipo" class="form-control form-control-sm">
+                    <label for="filtroTipo" class="form-label small">Tipo</label>
+                    <select id="filtroTipo" name="tipo" class="form-control form-control-sm">
                         <option value="">Todos</option>
                         @foreach($tipos as $tipo)
                             <option value="{{ $tipo }}" {{ request('tipo') === $tipo ? 'selected' : '' }}>{{ $tipo }}</option>
@@ -54,8 +54,8 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small">Gestor</label>
-                    <select name="gestor" class="form-control form-control-sm">
+                    <label for="filtroGestor" class="form-label small">Gestor</label>
+                    <select id="filtroGestor" name="gestor" class="form-control form-control-sm">
                         <option value="">Todos</option>
                         @foreach($gestores as $gestor)
                             <option value="{{ $gestor->id }}" {{ (string) request('gestor') === (string) $gestor->id ? 'selected' : '' }}>
@@ -65,8 +65,8 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small">Sistema</label>
-                    <select name="sistema" class="form-control form-control-sm">
+                    <label for="filtroSistema" class="form-label small">Sistema</label>
+                    <select id="filtroSistema" name="sistema" class="form-control form-control-sm">
                         <option value="">Todos</option>
                         @foreach($sistemas as $valor => $rotulo)
                             <option value="{{ $valor }}" {{ request('sistema') === $valor ? 'selected' : '' }}>{{ $rotulo }}</option>

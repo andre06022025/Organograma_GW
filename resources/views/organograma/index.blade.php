@@ -30,11 +30,13 @@
             'barra' => true,
             'texto' => 'DIREÇÃO (' . strtoupper($m['thiago@empresa.com.br']->nome_completo ?? 'THIAGO') . ')',
             'fixo' => true,
+            'area' => 'corporativo',
         ])
 
         <div class="flex items-stretch gap-2">
 
             {{-- ================= ÁREAS DE PRODUÇÃO ================= --}}
+            @php($areaGrade = 'producao')
             <div class="js-area flex-[1.33] basis-0 min-w-0" data-area="producao">
                 <div class="text-center text-[clamp(11px,0.85vw,16px)] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200 mb-1">
                     Áreas de Produção
@@ -119,6 +121,7 @@
             <div class="js-divisor w-px self-stretch bg-slate-700 dark:bg-slate-400 mx-1"></div>
 
             {{-- ================= ÁREAS DE APOIO ================= --}}
+            @php($areaGrade = 'apoio')
             <div class="js-area flex-1 basis-0 min-w-0" data-area="apoio">
                 <div class="text-center text-[clamp(11px,0.85vw,16px)] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200 mb-1">
                     Áreas de Apoio
